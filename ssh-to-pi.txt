@@ -1,0 +1,5 @@
+connect to the pi like this:
+
+ssh -p18012 pi@0.tcp.eu.ngrok.io
+
+In case the port number (after the -p) changes I will update this file, so everyone can find the used port here.
