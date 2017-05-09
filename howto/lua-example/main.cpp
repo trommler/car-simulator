@@ -20,10 +20,10 @@ void simple_lua_interpreter(lua_State *L)
     }
 }
 
-
+// print the contents of the lua stack to stdout
 void stack_dump(lua_State *L)
 {
-    int top = lua_gettop(L);
+    int top = lua_gettop(L); // number of stack elements
     printf("stack:\n");
 
     for (int i = 1; i <= top; ++i)
@@ -44,7 +44,7 @@ void stack_dump(lua_State *L)
                 printf("%g", lua_tonumber(L, i));
                 break;
             default:
-                printf("%s", lua_typename(L, i));
+                printf("%s", lua_typename(L, t));
                 break;
         }
 

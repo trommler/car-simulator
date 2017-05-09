@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean run
 CC=g++
 CFLAGS  = -Wall -I/usr/include/lua5.1
 LDFLAGS = -llua5.1
@@ -14,3 +14,6 @@ $(TARGET): $(CPP_SRC) $(HEADER)
 
 clean:
 	rm -f $(TARGET) *.o
+
+run: $(TARGET)
+	./$(TARGET)
