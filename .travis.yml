@@ -1,0 +1,9 @@
+language: cpp
+
+compiler:
+      - g++
+
+before_script:
+      - cd howto/lua-example
+
+script: make
