@@ -21,10 +21,10 @@ void simple_lua_interpreter(lua_State *L)
 }
 
 // print the contents of the lua stack to stdout
-void stack_dump(lua_State *L)
+void stack_dump(lua_State *L, const char *msg = "")
 {
     int top = lua_gettop(L); // number of stack elements
-    printf("stack:\n");
+    printf("stack %s:\n", msg);
 
     for (int i = 1; i <= top; ++i)
     {
@@ -35,7 +35,7 @@ void stack_dump(lua_State *L)
                 printf("nil");
                 break;
             case LUA_TSTRING:
-                printf("%s", lua_tostring(L, i));
+                printf("'%s'", lua_tostring(L, i));
                 break;
             case LUA_TBOOLEAN:
                 printf(lua_toboolean(L, i) ? "true" : "false");
@@ -47,10 +47,24 @@ void stack_dump(lua_State *L)
                 printf("%s", lua_typename(L, t));
                 break;
         }
-
         printf("   ");
     }
     printf("\n");
+}
+
+// load a variable named 'var_name' from lua, the lua file has to be loaded and compiled before
+int get_global_int(lua_State *L, const char *var_name)
+{
+    lua_getglobal(L, var_name);
+    if (!lua_isnumber(L, -1))
+    {
+        fprintf(stderr, "get_global_int: not a number\n");
+        stack_dump(L, "[error in get_global_int]");
+        exit(-1);
+    }
+    int value = (int)lua_tonumber(L, -1);
+    lua_pop(L, 1);
+    return value;
 }
 
 
@@ -82,7 +96,7 @@ int main(int argc, char **argv)
     lua_pushstring(L, buf2);                    // null-terminated string
 
     // dump stack
-    stack_dump(L);
+    stack_dump(L, "after pushing some values");
 
     // these check if a value can be converted into the queried type
     printf("index 1 is number? : %d\n", lua_isnumber(L, 1));
@@ -102,7 +116,7 @@ int main(int argc, char **argv)
     // btw.: lua_pop(L, n) is the same as lua_settop(L, -(n)-1)
 
     // dump stack
-    stack_dump(L);
+    stack_dump(L, "after some manipulations");
 
     // there are also:
     // lua_remove(L, index)         -- remove element at the given idex
@@ -111,8 +125,45 @@ int main(int argc, char **argv)
     // lua_pushvalue(L, index)      -- copy value at index and push on top
 
 
-    //simple_lua_interpreter(L);
+    //simple_lua_interpreter(L);        // start the simple interpreter (CTRL-D to exit)
+
+
+    // lua config file example
+    //
+    const char *filename = "extension.lua";
+
+    // load and compile the lua file
+    if (luaL_loadfile(L, filename) || lua_pcall(L, 0, 0, 0))
+        fprintf(stderr, "cannot load file: %s", lua_tostring(L, -1));
+
+    // load two global vars from the lua file
+    int width  = get_global_int(L, "width");
+    int height = get_global_int(L, "height");
+    printf("width=%d, height=%d\n", width, height);
+
+
+    // how to call a function defined in lua
+    lua_getglobal(L, "my_pow");         // put function on the stack
+    lua_pushnumber(L, 2);               // push 1st argument
+    lua_pushnumber(L, 3);               // push 2nd argument
+    stack_dump(L, "after pushing function and params");
+
+    // call the function with 2 arguments and put 1 result on the stack
+    if (lua_pcall(L, 2, 1, 0))
+    {
+        fprintf(stderr, "error in calling my_pow\n");
+        return -1;
+    }
+    stack_dump(L, "after function call");
+
+    // fetch result of function call from the stack
+    int result = lua_tonumber(L, -1);
+    lua_pop(L, 1);
+    printf("result=%d\n", result);
+    stack_dump(L, "after result retrieval");
 
     lua_close(L);
     return 0;
 }
+
+
