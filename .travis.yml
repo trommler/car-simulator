@@ -9,4 +9,6 @@ before_install:
 before_script:
       - cd howto/lua-example
 
-script: make
+script:
+    - make
+    - make run
