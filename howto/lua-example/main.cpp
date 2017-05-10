@@ -72,7 +72,7 @@ int get_global_int(lua_State *L, const char *var_name)
 int main(int argc, char **argv)
 {
     int error;
-    lua_State *L = lua_open();      /* open lua */
+    lua_State *L = luaL_newstate(); /* open lua */
     luaL_openlibs(L);               /* open lua librarys */
     error = lua_checkstack(L, 50);  /* ensure the lua stack can hold 50 elements, it's LUA_MINSTACK by default */
     if (error == 0)
