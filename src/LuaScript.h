@@ -1,5 +1,5 @@
 /** 
- * @file LuaBridge.h
+ * @file LuaScript.h
  * @author Florian Bauer
  *
  */

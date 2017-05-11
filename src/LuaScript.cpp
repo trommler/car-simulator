@@ -1,5 +1,5 @@
 /** 
- * @file LuaBridge.cpp
+ * @file LuaScript.cpp
  * @author Florian Bauer
  * 
  * This encapsulates the basic functions supported by the Lua libraries into a easy to use class

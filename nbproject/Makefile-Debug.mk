@@ -35,7 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/1694dbaf/LuaScript.o \
+	${OBJECTDIR}/src/LuaScript.o \
 	${OBJECTDIR}/src/main.o
 
 
@@ -43,8 +43,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-llua5.2
-CXXFLAGS=-llua5.2
+CCFLAGS=
+CXXFLAGS=
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -57,16 +57,16 @@ LDLIBSOPTIONS=`pkg-config --libs lua5.2`
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amosapp
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amosapp: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amosapp ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/1694dbaf/LuaScript.o: /home/bauer/Projects/AMOS/AmosApp/src/LuaScript.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/1694dbaf
+${OBJECTDIR}/src/LuaScript.o: src/LuaScript.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1694dbaf/LuaScript.o /home/bauer/Projects/AMOS/AmosApp/src/LuaScript.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/LuaScript.o src/LuaScript.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
