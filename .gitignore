@@ -31,5 +31,17 @@
 # editor tmp files
 *~
 
+# IDE project meta files
+*.xml
+*.inc
+.cproject
+.project
+build/
+dist/
+nbproject/private/
+.settings/
+
 runme
+
+
 
