@@ -1,4 +1,4 @@
-# ![ProjectLogo](resources/ProjectLogoThump.png)  amos-ss17-proj4       
+# ![ProjectLogo](resources/images/ProjectLogoThumb.png)  amos-ss17-proj4       
 
 Raspberry Pi as a simulated car.
 

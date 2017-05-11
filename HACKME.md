@@ -6,14 +6,14 @@ This can simply be done under a Debian/Ubuntu/Raspian based distribution with:
 
     sudo apt install can-utils
 
-OR install the package manually by following the steps as descriped here:
+OR install the package manually by following the steps as described here:
 [eLinux Wiki](http://elinux.org/Can-utils)
 
 
 2. Load the Kernel modules
 
-Since you propably have no real hardware CAN interface, we use the virtualCAN device. Therefore we
-have to load the Kernel moudule with `sudo modprobe vcan` and set up the connection with:  
+Since you probably have no real hardware CAN interface, we use the virtualCAN device. Therefore we
+have to load the Kernel module with `sudo modprobe vcan` and set up the connection with:  
 
     sudo ip link add dev vcan0 type vcan
     sudo ip link set up vcan0
@@ -30,15 +30,16 @@ The first Terminal window should now show something like:
     user@linux ~ $ candump vcan0
       vcan0  123   [8]  11 22 33 44 55 66 77 88
 
-For further informations and troubleshouting see:
+For further informations and troubleshooting see:
 
 [Using can-utils](https://discuss.cantact.io/t/using-can-utils/24)
 [Bringing CAN interface up](http://elinux.org/Bringing_CAN_interface_up)
 [SocketCAN](https://en.wikipedia.org/wiki/SocketCAN)
 
+
 ## Installing Lua on Linux
 
-Install the following packages:  
+Install the following packages with `apt get install ...`:  
 
     lua5.2
     lua5.2-dev
@@ -50,7 +51,10 @@ Include Lua support in the C++ file with
 #include <lua.hpp>
 ```
 
+
 ## Install Unit-Tests
+
+Install the following packages with `apt get install ...`:  
 
     libcppunit-1.13
     libcppunit-dev
@@ -59,5 +63,10 @@ Include Lua support in the C++ file with
 Build targets according to the Makefile are `build-tests` and `tests`.
 
 
+## Set-Up an IDE
+
+You can choose the easy way with the [NetBeans Set-Up](resources/NetBeansSetUp.md) or the harder one with the [Eclipse Set-Up](resources/EclipseSetUp.md)
+
+_(Author's note: NetBeans is more comfortable anyway)_
 
 
