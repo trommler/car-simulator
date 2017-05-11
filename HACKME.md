@@ -47,7 +47,7 @@ Install the following packages:
 Include Lua support in the C++ file with 
 
 ```cpp
-#include <lua5.2/lua.hpp>
+#include <lua.hpp>
 ```
 
 ## Install Unit-Tests
