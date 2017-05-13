@@ -27,23 +27,24 @@ have to load the Kernel module with `sudo modprobe vcan` and set up the connecti
 
 The first Terminal window should now show something like:
 
-    user@linux ~ $ candump vcan0
-      vcan0  123   [8]  11 22 33 44 55 66 77 88
+```bash
+user@linux ~ $ candump vcan0
+  vcan0  123   [8]  11 22 33 44 55 66 77 88
+```
 
 For further informations and troubleshooting see:
 
-[Using can-utils](https://discuss.cantact.io/t/using-can-utils/24)
-[Bringing CAN interface up](http://elinux.org/Bringing_CAN_interface_up)
-[SocketCAN](https://en.wikipedia.org/wiki/SocketCAN)
+[Using can-utils](https://discuss.cantact.io/t/using-can-utils/24)  
+[Bringing CAN interface up](http://elinux.org/Bringing_CAN_interface_up)  
+[SocketCAN](https://en.wikipedia.org/wiki/SocketCAN)  
 
 
 ## Installing Lua on Linux
 
-Install the following packages with `apt get install ...`:  
+Install the following packages with `sudo apt install lua5.2 liblua5.2-0`:  
 
     lua5.2
-    lua5.2-dev
-    lua5.2-doc
+    liblua5.2-0
 
 Include Lua support in the C++ file with 
 
@@ -54,7 +55,7 @@ Include Lua support in the C++ file with
 
 ## Install Unit-Tests
 
-Install the following packages with `apt get install ...`:  
+Install the following packages with `sudo apt install ...`:  
 
     libcppunit-1.13
     libcppunit-dev
