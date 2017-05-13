@@ -8,25 +8,22 @@
 
 #include <lua.hpp>
 #include <string>
-#include <stdexcept>
-#include <iostream>
-#include <memory>
 
 class LuaScript
 {
 public:
-    LuaScript(const LuaScript& orig) = delete;
-    LuaScript(const LuaScript&& orig);
+    LuaScript(LuaScript& orig) = delete; // make non-copyable
+    LuaScript& operator=(LuaScript& orig) = delete; // make non-copyable
+    LuaScript(LuaScript&& orig) = default; // provide move constructor
     virtual ~LuaScript();
     static LuaScript import_script(const std::string& scriptFile);
     int executeScript() noexcept;
     void simpleLuaInterpreter() noexcept;
     void dumpStack() noexcept;
     int getGlobalInt(const std::string& varName) noexcept;
-    void close() noexcept;
 private:
     lua_State* L = nullptr;
-    LuaScript();
+    LuaScript() = default; // private default constructor (used only in `import_script()`)
     int loadScript(const std::string& fileName) noexcept;
 };
 

@@ -31,8 +31,6 @@ int main(int argc, char** argv)
     // some Lua script tests...
     LuaScript myScript = LuaScript::import_script("testscript.lua");
     myScript.executeScript();
-    myScript.close();
-    
     
     // some virtualCAN tests...
     int so = socket(PF_CAN, SOCK_RAW, CAN_RAW);

@@ -13,14 +13,12 @@
 using namespace std;
 
 /**
- * Constructor.
+ * Destructor. Closes the Lua script.
  */
-LuaScript::LuaScript() { }
-
-/**
- * Destructor.
- */
-LuaScript::~LuaScript() { }
+LuaScript::~LuaScript()
+{
+    lua_close(L);
+}
 
 /**
  * Loads the Lua script according to the given name. Do not forget to call `close()` after usage.
@@ -54,7 +52,7 @@ int LuaScript::loadScript(const string& fileName) noexcept
 /**
  * Executes the given Lua script.
  * 
- * @return 0 on sucess, otherwise a negative value
+ * @return 0 on success, otherwise a negative value
  */
 int LuaScript::executeScript() noexcept
 {
@@ -90,12 +88,12 @@ void LuaScript::simpleLuaInterpreter() noexcept
  */
 void LuaScript::dumpStack() noexcept
 {
-    int top = lua_gettop(L); // number of stack elements
-    int t;
+    const int top = lua_gettop(L); // number of stack elements
+    int type;
     for (int i = 1; i <= top; i++)
     {
-        t = lua_type(L, i);
-        switch (t)
+        type = lua_type(L, i);
+        switch (type)
         {
             case LUA_TNIL:
                 cout << "nil";
@@ -110,7 +108,7 @@ void LuaScript::dumpStack() noexcept
                 cout << lua_tonumber(L, i);
                 break;
             default:
-                cout << lua_typename(L, t);
+                cout << lua_typename(L, type);
                 break;
         }
         cout << '\t';
@@ -137,12 +135,4 @@ int LuaScript::getGlobalInt(const string& varName) noexcept
     int retVal = static_cast<int> (lua_tonumber(L, -1));
     lua_pop(L, 1);
     return retVal;
-}
-
-/**
- * Closes the Lua script.
- */
-void LuaScript::close() noexcept
-{
-    lua_close(L);
 }
