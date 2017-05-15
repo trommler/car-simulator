@@ -11,6 +11,8 @@ install:
     - sudo apt-get install liblua5.2-dev
     - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; fi
     - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9"; fi
+    - sudo rm /bin/g++
+    - sudo cp /bin/g++-4.9 /bin/g++
 
 #before_script:
       #- cd howto/lua-example
@@ -18,6 +20,6 @@ install:
 script:
     - $CXX --version
     - g++ --version
-    - apt-cache search gcc
+    #- apt-cache search gcc
     #- make
     #- make run
