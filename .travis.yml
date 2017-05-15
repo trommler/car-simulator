@@ -5,7 +5,7 @@ dist: trusty
 compiler:
       - g++
 
-env:
+env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
     addons:
         apt:
             packages:
