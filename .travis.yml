@@ -5,7 +5,7 @@ compiler:
 
 before_install:
     - sudo apt-get install liblua5.2-dev
-    apt-cache search g++
+    - apt-cache search g++
 
 #before_script:
       #- cd howto/lua-example
