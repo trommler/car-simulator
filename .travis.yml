@@ -1,27 +1,13 @@
-language: generic
+language: cpp
 
-dist: trusty
-
-os: linux
-
-matrix:
-  include:
-    - os: linux
-      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
-      addons:
-        apt:
-          packages:
-            - g++-5
-          sources: &sources
-            - llvm-toolchain-precise-3.8
-            - ubuntu-toolchain-r-test
-
+compiler:
+    - g++
 
 before_install:
     - sudo apt-get install liblua5.2-dev
+    apt-cache search g++
 
-before_script:
-    - g++-5 --version
+#before_script:
       #- cd howto/lua-example
 
 script:
