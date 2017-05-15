@@ -40,6 +40,8 @@ build/
 dist/
 nbproject/private/
 .settings/
+private.xml
+configurations.xml
 
 runme
 

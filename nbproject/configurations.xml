@@ -20,6 +20,14 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1"
+                     displayName="LuaScriptTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTest.cpp</itemPath>
+        <itemPath>/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTest.h</itemPath>
+        <itemPath>/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTestRunner.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -44,6 +52,7 @@
           <standard>11</standard>
           <incDir>
             <pElem>/usr/include/lua5.2</pElem>
+            <pElem>/home/bauer/Projects/can-utils/include</pElem>
           </incDir>
           <useLinkerLibraries>false</useLinkerLibraries>
           <warningLevel>2</warningLevel>
@@ -54,6 +63,42 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTest.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTest.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTestRunner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <folder path="TestFiles">
+        <ccTool>
+          <incDir>
+            <pElem>/home/bauer/Projects/amos-ss17-proj4/src</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/LuaScript.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/LuaScript.h" ex="false" tool="3" flavor2="0">
@@ -87,6 +132,35 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTest.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTest.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/bauer/Projects/amos-ss17-proj4/tests/LuaScriptTestRunner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/LuaScript.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/LuaScript.h" ex="false" tool="3" flavor2="0">

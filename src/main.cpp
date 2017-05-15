@@ -29,9 +29,9 @@ using namespace std;
 int main(int argc, char** argv)
 {
     // some Lua script tests...
-    LuaScript myScript = LuaScript::import_script("testscript.lua");
+    LuaScript myScript = LuaScript::import_script("tests/testscript.lua");
     myScript.executeScript();
-    
+
     // some virtualCAN tests...
     int so = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (so < 0)
