@@ -5,6 +5,12 @@ dist: trusty
 compiler:
       - g++
 
+env:
+    addons:
+        apt:
+            packages:
+                - g++-5
+
 before_install:
     - sudo apt-get install liblua5.2-dev
 
