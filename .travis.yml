@@ -14,7 +14,8 @@ env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
 before_install:
     - sudo apt-get install liblua5.2-dev
 
-#before_script:
+before_script:
+    - g++-5 --version
       #- cd howto/lua-example
 
 script:
