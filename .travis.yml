@@ -5,6 +5,12 @@ dist: trusty
 compiler:
       - g++
 
+env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+    addons:
+        apt:
+            packages:
+                - g++-5
+
 before_install:
     - sudo apt-get install liblua5.2-dev
 
