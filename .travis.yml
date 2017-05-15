@@ -6,9 +6,9 @@ compiler:
 before_install:
     - sudo apt-get install liblua5.2-dev
 
-before_script:
-      - cd howto/lua-example
+#before_script:
+      #- cd howto/lua-example
 
 script:
     - make
-    - make run
+    #- make run
