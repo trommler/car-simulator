@@ -1,15 +1,21 @@
-language: cpp
+language: generic
 
 dist: trusty
 
-compiler:
-      - g++
+os: linux
 
-env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
-    addons:
+matrix:
+  include:
+    - os: linux
+      env: COMPILER_NAME=gcc CXX=g++-5 CC=gcc-5
+      addons:
         apt:
-            packages:
-                - g++-5
+          packages:
+            - g++-5
+          sources: &sources
+            - llvm-toolchain-precise-3.8
+            - ubuntu-toolchain-r-test
+
 
 before_install:
     - sudo apt-get install liblua5.2-dev
