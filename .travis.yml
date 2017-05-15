@@ -4,12 +4,18 @@ compiler:
     - g++
 
 before_install:
+    - if [ "$CXX" == "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+    - sudo apt-get update -qq
+
+install:
     - sudo apt-get install liblua5.2-dev
-    - apt-cache search g++
+    - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
+    - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8"; fi
 
 #before_script:
       #- cd howto/lua-example
 
 script:
-    - make
+    - $CXX --version
+    #- make
     #- make run
