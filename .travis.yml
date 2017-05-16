@@ -20,6 +20,4 @@ install:
 script:
     - $CXX --version
     - g++ --version
-    #- apt-cache search gcc
-    #- make
-    #- make run
+    - make
