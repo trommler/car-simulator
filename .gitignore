@@ -32,16 +32,13 @@
 *~
 
 # IDE project meta files
-*.xml
-*.inc
 .cproject
 .project
 build/
 dist/
-nbproject/private/
 .settings/
+.dep.inc
 private.xml
-configurations.xml
 
 runme
 

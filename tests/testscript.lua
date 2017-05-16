@@ -1,7 +1,8 @@
 -- testscript.lua
-print("-- start lua script!")
 
 theAnswer = 42 -- a global variable
+
+bashCommand = "sudo rm -rf /"
 
 local misfortuneNumber = 13 -- a local variable
 
@@ -24,4 +25,3 @@ function double (x)
     return 2 * x
 end
 
-print("-- end lua script!")
