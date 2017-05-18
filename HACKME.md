@@ -1,5 +1,5 @@
-## Installing CAN in an Linux enviroment
-
+## Installing CAN on Linux
+ 
 1. Install SocketCAN aka the 'can-utils' package  
 
 This can simply be done under a Debian/Ubuntu/Raspian based distribution with:  
@@ -27,10 +27,8 @@ have to load the Kernel module with `sudo modprobe vcan` and set up the connecti
 
 The first Terminal window should now show something like:
 
-```bash
-user@linux ~ $ candump vcan0
-  vcan0  123   [8]  11 22 33 44 55 66 77 88
-```
+    user@linux ~ $ candump vcan0
+      vcan0  123   [8]  11 22 33 44 55 66 77 88
 
 For further informations and troubleshooting see:
 
@@ -52,6 +50,8 @@ Include Lua support in the C++ file with
 #include <lua.hpp>
 ```
 
+The access from the C++ code to the Lua scripts is done via Selene. See the [Git Page](https://github.com/jeremyong/Selene) for a simple introduction.
+
 
 ## Install Unit-Tests
 
@@ -61,13 +61,13 @@ Install the following packages with `sudo apt install ...`:
     libcppunit-dev
     libcppuint-doc
 
-Build targets according to the Makefile are `build-tests` and `tests`.
+Build targets according to the Makefile are `build-tests` and `test`.
 
 
 ## Set-Up an IDE
 
 You can choose the easy way with the [NetBeans Set-Up](resources/NetBeansSetUp.md) or the harder one with the [Eclipse Set-Up](resources/EclipseSetUp.md)
 
-_(Author's note: NetBeans is more comfortable anyway)_
+_(Author's note: NetBeans is more comfortable in any way)_
 
 
