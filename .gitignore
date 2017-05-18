@@ -38,9 +38,6 @@ build/
 dist/
 .settings/
 .dep.inc
-private.xml
 
 runme
-
-
 

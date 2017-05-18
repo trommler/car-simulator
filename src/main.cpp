@@ -22,7 +22,7 @@ using namespace luabridge;
  */
 int main(int argc, char** argv)
 {
-    const std::string testScript = "tests/testscript.lua";
+    const std::string testScript = "tests/testscript01.lua";
 
     if (utils::existsFile(testScript))
     {
