@@ -43,10 +43,13 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
+	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f1
 
 # Test Object Files
 TESTOBJECTFILES= \
+	${TESTDIR}/tests/SeleneTest.o \
+	${TESTDIR}/tests/SeleneTestRunner.o \
 	${TESTDIR}/tests/UtilsTest.o \
 	${TESTDIR}/tests/UtilsTestRunner.o
 
@@ -77,12 +80,12 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4: ${OBJECTFILES}
 ${OBJECTDIR}/src/Utilities.o: src/Utilities.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ILuaBridge `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Utilities.o src/Utilities.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Utilities.o src/Utilities.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ILuaBridge `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -91,21 +94,37 @@ ${OBJECTDIR}/src/main.o: src/main.cpp
 .build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
 .build-tests-subprojects:
 
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/SeleneTest.o ${TESTDIR}/tests/SeleneTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
+
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/UtilsTest.o ${TESTDIR}/tests/UtilsTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
 
 
+${TESTDIR}/tests/SeleneTest.o: tests/SeleneTest.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/SeleneTest.o tests/SeleneTest.cpp
+
+
+${TESTDIR}/tests/SeleneTestRunner.o: tests/SeleneTestRunner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/SeleneTestRunner.o tests/SeleneTestRunner.cpp
+
+
 ${TESTDIR}/tests/UtilsTest.o: tests/UtilsTest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ILuaBridge -Itests `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/UtilsTest.o tests/UtilsTest.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/UtilsTest.o tests/UtilsTest.cpp
 
 
 ${TESTDIR}/tests/UtilsTestRunner.o: tests/UtilsTestRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ILuaBridge -Itests `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/UtilsTestRunner.o tests/UtilsTestRunner.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/UtilsTestRunner.o tests/UtilsTestRunner.cpp
 
 
 ${OBJECTDIR}/src/Utilities_nomain.o: ${OBJECTDIR}/src/Utilities.o src/Utilities.cpp 
@@ -116,7 +135,7 @@ ${OBJECTDIR}/src/Utilities_nomain.o: ${OBJECTDIR}/src/Utilities.o src/Utilities.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ILuaBridge `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Utilities_nomain.o src/Utilities.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Utilities_nomain.o src/Utilities.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/Utilities.o ${OBJECTDIR}/src/Utilities_nomain.o;\
 	fi
@@ -129,7 +148,7 @@ ${OBJECTDIR}/src/main_nomain.o: ${OBJECTDIR}/src/main.o src/main.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ILuaBridge `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main_nomain.o src/main.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -ISelene/include/selene `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main_nomain.o src/main.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/main_nomain.o;\
 	fi
@@ -138,6 +157,7 @@ ${OBJECTDIR}/src/main_nomain.o: ${OBJECTDIR}/src/main.o src/main.cpp
 .test-conf:
 	@if [ "${TEST}" = "" ]; \
 	then  \
+	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	else  \
 	    ./${TEST} || true; \

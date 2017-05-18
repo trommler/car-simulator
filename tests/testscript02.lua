@@ -2,14 +2,15 @@ PCM = {
     RequestId = 0x7e0,
     ResponseId = 0x7e8,
     
-    ReadDataByIdentifier {
-        ["f190"] = ascii("SALGA2EV9HA298784"),
-        ["f124"] = ascii("HPLA-12345-AB"),
-        ["f123"] = readf123(),
+    ReadDataByIdentifier = { -- "=" on tables is necessary
+        ["f190"] = "SALGA2EV9HA298784",
+        ["f124"] = "HPLA-12345-AB",
+        ["f123"] = nil,
         ["fabc"] = nil,
         ["1e23"] = "231132"
     },
-      
+
+--[[      
 -- Alternative 1:
 
     Raw {
@@ -22,7 +23,7 @@ PCM = {
             return "62 1289" + toByteResponse(2, myCounter);
         end
     },
---[[
+
 
 -- Alternative 2:
     Raw {

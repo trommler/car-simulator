@@ -20,7 +20,7 @@ void UtilsTest::tearDown() { }
 
 void UtilsTest::testExistsFile()
 {
-    const std::string filePath = "tests/testscript.lua";
+    const std::string filePath = "tests/testscript01.lua";
     bool result = utils::existsFile(filePath);
     CPPUNIT_ASSERT_MESSAGE("File does not exist!", result);
     
@@ -48,7 +48,7 @@ void UtilsTest::testExistsDirectory()
     CPPUNIT_ASSERT_EQUAL(true, result);
     
     // this check is supposed to fail
-    result = utils::existsDirectory("tests/testscript.lua");
+    result = utils::existsDirectory("tests/testscript01.lua");
     CPPUNIT_ASSERT_EQUAL(false, result);
 }
 
