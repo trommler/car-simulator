@@ -21,3 +21,4 @@ script:
     - $CXX --version
     - g++ --version
     - make
+    - make test # -> unit tests 
