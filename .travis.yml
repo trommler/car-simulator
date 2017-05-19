@@ -8,7 +8,7 @@ before_install:
     - sudo apt-get update -qq
 
 install:
-    - sudo apt-get install liblua5.2-dev
+    - sudo apt-get install liblua5.2-dev libcppunit-1.13 libcppunit-dev
     - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; fi
     - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9"; fi
     - ls -la /usr/bin/g++*
@@ -21,3 +21,4 @@ script:
     - $CXX --version
     - g++ --version
     - make
+    - make test
