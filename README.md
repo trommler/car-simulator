@@ -1,4 +1,4 @@
-# ![ProjectLogo](resources/images/ProjectLogoThumb.png)  amos-ss17-proj4       
+# ![ProjectLogo](resources/images/ProjectLogoThumb.png)  amos-ss17-proj4   [![Build Status](https://travis-ci.org/christian-reintges/amos-ss17-proj4.svg?branch=master)](https://travis-ci.org/christian-reintges/amos-ss17-proj4)    
 
 Raspberry Pi as a simulated car.
 
