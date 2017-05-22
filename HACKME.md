@@ -43,10 +43,12 @@ For further informations and troubleshooting see:
 
 2. Enter the directory via bash and run the following commands:
 
-    ./autogen.sh
-    ./configure
-    make
-    sudo make install
+```sh
+./autogen.sh
+./configure
+make
+sudo make install
+```
 
 For further details and troubleshooting consider the [can-isotp README](https://github.com/hartkopp/can-isotp).
 
