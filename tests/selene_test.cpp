@@ -1,14 +1,14 @@
 /**
- * @file: SeleneTest.cpp
- * @author: Florian Bauer
+ * @file SeleneTest.cpp
+ * @author Florian Bauer
  *
- * Unit tests for the Selene Lua bridge. See https://github.com/jeremyong/Selene for usage 
- * instructions.
+ * Unit tests for the Selene Lua bridge. See https://github.com/jeremyong/Selene
+ * for usage instructions.
  */
 
-#include "SeleneTest.h"
+#include "selene_test.h"
 #include "selene.h"
-#include "Utilities.h"
+#include "utilities.h"
 #include <string>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SeleneTest);
@@ -23,11 +23,11 @@ void SeleneTest::tearDown() { }
 
 void SeleneTest::testLuaScriptMethod()
 {
-    const std::string testScript01 = "tests/testscript01.lua";
-    if (utils::existsFile(testScript01))
+    const std::string test_script01 = "tests/testscript01.lua";
+    if (utils::existsFile(test_script01))
     {
         sel::State state;
-        state.Load(testScript01);
+        state.Load(test_script01);
 
         CPPUNIT_ASSERT_EQUAL(42, int(state["theAnswer"]));
         CPPUNIT_ASSERT(state["bashCommand"] == "sudo rm -rf /");
@@ -39,11 +39,11 @@ void SeleneTest::testLuaScriptMethod()
         CPPUNIT_ASSERT_MESSAGE("Could not find test file 01!", false);
     }
 
-    const std::string testScript02 = "tests/testscript02.lua";
-    if (utils::existsFile(testScript02))
+    const std::string test_script02 = "tests/testscript02.lua";
+    if (utils::existsFile(test_script02))
     {
         sel::State state;
-        state.Load(testScript02);
+        state.Load(test_script02);
 
         CPPUNIT_ASSERT_EQUAL(0x7e0, int(state["PCM"]["RequestId"]));
         CPPUNIT_ASSERT_EQUAL(0x7e8, int(state["PCM"]["ResponseId"]));
@@ -52,8 +52,8 @@ void SeleneTest::testLuaScriptMethod()
         const std::string tmp = state["PCM"]["ReadDataByIdentifier"]["f190"];
         CPPUNIT_ASSERT_MESSAGE(tmp, "SALGA2EV9HA298784" == tmp);
         
-        auto nilVal = state["PCM"]["ReadDataByIdentifier"]["f123"];
-        CPPUNIT_ASSERT(!nilVal.exists()); // supposed to be non-existent
+        auto nil_val = state["PCM"]["ReadDataByIdentifier"]["f123"];
+        CPPUNIT_ASSERT(!nil_val.exists()); // supposed to be non-existent
     }
     else
     {

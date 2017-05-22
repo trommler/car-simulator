@@ -5,8 +5,8 @@
  * Unit test for the utility functions.
  */
 
-#include "UtilsTest.h"
-#include "../src/Utilities.h"
+#include "utils_test.h"
+#include "utilities.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UtilsTest);
 
@@ -20,8 +20,8 @@ void UtilsTest::tearDown() { }
 
 void UtilsTest::testExistsFile()
 {
-    const std::string filePath = "tests/testscript01.lua";
-    bool result = utils::existsFile(filePath);
+    const std::string file_path = "tests/testscript01.lua";
+    bool result = utils::existsFile(file_path);
     CPPUNIT_ASSERT_MESSAGE("File does not exist!", result);
     
     // these checks are supposed to fail
@@ -34,8 +34,8 @@ void UtilsTest::testExistsFile()
 
 void UtilsTest::testExistsDirectory()
 {
-    const std::string dirPath = "tests";
-    bool result = utils::existsDirectory(dirPath);
+    const std::string dir_path = "tests";
+    bool result = utils::existsDirectory(dir_path);
     CPPUNIT_ASSERT_MESSAGE("Directory does not exist!", result);
 
     result = utils::existsDirectory("tests/"); // check also case with trailing slash
