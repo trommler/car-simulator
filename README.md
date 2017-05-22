@@ -13,12 +13,12 @@ This project aims to provide a [UDS](https://en.wikipedia.org/wiki/Unified_Diagn
 
 ### Requirements
 
-Tool/Library | Version
------------- | ------------------
-Lua          | >= 5.2
-C++ compiler | >= ISO C++14
-SocketCAN    | >= git 2017/02/14
-CppUnit      | >= 1.10 (optional)
+ Tool / Library   | Version
+----------------- | ------------------
+Lua               | >= 5.2
+C++ compiler      | >= ISO C++14
+SocketCAN         | >= git 2017/02/14
+CppUnit (optional)| >= 1.10
 
 
 For instructions to set up all necessary installations, read the [HACKME](HACKME.md).

@@ -2,8 +2,8 @@
 
 1. Install SocketCAN a.k.a. the `can-utils` package
 
-    * Clone the following repository with: `git clone https://github.com/linux-can/can-utils.git`
-    * Enter the directory via bash and run the following commands:
+    1. Clone the following repository with: `git clone https://github.com/linux-can/can-utils.git`
+    2. Enter the directory via bash and run the following commands:
 
 ```sh
 ./autogen.sh
@@ -12,7 +12,7 @@ make
 sudo make install
 ```
 
-For further details and troubleshooting consider the [can-isotp README](https://github.com/hartkopp/can-isotp) and [eLinux Wiki](http://elinux.org/Can-utils).
+For further details and troubleshooting consider the [can-isotp README](https://github.com/hartkopp/can-isotp) and the [eLinux Wiki](http://elinux.org/Can-utils).
 
 **Note:** The default package `can-utils` provided by most Debian/Ubuntu based distributions are commonly outdated and usually don't support the required ISO-TP protocol.
 
@@ -44,12 +44,13 @@ For further informations and troubleshooting see:
 
 ## Testing the ISO-TP connection
 
-1. Set up the CAN connection with the following commands:
+1. Set up the CAN connection with the following commands (like described before):
 
-    sudo modprobe vcan
-    sudo ip link add dev vcan0 type vcan
-    sudo ip link set up vcan0
-
+```sh
+sudo modprobe vcan
+sudo ip link add dev vcan0 type vcan
+sudo ip link set up vcan0
+```
 2. Open the receiver with `isotprecv -s 123 -d 321 -l vcan0`.
 
 3. Open a new terminal window and transmit some test data thorough the sender via `echo 11 22 33 44 55 66 DE AD BE EF | isotpsend -s 321 -d 123 vcan0`.
@@ -71,7 +72,7 @@ Include Lua support in the C++ file with
 #include <lua.hpp>
 ```
 
-The access from the C++ code to the Lua scripts is done via Selene. See the [GitHub Page](https://github.com/jeremyong/Selene) for a simple introduction.
+The access from the C++ code to the Lua scripts is done via Selene. See the [_Selene_ GitHub Page](https://github.com/jeremyong/Selene) for a simple introduction.
 
 
 ## Install Unit-Tests
