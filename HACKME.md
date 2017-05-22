@@ -1,14 +1,20 @@
-## Installing CAN on Linux
+## Installing SocketCAN on Linux
 
-1. Install SocketCAN a.k.a. the 'can-utils' package
+1. Install SocketCAN a.k.a. the `can-utils` package
 
-This can simply be done under a Debian/Ubuntu/Raspian based distribution with:
+    * Clone the following repository with: `git clone https://github.com/linux-can/can-utils.git`
+    * Enter the directory via bash and run the following commands:
 
-    sudo apt install can-utils
+```sh
+./autogen.sh
+./configure
+make
+sudo make install
+```
 
-OR install the package manually by following the steps as described here:
-[eLinux Wiki](http://elinux.org/Can-utils)
+For further details and troubleshooting consider the [can-isotp README](https://github.com/hartkopp/can-isotp) and [eLinux Wiki](http://elinux.org/Can-utils).
 
+**Note:** The default package `can-utils` provided by most Debian/Ubuntu based distributions are commonly outdated and usually don't support the required ISO-TP protocol.
 
 2. Load the Kernel modules
 
@@ -32,30 +38,13 @@ The first Terminal window should now show something like:
 
 For further informations and troubleshooting see:
 
-[Using can-utils](https://discuss.cantact.io/t/using-can-utils/24)
-[Bringing CAN interface up](http://elinux.org/Bringing_CAN_interface_up)
-[SocketCAN](https://en.wikipedia.org/wiki/SocketCAN)
-
-
-## Installing ISO-TP
-
-1. Clone the following repository with: `git clone https://github.com/linux-can/can-utils.git`
-
-2. Enter the directory via bash and run the following commands:
-
-```sh
-./autogen.sh
-./configure
-make
-sudo make install
-```
-
-For further details and troubleshooting consider the [can-isotp README](https://github.com/hartkopp/can-isotp).
-
+[Using can-utils](https://discuss.cantact.io/t/using-can-utils/24)  
+[Bringing CAN interface up](http://elinux.org/Bringing_CAN_interface_up)  
+[SocketCAN](https://en.wikipedia.org/wiki/SocketCAN)  
 
 ## Testing the ISO-TP connection
 
-1. Set up the CAN connection with the following commands, like described in the section before:
+1. Set up the CAN connection with the following commands:
 
     sudo modprobe vcan
     sudo ip link add dev vcan0 type vcan
@@ -82,14 +71,14 @@ Include Lua support in the C++ file with
 #include <lua.hpp>
 ```
 
-The access from the C++ code to the Lua scripts is done via Selene. See the [Git Page](https://github.com/jeremyong/Selene) for a simple introduction.
+The access from the C++ code to the Lua scripts is done via Selene. See the [GitHub Page](https://github.com/jeremyong/Selene) for a simple introduction.
 
 
 ## Install Unit-Tests
 
 Install the following CppUnitTest packages with:
 
-    sudo apt install libcppunit-1.* libcppunit-dev libcppuint-doc`
+    sudo apt install libcppunit-1.* libcppunit-dev libcppuint-doc
 
 The build target according to the Makefile is `make test`.
 
