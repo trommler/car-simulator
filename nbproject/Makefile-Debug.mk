@@ -35,6 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/CAN_UDS_Layer.o \
+	${OBJECTDIR}/src/SocketCAN.o \
+	${OBJECTDIR}/src/UDS_ECU.o \
 	${OBJECTDIR}/src/isotp_socket.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/utilities.o
@@ -77,6 +80,21 @@ LDLIBSOPTIONS=`pkg-config --libs lua5.2`
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/src/CAN_UDS_Layer.o: src/CAN_UDS_Layer.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/CAN_UDS_Layer.o src/CAN_UDS_Layer.cpp
+
+${OBJECTDIR}/src/SocketCAN.o: src/SocketCAN.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SocketCAN.o src/SocketCAN.cpp
+
+${OBJECTDIR}/src/UDS_ECU.o: src/UDS_ECU.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_ECU.o src/UDS_ECU.cpp
 
 ${OBJECTDIR}/src/isotp_socket.o: src/isotp_socket.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -132,6 +150,45 @@ ${TESTDIR}/tests/utils_test_runner.o: tests/utils_test_runner.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/utils_test_runner.o tests/utils_test_runner.cpp
 
+
+${OBJECTDIR}/src/CAN_UDS_Layer_nomain.o: ${OBJECTDIR}/src/CAN_UDS_Layer.o src/CAN_UDS_Layer.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/CAN_UDS_Layer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/CAN_UDS_Layer_nomain.o src/CAN_UDS_Layer.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/CAN_UDS_Layer.o ${OBJECTDIR}/src/CAN_UDS_Layer_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/SocketCAN_nomain.o: ${OBJECTDIR}/src/SocketCAN.o src/SocketCAN.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/SocketCAN.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SocketCAN_nomain.o src/SocketCAN.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/SocketCAN.o ${OBJECTDIR}/src/SocketCAN_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/UDS_ECU_nomain.o: ${OBJECTDIR}/src/UDS_ECU.o src/UDS_ECU.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/UDS_ECU.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_ECU_nomain.o src/UDS_ECU.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/UDS_ECU.o ${OBJECTDIR}/src/UDS_ECU_nomain.o;\
+	fi
 
 ${OBJECTDIR}/src/isotp_socket_nomain.o: ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

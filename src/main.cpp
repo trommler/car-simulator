@@ -9,6 +9,7 @@
 #include "selene.h"
 #include "utilities.h"
 #include "isotp_socket.h"
+#include "UDS_ECU.h"
 
 #include <lua.hpp>
 #include <stdio.h>
@@ -148,6 +149,14 @@ int main(int argc, char** argv)
     // listen with `isotprecv -s 321 -d 123 -l vcan0`
     IsoTpSocket my_sender(0x123, 0x321, "vcan0");
     my_sender.sendData(payload.data(), payload.size());
+
+
+    UDS_ECU *testserver = new UDS_ECU();
+    cout << "start testserver" << endl;
+    while(1)
+    {
+        testserver->receiveUDSmessage();
+    }
 
     return 0;
 }
