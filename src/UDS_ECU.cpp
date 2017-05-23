@@ -52,7 +52,7 @@
 
     void UDS_ECU::printUDSmessage()
     {
-        for(int i = 0; i < CAN_UDS_Layer::get_recieved_data_length(); i++)
+        for(unsigned int i = 0; i < CAN_UDS_Layer::get_recieved_data_length(); i++)
         {
             if(i % 8 == 0)
                 printf("\n");

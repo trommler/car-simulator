@@ -116,7 +116,7 @@
         {
             // printf("Single Frame \n");
             received_data_size = SocketCAN::get_can_data()[0];
-            for(int i = 0; i < received_data_size; i++)
+            for(unsigned int i = 0; i < received_data_size; i++)
             {
                 received_data[i] = SocketCAN::get_can_data()[i+1];
             }
@@ -187,7 +187,7 @@
 
     void CAN_UDS_Layer::printreceiveddata()
     {
-        for(int i = 0; i < received_data_size; i++)
+        for(unsigned int i = 0; i < received_data_size; i++)
         {
             printf("%X \n" , received_data[i]);
         }

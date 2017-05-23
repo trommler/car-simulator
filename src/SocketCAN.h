@@ -36,7 +36,7 @@ class SocketCAN
     public:
     SocketCAN();
 
-    void initSocketCAN_driver(char*);
+    void initSocketCAN_driver(const char*);
     void set_CANsendID(int);
     void set_CANreceiveID(int);
 

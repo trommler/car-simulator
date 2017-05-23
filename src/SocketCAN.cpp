@@ -7,7 +7,7 @@ using namespace std;
         can_data_size = 0;
     }
 
-    void SocketCAN::initSocketCAN_driver(char* device)
+    void SocketCAN::initSocketCAN_driver(const char* device)
     {
         skt = socket(PF_CAN, SOCK_RAW,CAN_RAW);
         strcpy(ifr.ifr_name, device);
@@ -48,7 +48,7 @@ using namespace std;
 
     void SocketCAN::receiveCANframe()
     {
-        while(receiveframe.can_id != receive_id)
+        while(static_cast<int>(receiveframe.can_id) != receive_id)
         {
             receiveallCANframe();
         }
