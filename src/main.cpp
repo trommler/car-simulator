@@ -1,8 +1,8 @@
-/** 
+/**
  * @file main.cpp
  * @author Florian Bauer
  *
- * This file contains the `main()`-function with a simple Lua script test. See 
+ * This file contains the `main()`-function with a simple Lua script test. See
  * https://github.com/jeremyong/Selene for usage instructions.
  */
 
@@ -52,7 +52,7 @@ void rawCanTest()
     struct ifreq ifr;
     strcpy(ifr.ifr_name, "vcan0");
     // ifr.ifr_ifindex gets filled with that device's index
-    ioctl(skt, SIOCGIFINDEX, &ifr); 
+    ioctl(skt, SIOCGIFINDEX, &ifr);
 
     // Select that CAN interface, and bind the socket to it.
     struct sockaddr_can addr;
@@ -127,8 +127,8 @@ void isotpCanTest()
 }
 
 /**
- * The main application only for testing purposes. 
- * 
+ * The main application only for testing purposes.
+ *
  * @param argc: the number of arguments
  * @param argv: the argument list
  * @return 0 on success, otherwise a negative value
@@ -151,7 +151,7 @@ int main(int argc, char** argv)
     my_sender.sendData(payload.data(), payload.size());
 
 
-    UDS_ECU *testserver = new UDS_ECU();
+    UDS_ECU *testserver = new UDS_ECU(0x123, 0x321, "vcan0");
     cout << "start testserver" << endl;
     while(1)
     {

@@ -23,6 +23,7 @@ public:
         , device_(device) { }
     virtual ~IsoTpSocket() = default;
     int sendData(const void* buffer, std::size_t size) noexcept;
+    int recieveData(void *buffer, std::size_t size) noexcept;
 
 private:
     unsigned int source_;

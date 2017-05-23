@@ -67,3 +67,46 @@ int IsoTpSocket::sendData(const void* buffer, std::size_t size) noexcept
 
     return bytes_sent;
 }
+
+
+int IsoTpSocket::recieveData(void *buffer, std::size_t size) noexcept
+{
+    struct sockaddr_can addr;
+    addr.can_addr.tp.tx_id = source_; // sender
+    addr.can_addr.tp.rx_id = dest_; // receiver
+    addr.can_family = AF_CAN;
+
+    int skt = socket(PF_CAN, SOCK_DGRAM, CAN_ISOTP);
+    if (skt < 0)
+    {
+        cerr << __func__ << "() socket: " << strerror(errno) << '\n';
+        return -1;
+    }
+
+    struct ifreq ifr;
+    strncpy(ifr.ifr_name, device_.c_str(), device_.length() + 1);
+    ioctl(skt, SIOCGIFINDEX, &ifr);
+    addr.can_ifindex = ifr.ifr_ifindex;
+
+    auto bind_res = bind(skt,
+                         reinterpret_cast<struct sockaddr*>(&addr),
+                         sizeof(addr));
+    if (bind_res < 0)
+    {
+        cerr << __func__ << "() bind: " << strerror(errno) << '\n';
+        close(skt);
+        return -2;
+    }
+
+    auto bytes_read = read(skt, buffer, size);
+    if (bytes_read < 0)
+    {
+        cerr << __func__ << "() read: " << strerror(errno) << '\n';
+        return -3;
+    }
+
+    cout << __func__ << "() read " << bytes_read << " Bytes\n";
+    close(skt);
+
+    return bytes_read;
+}
