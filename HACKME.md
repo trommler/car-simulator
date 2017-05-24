@@ -83,6 +83,22 @@ Install the following CppUnitTest packages with:
 
 The build target according to the Makefile is `make test`.
 
+## Using gcov and lcov with netbeans
+
+1.configure your netbeans:
+
+	right click your project -> Properties -> Build -> C++ Compiler and Linker -> add "--coverage"
+2.invoking gcov
+	
+	gcov [options] files
+3.invoking lcov
+
+	lcov --capture --directory project-dir --output-file coverage.info
+4.Generate HTML output
+
+	genhtml coverage.info --output-directory out
+5.find the out folder and open it and find the index.html open it. Then you have the graphical view of your code coverage
+
 
 ## Set-Up an IDE
 
