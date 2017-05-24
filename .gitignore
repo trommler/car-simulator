@@ -28,8 +28,16 @@
 *.out
 *.app
 
-
 # editor tmp files
 *~
 
+# IDE project meta files
+.cproject
+.project
+build/
+dist/
+.settings/
+.dep.inc
+
 runme
+

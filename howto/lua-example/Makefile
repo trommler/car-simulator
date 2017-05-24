@@ -1,7 +1,7 @@
 .PHONY: all clean run
 CC=g++
-CFLAGS  = -Wall -I/usr/include/lua5.1
-LDFLAGS = -llua5.1
+CFLAGS  = -Wall -I/usr/include/lua5.2
+LDFLAGS = -llua5.2
 CPP_SRC = main.cpp
 HEADER  = lua.hpp
 TARGET  = runme
