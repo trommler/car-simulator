@@ -2,12 +2,12 @@
 
 1. Install SocketCAN a.k.a. the `can-utils` package
 
-There ar two ways to install the `can-utils`: The first one is to install the package via the package manager, the second one is to compile the latest version by your own. Both methods are descriped here:
+There are two ways to install the `can-utils`: The first one is to install the package via the package manager, the second one is to compile the latest version by your own. Both methods are descriped here:
 
 * Install the default `can-utils` package provided by most Debian/Ubuntu based distributions with:
-
-    sudo apt install can-utils
-
+```
+sudo apt install can-utils
+```
 **OR**
 
 * Build the package by our own:
@@ -59,6 +59,7 @@ For further informations and troubleshooting see:
 2. Enter the directory of the cloned repository in the bash and type `make`. If the `make` command finish successfully: Lucky you! Go grab a beer, celebrate your victory and proceed further with step 3.
 
 Otherwise, if there is an error and make mumbles something about `error: to few arguments to function 'can_rx_register'` than:
+
     1. Open the file `~/can-isotp/net/can/isotp.c`
     2. Go to line 1112 and edit `if LINIX_VERSION_CODE >= KERNEL_VERSION(4,9,11)` into something that matches your current Kernel version e.g. `if LINIX_VERSION_CODE >= KERNEL_VERSION(4,4,0)` (type `uname -r` in the bash to show your version).
     3. Save the changes and try again.
@@ -71,11 +72,11 @@ After these steps, the usage of ISO-TP should be possible. In case the applicati
 ## Testing the ISO-TP connection
 
 1. Set up the CAN connection with the following commands (like described before):
-
-    sudo modprobe vcan
-    sudo ip link add dev vcan0 type vcan
-    sudo ip link set up vcan0
-
+```
+sudo modprobe vcan
+sudo ip link add dev vcan0 type vcan
+sudo ip link set up vcan0
+```
 2. Open the receiver with `isotprecv -s 123 -d 321 -l vcan0`.
 
 3. Open a new terminal window and transmit some test data thorough the sender via `echo 11 22 33 44 55 66 DE AD BE EF | isotpsend -s 321 -d 123 vcan0`.
@@ -110,17 +111,21 @@ The build target according to the Makefile is `make test`.
 ## Using gcov and lcov with netbeans
 
 1. configure your netbeans:
-
-	right click your project -> Properties -> Build -> C++ Compiler and Linker -> add "--coverage"
+```
+right click your project -> Properties -> Build -> C++ Compiler and Linker -> add "--coverage"
+```
 2. invoking gcov
-	
-	gcov [options] files
+```	
+gcov [options] files
+```
 3. invoking lcov
-
-	lcov --capture --directory project-dir --output-file coverage.info
+```
+lcov --capture --directory project-dir --output-file coverage.info
+```
 4. Generate HTML output
-
-	genhtml coverage.info --output-directory out
+```
+genhtml coverage.info --output-directory out
+```
 5. find the out folder and open it and find the index.html open it. Then you have the graphical view of your code coverage
 
 
