@@ -1,6 +1,5 @@
 /**
- * @file UtilsTest.cpp
- * @author Florian Bauer
+ * @file utils_test.cpp
  *
  * Unit test for the utility functions.
  */

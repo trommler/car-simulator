@@ -1,6 +1,5 @@
 /** 
  * @file main.cpp
- * @author Florian Bauer
  *
  * This file contains the `main()`-function with a simple Lua script test. See 
  * https://github.com/jeremyong/Selene for usage instructions.
@@ -43,37 +42,6 @@ void luaTest()
     }
 }
 
-void rawCanTest()
-{
-    int skt = socket(PF_CAN, SOCK_RAW, CAN_RAW);
-
-    // Locate the interface you wish to use
-    struct ifreq ifr;
-    strcpy(ifr.ifr_name, "vcan0");
-    // ifr.ifr_ifindex gets filled with that device's index
-    ioctl(skt, SIOCGIFINDEX, &ifr); 
-
-    // Select that CAN interface, and bind the socket to it.
-    struct sockaddr_can addr;
-    addr.can_family = AF_CAN;
-    addr.can_ifindex = ifr.ifr_ifindex;
-    bind(skt, (struct sockaddr*) &addr, sizeof(addr));
-
-    // Send a message to the CAN bus
-    struct can_frame frame; // can_frame payload is limited to 8 Byte.
-    frame.can_id = 0x100;
-    constexpr unsigned char buf[] = {
-        0x11, 0x22, 0x33, 0x44, 0x55,
-        0x66, 0x77, 0x88, 0x99, 0xaa
-    };
-    memcpy(frame.data, buf, 8);
-    frame.can_dlc = 8;
-    auto bytes_sent = write(skt, &frame, sizeof(frame));
-
-    cerr << __func__ << "() sent " << bytes_sent << " Bytes\n";
-    close(skt);
-}
-
 void isotpCanTest()
 {
     struct sockaddr_can addr;
@@ -87,9 +55,6 @@ void isotpCanTest()
         cerr << __func__ << "() socket: " << strerror(errno) << '\n';
         exit(1);
     }
-
-    // static struct can_isotp_options opts;
-    // setsockopt(skt, SOL_CAN_ISOTP, CAN_ISOTP_OPTS, &opts, sizeof(opts));
 
     addr.can_family = AF_CAN;
 
@@ -121,7 +86,7 @@ void isotpCanTest()
         return;
     }
 
-    cerr << __func__ << "() sent " << bytes_sent << " Bytes\n";
+    cerr << __func__ << "() sent " << bytes_sent << " bytes\n";
     close(skt);
 }
 
@@ -134,9 +99,7 @@ void isotpCanTest()
  */
 int main(int argc, char** argv)
 {
-    luaTest();
-    rawCanTest();
-    isotpCanTest();
+    luaTest(); // test function to get some values from a Lua script
 
     constexpr array<uint8_t, 32> payload = {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
@@ -145,9 +108,16 @@ int main(int argc, char** argv)
         0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F
     };
 
-    // listen with `isotprecv -s 321 -d 123 -l vcan0`
+    // listen on this socket with `isotprecv -s 321 -d 123 -l vcan0`
     IsoTpSocket my_sender(0x123, 0x321, "vcan0");
-    my_sender.sendData(payload.data(), payload.size());
+
+    IsoTpSocket my_receiver(0x321, 0x123, "vcan0");
+    my_receiver.receiveData(); // start the receiver thread
+    sleep(1); // wait some time to ensure the thread is set up and running
+
+    my_sender.sendData(payload.data(), payload.size()); // finally send the data
+
+    my_receiver.closeReceive(); // close the receiving thread
 
     return 0;
 }

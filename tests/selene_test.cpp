@@ -1,6 +1,5 @@
 /**
- * @file SeleneTest.cpp
- * @author Florian Bauer
+ * @file selene_test.cpp
  *
  * Unit tests for the Selene Lua bridge. See https://github.com/jeremyong/Selene
  * for usage instructions.

@@ -1,6 +1,5 @@
 /**
- * @file SeleneTest.h
- * @author Florian Bauer
+ * @file selene_test.h
  *
  */
 

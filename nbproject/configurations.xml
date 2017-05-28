@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>src/isotp_socket.h</itemPath>
+      <itemPath>src/sevice_identifier.h</itemPath>
       <itemPath>src/utilities.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -64,6 +65,7 @@
             <pElem>/usr/include/lua5.2</pElem>
             <pElem>Selene/include</pElem>
           </incDir>
+          <commandLine>-pthread</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
@@ -113,6 +115,8 @@
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="src/sevice_identifier.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
@@ -147,6 +151,7 @@
             <pElem>/usr/include/lua5.2</pElem>
             <pElem>Selene/include</pElem>
           </incDir>
+          <commandLine>-pthread</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -155,6 +160,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
+          <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs lua-5.2`</linkerOptionItem>
           </linkerLibItems>
@@ -200,6 +206,8 @@
       <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/sevice_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="0">
       </item>

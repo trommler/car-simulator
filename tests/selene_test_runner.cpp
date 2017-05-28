@@ -1,6 +1,5 @@
 /** 
- * @file SeleneTestRunner.cpp
- * @author Florian Bauer
+ * @file selene_test_runner.cpp
  * 
  * CppUnit site http://sourceforge.net/projects/cppunit/files
  */

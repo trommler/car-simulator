@@ -1,6 +1,5 @@
 /**
- * @file UtilsTest.h
- * @author Florian Bauer
+ * @file utils_test.h
  *
  */
 
