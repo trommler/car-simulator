@@ -10,7 +10,7 @@ sudo apt install can-utils
 ```
 **OR**
 
-* Build the package by our own:
+* Build the package by your own:
 
     1. Clone the following repository with: `git clone https://github.com/linux-can/can-utils.git`
     2. Enter the directory via bash and run the following commands:
@@ -60,9 +60,9 @@ For further informations and troubleshooting see:
 
 Otherwise, if there is an error and make mumbles something about `error: to few arguments to function 'can_rx_register'` than:
 
-    1. Open the file `~/can-isotp/net/can/isotp.c`
-    2. Go to line 1112 and edit `if LINIX_VERSION_CODE >= KERNEL_VERSION(4,9,11)` into something that matches your current Kernel version e.g. `if LINIX_VERSION_CODE >= KERNEL_VERSION(4,4,0)` (type `uname -r` in the bash to show your version).
-    3. Save the changes and try again.
+* Open the file `~/can-isotp/net/can/isotp.c`
+* Go to line 1112 and edit `if LINIX_VERSION_CODE >= KERNEL_VERSION(4,9,11)` into something that matches your current Kernel version e.g. `if LINIX_VERSION_CODE >= KERNEL_VERSION(4,4,0)` (type `uname -r` in the bash to show your version).
+* Save the changes and try again.
 
 3. Install the modules with `sudo make modules_install`.
 
@@ -104,7 +104,7 @@ The access from the C++ code to the Lua scripts is done via Selene. See the [_Se
 
 Install the following CppUnitTest packages with:
 
-    sudo apt install libcppunit-1.* libcppunit-dev libcppuint-doc
+    sudo apt install libcppunit-1.* libcppunit-dev
 
 The build target according to the Makefile is `make test`.
 
