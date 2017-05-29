@@ -89,10 +89,10 @@ constexpr uint8_t TRANSFER_DATA_REQ = 0x36;
 constexpr uint8_t TRANSFER_DATA_RES = 0x76;
 
 constexpr uint8_t REQUEST_TRANSFER_EXIT_REQ = 0x37;
-constexpr uint8_t REQUEST_TRANSFER_EXIT_REQ = 0x77;
+constexpr uint8_t REQUEST_TRANSFER_EXIT_RES = 0x77;
 
 constexpr uint8_t REQUEST_FILE_TRANSFER_REQ = 0x38;
-constexpr uint8_t REQUEST_FILE_TRANSFER_REQ = 0x78;
+constexpr uint8_t REQUEST_FILE_TRANSFER_RES = 0x78;
 
 #endif /* SEVICE_IDENTIFIER_H */
 
