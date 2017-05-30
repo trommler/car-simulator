@@ -1,13 +1,14 @@
-/** 
+/**
  * @file main.cpp
  *
- * This file contains the `main()`-function with a simple Lua script test. See 
+ * This file contains the `main()`-function with a simple Lua script test. See
  * https://github.com/jeremyong/Selene for usage instructions.
  */
 
 #include "selene.h"
 #include "utilities.h"
 #include "isotp_socket.h"
+#include "UDS_ECU.h"
 
 #include <lua.hpp>
 #include <stdio.h>
@@ -92,8 +93,8 @@ void isotpCanTest()
 }
 
 /**
- * The main application only for testing purposes. 
- * 
+ * The main application only for testing purposes.
+ *
  * @param argc: the number of arguments
  * @param argv: the argument list
  * @return 0 on success, otherwise a negative value
@@ -125,6 +126,14 @@ int main(int argc, char** argv)
 
     // exit program with [Ctrl + C]
     t1.join();
+
+
+    UDS_ECU *testserver = new UDS_ECU(0x123, 0x321, "vcan0");
+    cout << "start testserver" << endl;
+    while(1)
+    {
+        testserver->receiveUDSmessage();
+    }
 
     return 0;
 }

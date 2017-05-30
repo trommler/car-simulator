@@ -1,9 +1,9 @@
-/** 
+/**
  * @file isotp_sender.cpp
- * 
+ *
  * This file holds a basic sender and receiver class to transmit data over CAN
  * using the ISO-TP protocol.
- * 
+ *
  */
 
 #include "isotp_socket.h"
@@ -24,8 +24,8 @@ using namespace std;
 constexpr size_t MAX_BUFSIZE = 5000; ///< >= 4096 bytes
 
 /**
- * Writes the given data into the ISO-TP socket. 
- * 
+ * Writes the given data into the ISO-TP socket.
+ *
  * @param buffer: the pointer to the buffer
  * @param size: the number of bytes to write in the socket
  * @return the number of sent bytes or a negative value on error
@@ -74,15 +74,16 @@ int IsoTpSocket::sendData(const void* buffer, std::size_t size) noexcept
 
 /**
  * Receives the via ISO-TP transmitted data.
- * 
+ *
  * @return 0 on success, otherwise a negative value
  */
-int IsoTpSocket::receiveData()
+int IsoTpSocket::recieveData(void *buffer, std::size_t size) noexcept
 {
     isOnExit_ = false;
     struct sockaddr_can addr;
     addr.can_addr.tp.tx_id = source_;
     addr.can_addr.tp.rx_id = dest_;
+
     addr.can_family = AF_CAN;
 
     int skt = socket(PF_CAN, SOCK_DGRAM, CAN_ISOTP);
@@ -117,8 +118,8 @@ int IsoTpSocket::receiveData()
             cout << __func__ << "() received " << dec << num_bytes << " bytes!\n";
             for (unsigned i = 0; i < num_bytes; i++)
             {
-                /* TODO: (Florian 30.05.17) This output is only for 
-                 * demonstration and test purposes. A proper implementation 
+                /* TODO: (Florian 30.05.17) This output is only for
+                 * demonstration and test purposes. A proper implementation
                  * which evaluates the received data, has to be done here.
                  */
                 cout << " 0x"

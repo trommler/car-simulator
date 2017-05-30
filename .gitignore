@@ -40,5 +40,8 @@ dist/
 .settings/
 .dep.inc
 
+# vim swap files
+*.swp
+
 runme
 

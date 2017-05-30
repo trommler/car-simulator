@@ -1,4 +1,4 @@
-/** 
+/**
  * @file isotp_socket.h
  *
  */
@@ -26,7 +26,7 @@ public:
     }
     virtual ~IsoTpSocket() = default;
     int sendData(const void* buffer, std::size_t size) noexcept;
-    int receiveData();
+    int recieveData(void *buffer, std::size_t size) noexcept;
     void exitReceive();
 
 private:
