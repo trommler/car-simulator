@@ -30,6 +30,7 @@
 
 # editor tmp files
 *~
+*.swp
 
 # IDE project meta files
 .cproject
