@@ -17,6 +17,7 @@
                    projectFiles="true">
       <itemPath>src/isotp_socket.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
+      <itemPath>src/tester_main.cpp</itemPath>
       <itemPath>src/utilities.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -210,6 +211,90 @@
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utils_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utils_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/utils_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Tester_Debug" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <standard>11</standard>
+          <incDir>
+            <pElem>/usr/include/lua5.2</pElem>
+            <pElem>Selene/include</pElem>
+          </incDir>
+          <commandLine>-pthread</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs lua5.2`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <folder path="TestFiles">
+        <ccTool>
+          <incDir>
+            <pElem>src</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="11">
+      </item>
+      <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/main.cpp" ex="true" tool="1" flavor2="11">
+      </item>
+      <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/tester_main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/utilities.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
       </item>

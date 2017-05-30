@@ -22,6 +22,14 @@ CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/amos-ss17-proj4
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
 CND_PACKAGE_NAME_Release=amos-ss17-proj4.tar
 CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/amos-ss17-proj4.tar
+# Tester_Debug configuration
+CND_PLATFORM_Tester_Debug=GNU-Linux
+CND_ARTIFACT_DIR_Tester_Debug=dist/Tester_Debug/GNU-Linux
+CND_ARTIFACT_NAME_Tester_Debug=amos-ss17-proj4
+CND_ARTIFACT_PATH_Tester_Debug=dist/Tester_Debug/GNU-Linux/amos-ss17-proj4
+CND_PACKAGE_DIR_Tester_Debug=dist/Tester_Debug/GNU-Linux/package
+CND_PACKAGE_NAME_Tester_Debug=amos-ss17-proj4.tar
+CND_PACKAGE_PATH_Tester_Debug=dist/Tester_Debug/GNU-Linux/package/amos-ss17-proj4.tar
 #
 # include compiler specific variables
 #
