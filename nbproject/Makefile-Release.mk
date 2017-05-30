@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/UDS_ECU.o \
+	${OBJECTDIR}/src/UDS_TESTER.o \
 	${OBJECTDIR}/src/isotp_socket.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/utilities.o
@@ -83,6 +84,11 @@ ${OBJECTDIR}/src/UDS_ECU.o: src/UDS_ECU.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_ECU.o src/UDS_ECU.cpp
+
+${OBJECTDIR}/src/UDS_TESTER.o: src/UDS_TESTER.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_TESTER.o src/UDS_TESTER.cpp
 
 ${OBJECTDIR}/src/isotp_socket.o: src/isotp_socket.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -150,6 +156,19 @@ ${OBJECTDIR}/src/UDS_ECU_nomain.o: ${OBJECTDIR}/src/UDS_ECU.o src/UDS_ECU.cpp
 	    $(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_ECU_nomain.o src/UDS_ECU.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/UDS_ECU.o ${OBJECTDIR}/src/UDS_ECU_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/UDS_TESTER_nomain.o: ${OBJECTDIR}/src/UDS_TESTER.o src/UDS_TESTER.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/UDS_TESTER.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_TESTER_nomain.o src/UDS_TESTER.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/UDS_TESTER.o ${OBJECTDIR}/src/UDS_TESTER_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/isotp_socket_nomain.o: ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp 

@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>src/UDS_ECU.h</itemPath>
+      <itemPath>src/UDS_TESTER.h</itemPath>
       <itemPath>src/isotp_socket.h</itemPath>
       <itemPath>src/service_identifier.h</itemPath>
       <itemPath>src/utilities.h</itemPath>
@@ -17,6 +18,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>src/UDS_ECU.cpp</itemPath>
+      <itemPath>src/UDS_TESTER.cpp</itemPath>
       <itemPath>src/isotp_socket.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
       <itemPath>src/tester_main.cpp</itemPath>
@@ -116,6 +118,10 @@
       </item>
       <item path="src/UDS_ECU.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/UDS_TESTER.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/UDS_TESTER.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
@@ -212,6 +218,10 @@
       </item>
       <item path="src/UDS_ECU.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/UDS_TESTER.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/UDS_TESTER.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
@@ -294,6 +304,10 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <item path="src/UDS_TESTER.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/UDS_TESTER.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
