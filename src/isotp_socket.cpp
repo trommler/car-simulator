@@ -77,7 +77,7 @@ int IsoTpSocket::sendData(const void* buffer, std::size_t size) noexcept
  *
  * @return 0 on success, otherwise a negative value
  */
-int IsoTpSocket::recieveData(void *buffer, std::size_t size) noexcept
+int IsoTpSocket::receiveData() noexcept
 {
     isOnExit_ = false;
     struct sockaddr_can addr;

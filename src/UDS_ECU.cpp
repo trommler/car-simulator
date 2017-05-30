@@ -6,33 +6,21 @@ using namespace std;
 UDS_ECU::UDS_ECU(unsigned int source, unsigned int dest, const string &device)
     : isotp_socket(source, dest, device.c_str())
 {
-    CAN_UDS_Layer();
 }
-
-//void UDS_ECU::init_receive_id(int id)
-//{
-    //CAN_UDS_Layer::set_CANreceiveID(id);
-//}
-
-//void UDS_ECU::init_send_id(int id)
-//{
-    //CAN_UDS_Layer::set_CANsendID(id);
-//}
-
-//void UDS_ECU::sendUDSmessage(unsigned char* data, unsigned int data_size)
-//{
-    //CAN_UDS_Layer::sendCANmessage(data, data_size);
-//}
 
 void UDS_ECU::receiveUDSmessage()
 {
     unsigned char *buffer = new unsigned char[4096];
-    int recieved_bytes = isotp_socket.recieveData(buffer, 4096);
+
+    // TODO(chris): Process recieved messages here or in receiveData?
+    //              Right now it's done in receiveData.
+    //int received_bytes = isotp_socket.receiveData(buffer, 4096);
+    int received_bytes = 0;
 
     if (buffer[0] == 0x3E)
     {
         cout << "Received message: ";
-        printUDSmessage(buffer, recieved_bytes);
+        printUDSmessage(buffer, received_bytes);
 
         printf("UDS - TesterPresent sending: \n%x %x \n", 0x7E, 0x00);
         UDS_TesterPresent();
@@ -40,7 +28,7 @@ void UDS_ECU::receiveUDSmessage()
     else
     {
         cout << "Received unkown message: ";
-        printUDSmessage(buffer, recieved_bytes);
+        printUDSmessage(buffer, received_bytes);
 
         unsigned char temp[1] = {0xEF};
         cout << "sending error - code: ";

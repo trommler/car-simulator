@@ -26,7 +26,7 @@ public:
     }
     virtual ~IsoTpSocket() = default;
     int sendData(const void* buffer, std::size_t size) noexcept;
-    int recieveData(void *buffer, std::size_t size) noexcept;
+    int receiveData() noexcept;
     void exitReceive();
 
 private:

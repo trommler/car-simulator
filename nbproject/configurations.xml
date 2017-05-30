@@ -4,8 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>src/CAN_UDS_Layer.h</itemPath>
-      <itemPath>src/SocketCAN.h</itemPath>
       <itemPath>src/UDS_ECU.h</itemPath>
       <itemPath>src/isotp_socket.h</itemPath>
       <itemPath>src/service_identifier.h</itemPath>
@@ -18,8 +16,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>src/CAN_UDS_Layer.cpp</itemPath>
-      <itemPath>src/SocketCAN.cpp</itemPath>
       <itemPath>src/UDS_ECU.cpp</itemPath>
       <itemPath>src/isotp_socket.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
@@ -116,14 +112,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/CAN_UDS_Layer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/CAN_UDS_Layer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/SocketCAN.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/SocketCAN.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/UDS_ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/UDS_ECU.h" ex="false" tool="3" flavor2="0">
@@ -220,14 +208,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/CAN_UDS_Layer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/CAN_UDS_Layer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/SocketCAN.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/SocketCAN.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/UDS_ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/UDS_ECU.h" ex="false" tool="3" flavor2="0">
