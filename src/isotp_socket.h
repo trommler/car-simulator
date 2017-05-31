@@ -25,16 +25,24 @@ public:
     {
     }
     virtual ~IsoTpSocket() = default;
+    int openSender() noexcept;
+    void closeSender() noexcept;
     int sendData(const void* buffer, std::size_t size) noexcept;
-    int receiveData() noexcept;
-    void exitReceive();
+    int openReceiver() noexcept;
+    int readData() noexcept;
+    void closeReceiver() noexcept;
+    
+protected:
+    virtual void proceedReceivedData(const std::uint8_t* buffer,
+                                     std::size_t num_bytes) noexcept;
 
 private:
     canid_t source_;
     canid_t dest_;
     const std::string device_;
+    int send_skt_ = -1;
+    int receive_skt_ = -1;
     bool isOnExit_ = false;
-    int basicUdsService(std::uint8_t* buffer, std::size_t size);
 
 };
 

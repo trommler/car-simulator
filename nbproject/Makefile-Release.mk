@@ -35,8 +35,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/UDS_ECU.o \
-	${OBJECTDIR}/src/UDS_TESTER.o \
 	${OBJECTDIR}/src/isotp_socket.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/utilities.o
@@ -79,16 +77,6 @@ LDLIBSOPTIONS=`pkg-config --libs lua-5.2`
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4 ${OBJECTFILES} ${LDLIBSOPTIONS}
-
-${OBJECTDIR}/src/UDS_ECU.o: src/UDS_ECU.cpp
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_ECU.o src/UDS_ECU.cpp
-
-${OBJECTDIR}/src/UDS_TESTER.o: src/UDS_TESTER.cpp
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_TESTER.o src/UDS_TESTER.cpp
 
 ${OBJECTDIR}/src/isotp_socket.o: src/isotp_socket.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -144,32 +132,6 @@ ${TESTDIR}/tests/utils_test_runner.o: tests/utils_test_runner.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/utils_test_runner.o tests/utils_test_runner.cpp
 
-
-${OBJECTDIR}/src/UDS_ECU_nomain.o: ${OBJECTDIR}/src/UDS_ECU.o src/UDS_ECU.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/UDS_ECU.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_ECU_nomain.o src/UDS_ECU.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/UDS_ECU.o ${OBJECTDIR}/src/UDS_ECU_nomain.o;\
-	fi
-
-${OBJECTDIR}/src/UDS_TESTER_nomain.o: ${OBJECTDIR}/src/UDS_TESTER.o src/UDS_TESTER.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/UDS_TESTER.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/UDS_TESTER_nomain.o src/UDS_TESTER.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/UDS_TESTER.o ${OBJECTDIR}/src/UDS_TESTER_nomain.o;\
-	fi
 
 ${OBJECTDIR}/src/isotp_socket_nomain.o: ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
