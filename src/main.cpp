@@ -8,7 +8,6 @@
 #include "selene.h"
 #include "utilities.h"
 #include "isotp_socket.h"
-#include "UDS_ECU.h"
 
 #include <lua.hpp>
 #include <stdio.h>
@@ -112,28 +111,25 @@ int main(int argc, char** argv)
 
     // listen on this socket with `isotprecv -s 321 -d 123 -l vcan0`
     IsoTpSocket my_sender(0x123, 0x321, "vcan0");
+    my_sender.openSender();
 
     IsoTpSocket my_receiver(0x321, 0x123, "vcan0");
-    std::thread t1(&IsoTpSocket::receiveData, &my_receiver); // run async in thread
-
+    my_receiver.openReceiver();
+    std::thread t1(&IsoTpSocket::readData, &my_receiver); // run async in thread
     usleep(2000); // wait some time to ensure the thread is set up and running
+    
     my_sender.sendData(payload01.data(), payload01.size()); // finally send the data
 
     constexpr array<uint8_t, 11> payload02 = {
         0x59, 0x65, 0x73, 0x20, 0x77, 0x65, 0x20, 0x43, 0x41, 0x4E, 0x21
     };
+    
     my_sender.sendData(payload02.data(), payload02.size()); // send some more data
-
+    my_sender.closeSender();
+    
     // exit program with [Ctrl + C]
     t1.join();
-
-
-    UDS_ECU *testserver = new UDS_ECU(0x123, 0x321, "vcan0");
-    cout << "start testserver" << endl;
-    while(1)
-    {
-        testserver->receiveUDSmessage();
-    }
+    my_receiver.closeReceiver();
 
     return 0;
 }
