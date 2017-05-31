@@ -47,7 +47,7 @@ int IsoTpSocket::openSender() noexcept
     }
 
     struct ifreq ifr;
-    strncpy(ifr.ifr_name, device_.c_str(), device_.length());
+    strncpy(ifr.ifr_name, device_.c_str(), device_.length() + 1);
     ioctl(skt, SIOCGIFINDEX, &ifr);
     addr.can_ifindex = ifr.ifr_ifindex;
 
@@ -91,7 +91,7 @@ void IsoTpSocket::closeSender() noexcept
  * @see IsoTpSocket::openSender()
  * @see IsoTpSocket::closeSender()
  */
-int IsoTpSocket::sendData(const void* buffer, std::size_t size) noexcept
+int IsoTpSocket::sendData(const void* buffer, size_t size) noexcept
 {
     if (send_skt_ < 0)
     {
@@ -133,7 +133,7 @@ int IsoTpSocket::openReceiver() noexcept
     }
 
     struct ifreq ifr;
-    strncpy(ifr.ifr_name, device_.c_str(), device_.length());
+    strncpy(ifr.ifr_name, device_.c_str(), device_.length() + 1);
     ioctl(skt, SIOCGIFINDEX, &ifr);
     addr.can_ifindex = ifr.ifr_ifindex;
 
@@ -186,7 +186,7 @@ int IsoTpSocket::readData() noexcept
         cerr << __func__ << "() Can not read data. Receiver socket invalid!\n";
         return -1;
     }
-    
+
     uint8_t msg[MAX_BUFSIZE];
     size_t num_bytes;
     do
@@ -198,20 +198,20 @@ int IsoTpSocket::readData() noexcept
         }
     }
     while (!isOnExit_);
-    
+
     return 0;
 }
 
 /**
  * Proceeds the received data. This is the default implementation, which simply
  * prints out the received data in hexadecimal notation to `std::out`. This 
- * function should be overridden to do something useful with the received data.
- * To do this, derive an new class from `IsoTpSocket` and override the function
- * to your likings.
+ * function is supposed be overridden to do something useful with the received 
+ * data. To do this, derive an new class from `IsoTpSocket` and override the 
+ * function to your likings.
  * 
  * @see IsoTpSocket::readData()
  */
-void IsoTpSocket::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noexcept 
+void IsoTpSocket::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noexcept
 {
     cout << __func__ << "() Received " << dec << num_bytes << " bytes.\n";
     for (unsigned i = 0; i < num_bytes; i++)

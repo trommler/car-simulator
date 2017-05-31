@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/isotp_socket.o \
+	${OBJECTDIR}/src/uds_server.o \
 	${OBJECTDIR}/src/utilities.o
 
 # Test Directory
@@ -81,6 +82,11 @@ ${OBJECTDIR}/src/isotp_socket.o: src/isotp_socket.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp
+
+${OBJECTDIR}/src/uds_server.o: src/uds_server.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/uds_server.o src/uds_server.cpp
 
 ${OBJECTDIR}/src/utilities.o: src/utilities.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -138,6 +144,19 @@ ${OBJECTDIR}/src/isotp_socket_nomain.o: ${OBJECTDIR}/src/isotp_socket.o src/isot
 	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/isotp_socket_nomain.o src/isotp_socket.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/isotp_socket.o ${OBJECTDIR}/src/isotp_socket_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/uds_server_nomain.o: ${OBJECTDIR}/src/uds_server.o src/uds_server.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/uds_server.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/uds_server_nomain.o src/uds_server.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/uds_server.o ${OBJECTDIR}/src/uds_server_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/utilities_nomain.o: ${OBJECTDIR}/src/utilities.o src/utilities.cpp 
