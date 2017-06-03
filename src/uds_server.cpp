@@ -28,7 +28,7 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
         case DIAGNOSTIC_SESSION_CONTROL_REQ:
         {
             // gets the response ID from the Lua script
-            std::uint16_t tmpRespId = script_.getResponseId();
+            std::uint16_t tmpRespId = script_.getResponseId("PCM");
             if (tmpRespId != 0)
             {
                 // FIXME: this is not the proper response, since this is only a simple test!
@@ -38,7 +38,7 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
         }
         case ECU_RESET_REQ:
         {
-            const std::string testStr = script_.getDataByIdentifier(0xf124);
+            const std::string testStr = script_.getDataByIdentifier("PCM", 0xf124);
             if (!testStr.empty())
             {
                 // FIXME: this is not the proper response, since this is only a simple test!
