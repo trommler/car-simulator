@@ -52,8 +52,8 @@ int IsoTpSocket::openSender() noexcept
     addr.can_ifindex = ifr.ifr_ifindex;
 
     auto bind_res = bind(skt,
-                         reinterpret_cast<struct sockaddr*> (&addr),
-                         sizeof (addr));
+                         reinterpret_cast<struct sockaddr*>(&addr),
+                         sizeof(addr));
     if (bind_res < 0)
     {
         cerr << __func__ << "() bind: " << strerror(errno) << '\n';
@@ -138,8 +138,8 @@ int IsoTpSocket::openReceiver() noexcept
     addr.can_ifindex = ifr.ifr_ifindex;
 
     auto bind_res = bind(skt,
-                         reinterpret_cast<struct sockaddr*> (&addr),
-                         sizeof (addr));
+                         reinterpret_cast<struct sockaddr*>(&addr),
+                         sizeof(addr));
     if (bind_res < 0)
     {
         cerr << __func__ << "() bind: " << strerror(errno) << '\n';
