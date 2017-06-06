@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>src/ECU.h</itemPath>
       <itemPath>src/ecu_lua_script.h</itemPath>
       <itemPath>src/isotp_socket.h</itemPath>
       <itemPath>src/service_identifier.h</itemPath>
@@ -17,6 +18,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>src/ECU.cpp</itemPath>
       <itemPath>src/ecu_lua_script.cpp</itemPath>
       <itemPath>src/isotp_socket.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
@@ -113,6 +115,10 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ecu_lua_script.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ecu_lua_script.h" ex="false" tool="3" flavor2="0">
@@ -213,6 +219,10 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ecu_lua_script.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ecu_lua_script.h" ex="false" tool="3" flavor2="0">
@@ -303,6 +313,10 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/ecu_lua_script.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ecu_lua_script.h" ex="false" tool="3" flavor2="0">

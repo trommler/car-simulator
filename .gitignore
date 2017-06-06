@@ -43,5 +43,8 @@ dist/
 # vim swap files
 *.swp
 
+# ctags file
+tags
+
 runme
 
