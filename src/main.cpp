@@ -44,7 +44,7 @@ void luaTest()
     }
 }
 
-void isotpCanTest()
+void isotpCanTest(string device)
 {
     struct sockaddr_can addr;
 
@@ -61,8 +61,7 @@ void isotpCanTest()
     addr.can_family = AF_CAN;
 
     struct ifreq ifr;
-    constexpr char dev[] = "vcan0";
-    strncpy(ifr.ifr_name, dev, sizeof(dev));
+    strncpy(ifr.ifr_name, device.c_str(), device.size());
     ioctl(skt, SIOCGIFINDEX, &ifr);
     addr.can_ifindex = ifr.ifr_ifindex;
 
@@ -101,7 +100,13 @@ void isotpCanTest()
  */
 int main(int argc, char** argv)
 {
+    string device = "vcan0";
+    if (argc > 1)
+    {
+        device = argv[1];
+    }
+
     ECU motor;
-    motor.initECU();
+    motor.initECU(device);
     return 0;
 }
