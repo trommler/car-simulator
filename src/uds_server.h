@@ -26,6 +26,15 @@ public:
     UdsServer(canid_t source,
               canid_t dest,
               const std::string& device,
+              const EcuLuaScript& ecuScript)
+    : IsoTpSocket(source, dest, device)
+    , script_(ecuScript)
+    {
+    }
+
+    UdsServer(canid_t source,
+              canid_t dest,
+              const std::string& device,
               EcuLuaScript&& ecuScript)
     : IsoTpSocket(source, dest, device)
     , script_(std::move(ecuScript))
@@ -39,7 +48,10 @@ public:
 
 private:
     const EcuLuaScript script_;
-
+    uint8_t securityAccessType = 0x00;
+    uint8_t response_data_[4095];
+    uint8_t response_data_size_ = 0;
+    void copyLuaScriptResponse(std::string);
 };
 
 #endif /* UDSSERVER_H */
