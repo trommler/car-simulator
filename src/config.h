@@ -15,7 +15,7 @@
 using namespace std;
 
 #define PATH_TO_LUA "tests/testscript03.lua"
-#define CAN_DEVICE "vcan0"
+//#define CAN_DEVICE "vcan0"
 #define MAX_ECU 4
 
 

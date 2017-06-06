@@ -58,8 +58,8 @@ public:
         }
         t->~thread();
     }
-    void initECU();
-    void testECU();
+    void initECU(std::string device);
+    void testECU(std::string device);
 };
 
 
