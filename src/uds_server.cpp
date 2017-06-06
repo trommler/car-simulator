@@ -116,7 +116,7 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
 
 void UdsServer::copyLuaScriptResponse(std::string lua_response)
 {
-    for(int i = 0; i < lua_response.length();i++)
+    for(unsigned int i = 0; i < lua_response.length();i++)
     {
         response_data_[response_data_size_++] = lua_response[i];
     }
