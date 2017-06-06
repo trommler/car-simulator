@@ -51,7 +51,7 @@ public:
     }
     ~ECU()
     {
-        for(int i = 0; i < server_size; i++)
+        for(unsigned int i = 0; i < server_size; i++)
         {
             uds_server[i]->closeSender();
             uds_server[i]->closeReceiver();
