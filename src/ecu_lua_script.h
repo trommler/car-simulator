@@ -15,6 +15,7 @@ constexpr char REQ_ID_FIELD[] = "RequestId";
 constexpr char RES_ID_FIELD[] = "ResponseId";
 constexpr char READ_DATA_BY_IDENTIFIER_TABLE[] = "ReadDataByIdentifier";
 constexpr char READ_SEED[] = "Seed";
+constexpr char RAW_TABLE[] = "Raw";
 
 class EcuLuaScript
 {
@@ -22,7 +23,7 @@ public:
     EcuLuaScript() = delete;
     EcuLuaScript(EcuLuaScript&& origin) = default;
     EcuLuaScript& operator =(EcuLuaScript&& origin) = default;
-    EcuLuaScript(const std::string& luaScript);
+    EcuLuaScript(const std::string& ecuIdent, const std::string& luaScript);
     virtual ~EcuLuaScript() = default;
 
     std::uint16_t getRequestId() const;
@@ -32,6 +33,7 @@ public:
 
 private:
     sel::State lua_state_;
+    std::string ecu_ident_ = "";
     std::uint16_t request_id_ = 0;
     std::uint16_t response_id_ = 0;
 

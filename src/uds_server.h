@@ -17,15 +17,6 @@ public:
     UdsServer(canid_t source,
               canid_t dest,
               const std::string& device,
-              const std::string& luaFile)
-    : IsoTpSocket(source, dest, device)
-    , script_(EcuLuaScript(luaFile))
-    {
-    }
-
-    UdsServer(canid_t source,
-              canid_t dest,
-              const std::string& device,
               EcuLuaScript&& ecuScript)
     : IsoTpSocket(source, dest, device)
     , script_(std::move(ecuScript))

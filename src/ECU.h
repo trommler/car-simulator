@@ -46,7 +46,7 @@ public:
     ECU()
     {
         server_size = 0;
-        script_ = new EcuLuaScript(PATH_TO_LUA);
+        script_ = new EcuLuaScript("PCM", PATH_TO_LUA);
     }
     ~ECU()
     {

@@ -5,7 +5,6 @@
  * https://github.com/jeremyong/Selene for usage instructions.
  */
 
-#include "selene.h"
 #include "utilities.h"
 #include "ECU.h"
 
@@ -21,8 +20,6 @@
 #include <array>
 #include <cstdint>
 #include <iostream>
-#include <cerrno>
-#include <thread>
 
 using namespace std;
 

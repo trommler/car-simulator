@@ -10,11 +10,18 @@
 
 using namespace std;
 
-EcuLuaScript::EcuLuaScript(const string& luaScript)
+/**
+ * Constructor. 
+ * 
+ * @param ecuIdent: the identifier name for the ECU (e.g. "PCM")
+ * @param luaScript: the path to the Lua script
+ */
+EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
 {
     if (utils::existsFile(luaScript))
     {
         lua_state_.Load(luaScript);
+        ecu_ident_ = ecuIdent;
     }
     else
     {
@@ -29,7 +36,7 @@ EcuLuaScript::EcuLuaScript(const string& luaScript)
  */
 uint16_t EcuLuaScript::getRequestId() const
 {
-    return request_id_;
+    return int(lua_state_[ecu_ident_.c_str()][REQ_ID_FIELD]);
 }
 
 /**
@@ -39,7 +46,7 @@ uint16_t EcuLuaScript::getRequestId() const
  */
 uint16_t EcuLuaScript::getResponseId() const
 {
-    return response_id_;
+    return int(lua_state_[ecu_ident_.c_str()][RES_ID_FIELD]);
 }
 
 /**
@@ -50,7 +57,7 @@ uint16_t EcuLuaScript::getResponseId() const
  */
 string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
 {
-    auto val = lua_state_[READ_DATA_BY_IDENTIFIER_TABLE][identifier];
+    auto val = lua_state_[ecu_ident_.c_str()][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
     if (val.exists())
     {
         return val;
@@ -60,7 +67,7 @@ string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
 
 std::string EcuLuaScript::getSeed(uint8_t seed_level) const
 {
-    auto val = lua_state_[READ_SEED][seed_level];
+    auto val = lua_state_[ecu_ident_.c_str()][READ_SEED][seed_level];
     if (val.exists())
     {
         return val;
