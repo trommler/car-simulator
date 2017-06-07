@@ -34,13 +34,12 @@
 #include <cerrno>
 #include <thread>
 
-using namespace std;
 
 class ECU
 {
 private:    
     unsigned int server_size;
-    thread* t;
+    std::thread* t;
     EcuLuaScript* script_;
     UdsServer* uds_server[MAX_ECU];
 public:
