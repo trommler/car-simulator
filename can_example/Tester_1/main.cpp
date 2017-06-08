@@ -21,8 +21,15 @@ using namespace std;
  */
 int main(int argc, char** argv) 
 {
+
+    string device = "vcan0";
+    if (argc > 1)
+    {
+        device = argv[1];
+    }
+
     // test ecu
-    IsoTpSocket tester(0x200,0x100, "vcan0");
+    IsoTpSocket tester(0x200,0x100, device.c_str());
     tester.openSender();
     
     constexpr array<uint8_t, 3> ReadDataByIdentifier01 = { 0x22, 0xf1, 0x90 };

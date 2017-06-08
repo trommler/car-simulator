@@ -1,4 +1,4 @@
-/** 
+/**
  * @file uds_server.cpp
  * 
  * Implementation of an UDS server, which receives requests and sends response
@@ -11,9 +11,11 @@
 #include <cstdint>
 #include <string>
 
+using namespace std;
+
 /**
- * Handles the received UDS messages and send response back the according to the
- * Lua script.
+ * Handles the received UDS messages and sends back the response like defined in
+ * the according Lua script.
  * 
  * @param buffer: the buffer containing the received data 
  * @param num_bytes: the number of received bytes.
@@ -32,30 +34,31 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
             if (!script_.getDataByIdentifier(0xf124).empty())
             {
                 // FIXME: this is not the proper response, since this is only a simple test!
-                sendData(script_.getDataByIdentifier(0xf124).c_str(), sizeof(script_.getDataByIdentifier(0xf124).c_str()));
+                string tmpData = script_.getDataByIdentifier(0xf124);
+                sendData(tmpData.c_str(), tmpData.length());
             }
             break;
         }
         case READ_DATA_BY_IDENTIFIER_REQ:
         {
-            unsigned int temp = (buffer[1] << 8) + buffer[2];
+            uint16_t temp = (buffer[1] << 8) + buffer[2];
             // printf("READ_DATA_BY_IDENTIFIER_REQ %x \n", temp);
-            if(!script_.getDataByIdentifier(temp).empty())
+            if (!script_.getDataByIdentifier(temp).empty())
             {
                 //send positive response
                 response_data_[response_data_size_++] = READ_DATA_BY_IDENTIFIER_RES;
                 response_data_[response_data_size_++] = buffer[1];
                 response_data_[response_data_size_++] = buffer[2];
                 copyLuaScriptResponse(script_.getDataByIdentifier(temp));
-                sendData(response_data_,response_data_size_);
+                sendData(response_data_, response_data_size_);
             }
             else
             {
                 // send out of range
                 response_data_[response_data_size_++] = ERROR;
                 response_data_[response_data_size_++] = OUT_OF_RANGE;
-                sendData(response_data_, response_data_size_);         
-            }         
+                sendData(response_data_, response_data_size_);
+            }
             break;
         }
         case TESTER_PRESENT_REQ:
@@ -67,34 +70,34 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
         {
             response_data_[response_data_size_++] = DIAGNOSTIC_SESSION_CONTROL_RES;
             response_data_[response_data_size_++] = buffer[1];
-            
+
             // lua session function
             sendData(response_data_, response_data_size_);
-            
+
             break;
         }
         case SECURITY_ACCESS_REQ:
-        {   
-            if(!script_.getSeed((buffer[1])).empty())
+        {
+            if (!script_.getSeed((buffer[1])).empty())
             {
                 // send seed
                 response_data_[response_data_size_++] = SECURITY_ACCESS_REQ;
                 response_data_[response_data_size_++] = buffer[1];
 
                 // get lua file seed
-                securityAccessType = buffer[1]+0x01;
+                securityAccessType = buffer[1] + 0x01;
                 copyLuaScriptResponse(script_.getSeed(buffer[1]));
                 sendData(response_data_, response_data_size_);
             }
             else
             {
-                if(securityAccessType == buffer[1])
+                if (securityAccessType == buffer[1])
                 {
                     // second request 
                     response_data_[response_data_size_++] = SECURITY_ACCESS_RES;
-                    
+
                     // lua seed function
-                    
+
                     sendData(response_data_, response_data_size_);
                     securityAccessType = 0x00;
                 }
@@ -107,16 +110,15 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
             }
             break;
         }
-        // TODO: implement all other requests ...
+            // TODO: implement all other requests ...
         default:
             std::cerr << "Invalid UDS request received!\n";
     }
-
 }
 
 void UdsServer::copyLuaScriptResponse(std::string lua_response)
 {
-    for(int i = 0; i < lua_response.length();i++)
+    for (unsigned int i = 0; i < lua_response.length(); i++)
     {
         response_data_[response_data_size_++] = lua_response[i];
     }

@@ -8,9 +8,10 @@
 
 using namespace std;
 
-void ECU::initECU()
+void ECU::initECU(std::string device)
 {
-    uds_server[server_size++] = new UdsServer(script_->getRequestId(), script_->getResponseId(), CAN_DEVICE, PATH_TO_LUA);
+    EcuLuaScript script("PCM", PATH_TO_LUA); 
+    uds_server[server_size++] = new UdsServer(script_->getRequestId(), script_->getResponseId(), device, move(script));
     uds_server[server_size-1]->openReceiver();
     uds_server[server_size-1]->openSender();
     
@@ -19,7 +20,7 @@ void ECU::initECU()
     usleep(5000);
     
     // test ecu
-    /*UdsServer tester(0x200,0x100, CAN_DEVICE, PATH_TO_LUA);
+    /*UdsServer tester(0x200,0x100, device.c_str(), PATH_TO_LUA);
     tester.openSender();
     
     constexpr array<uint8_t, 3> ReadDataByIdentifier01 = { 0x22, 0xf1, 0x90 };
@@ -51,10 +52,11 @@ void ECU::initECU()
     t->join();
 }
 
-void ECU::testECU()
+void ECU::testECU(string device)
 {
     // test ecu
-    UdsServer tester(0x200,0x100, CAN_DEVICE, PATH_TO_LUA);
+    EcuLuaScript script("PCM", PATH_TO_LUA); 
+    UdsServer tester(0x200, 0x100, device, move(script));
     tester.openSender();
     
     constexpr array<uint8_t, 3> ReadDataByIdentifier01 = { 0x22, 0xf1, 0x90 };
