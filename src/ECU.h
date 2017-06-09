@@ -40,21 +40,14 @@ class ECU
 private:    
     unsigned int server_size;
     std::thread* t;
-    EcuLuaScript* script_;
     UdsServer* uds_server[MAX_ECU];
 public:
     ECU()
     {
         server_size = 0;
-        script_ = new EcuLuaScript("PCM", PATH_TO_LUA);
     }
     ~ECU()
     {
-        for(unsigned int i = 0; i < server_size; i++)
-        {
-            uds_server[i]->closeSender();
-            uds_server[i]->closeReceiver();
-        }
         t->~thread();
     }
     void initECU(std::string device);

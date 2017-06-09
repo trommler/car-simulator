@@ -21,21 +21,19 @@ class EcuLuaScript
 {
 public:
     EcuLuaScript() = delete;
-    EcuLuaScript(EcuLuaScript&& origin) = default;
-    EcuLuaScript& operator =(EcuLuaScript&& origin) = default;
+    EcuLuaScript(EcuLuaScript&& orig) = default;
+    EcuLuaScript& operator =(EcuLuaScript&& orig) = default;
     EcuLuaScript(const std::string& ecuIdent, const std::string& luaScript);
     virtual ~EcuLuaScript() = default;
 
-    std::uint16_t getRequestId() const;
-    std::uint16_t getResponseId() const;
-    std::string getSeed(std::uint8_t identifier) const;
-    std::string getDataByIdentifier(std::uint16_t identifier) const;
+    virtual std::uint16_t getRequestId() const;
+    virtual std::uint16_t getResponseId() const;
+    virtual std::string getSeed(std::uint8_t identifier) const;
+    virtual std::string getDataByIdentifier(std::uint16_t identifier) const;
 
 private:
     sel::State lua_state_;
     std::string ecu_ident_ = "";
-    std::uint16_t request_id_ = 0;
-    std::uint16_t response_id_ = 0;
 
 };
 

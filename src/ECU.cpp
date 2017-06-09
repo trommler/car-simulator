@@ -11,17 +11,16 @@ using namespace std;
 void ECU::initECU(std::string device)
 {
     EcuLuaScript script("PCM", PATH_TO_LUA); 
-    uds_server[server_size++] = new UdsServer(script_->getRequestId(), script_->getResponseId(), device, move(script));
-    uds_server[server_size-1]->openReceiver();
-    uds_server[server_size-1]->openSender();
+    uds_server[server_size++] = new UdsServer(script.getResponseId(), script.getRequestId(), device, move(script));
+
     
     // todo implement more than 0 ecu
     t = new thread(&IsoTpSocket::readData, uds_server[server_size-1]);
     usleep(5000);
     
     // test ecu
-    /*UdsServer tester(0x200,0x100, device.c_str(), PATH_TO_LUA);
-    tester.openSender();
+    /*
+    UdsServer tester(0x200,0x100, device.c_str(), PATH_TO_LUA);
     
     constexpr array<uint8_t, 3> ReadDataByIdentifier01 = { 0x22, 0xf1, 0x90 };
     constexpr array<uint8_t, 3> ReadDataByIdentifier02 = { 0x22, 0xf1, 0x24 };
@@ -46,7 +45,7 @@ void ECU::initECU(std::string device)
     tester.sendData(diagnostic_session01.data(), diagnostic_session01.size());
     usleep(2000);
     
-    tester.closeSender();*/
+    */
     
     // ECU::testECU();
     t->join();
@@ -56,8 +55,7 @@ void ECU::testECU(string device)
 {
     // test ecu
     EcuLuaScript script("PCM", PATH_TO_LUA); 
-    UdsServer tester(0x200, 0x100, device, move(script));
-    tester.openSender();
+    UdsServer tester(script.getResponseId(), script.getRequestId(), device, move(script));
     
     constexpr array<uint8_t, 3> ReadDataByIdentifier01 = { 0x22, 0xf1, 0x90 };
     constexpr array<uint8_t, 3> ReadDataByIdentifier02 = { 0x22, 0xf1, 0x24 };
@@ -81,8 +79,6 @@ void ECU::testECU(string device)
     usleep(2000);
     tester.sendData(diagnostic_session01.data(), diagnostic_session01.size());
     usleep(2000);
-    
-    tester.closeSender();
 }
 
 

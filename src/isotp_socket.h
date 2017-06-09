@@ -31,7 +31,7 @@ public:
     int openReceiver() noexcept;
     int readData() noexcept;
     void closeReceiver() noexcept;
-    
+
 protected:
     virtual void proceedReceivedData(const std::uint8_t* buffer,
                                      std::size_t num_bytes) noexcept;

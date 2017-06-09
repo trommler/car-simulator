@@ -14,6 +14,37 @@
 using namespace std;
 
 /**
+ * Constructor. Opens the sockets for sending and receiving.
+ * 
+ * @param device: the name of the transmitting device (e. g. "vcan0")
+ * @param ecuScript: the `EcuLuaScipt` as rvalue
+ */
+UdsServer::UdsServer(canid_t source,
+                     canid_t dest,
+                     const string& device,
+                     EcuLuaScript&& ecuScript)
+: IsoTpSocket(source, dest, device)
+, script_(move(ecuScript))
+{
+    int err = openReceiver();
+    err |= openSender();
+
+    if (err != 0)
+    {
+        throw;
+    }
+}
+
+/**
+ * Destructor. Closes the sockets for sending and receiving.
+ */
+UdsServer::~UdsServer()
+{
+    closeSender();
+    closeReceiver();
+}
+
+/**
  * Handles the received UDS messages and sends back the response like defined in
  * the according Lua script.
  * 
@@ -28,7 +59,7 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
     response_data_size_ = 0;
     switch (buffer[0])
     {
-        // TODO: Enhance the functionality. This are only a basic response test. 
+            // TODO: Enhance the functionality. This are only a basic response test. 
         case ECU_RESET_REQ:
         {
             if (!script_.getDataByIdentifier(0xf124).empty())

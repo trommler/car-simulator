@@ -17,16 +17,12 @@ public:
     UdsServer(canid_t source,
               canid_t dest,
               const std::string& device,
-              EcuLuaScript&& ecuScript)
-    : IsoTpSocket(source, dest, device)
-    , script_(std::move(ecuScript))
-    {
-    }
+              EcuLuaScript&& ecuScript);
 
-    virtual ~UdsServer() = default;
+    virtual ~UdsServer();
 
-    void proceedReceivedData(const std::uint8_t* buffer,
-                             std::size_t num_bytes) noexcept override;
+    virtual void proceedReceivedData(const std::uint8_t* buffer,
+                                     std::size_t num_bytes) noexcept override;
 
 private:
     const EcuLuaScript script_;
