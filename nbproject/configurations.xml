@@ -29,6 +29,14 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f3"
+                     displayName="EcuLuaScriptTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/ecu_lua_scrip_test_runner.cpp</itemPath>
+        <itemPath>tests/ecu_lua_script_test.cpp</itemPath>
+        <itemPath>tests/ecu_lua_script_test.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="SeleneTest"
                      projectFiles="true"
@@ -115,6 +123,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
@@ -138,6 +160,15 @@
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_scrip_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -219,6 +250,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
@@ -242,6 +287,15 @@
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_scrip_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -313,6 +367,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
@@ -336,6 +404,15 @@
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_scrip_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

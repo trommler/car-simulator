@@ -47,11 +47,14 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
+	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f1
 
 # Test Object Files
 TESTOBJECTFILES= \
+	${TESTDIR}/tests/ecu_lua_scrip_test_runner.o \
+	${TESTDIR}/tests/ecu_lua_script_test.o \
 	${TESTDIR}/tests/selene_test.o \
 	${TESTDIR}/tests/selene_test_runner.o \
 	${TESTDIR}/tests/utils_test.o \
@@ -118,6 +121,10 @@ ${OBJECTDIR}/src/utilities.o: src/utilities.cpp
 .build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
 .build-tests-subprojects:
 
+${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/ecu_lua_scrip_test_runner.o ${TESTDIR}/tests/ecu_lua_script_test.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
+
 ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/selene_test.o ${TESTDIR}/tests/selene_test_runner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
@@ -125,6 +132,18 @@ ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/selene_test.o ${TESTDIR}/tests/selene_
 ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/utils_test.o ${TESTDIR}/tests/utils_test_runner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
+
+
+${TESTDIR}/tests/ecu_lua_scrip_test_runner.o: tests/ecu_lua_scrip_test_runner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ecu_lua_scrip_test_runner.o tests/ecu_lua_scrip_test_runner.cpp
+
+
+${TESTDIR}/tests/ecu_lua_script_test.o: tests/ecu_lua_script_test.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ecu_lua_script_test.o tests/ecu_lua_script_test.cpp
 
 
 ${TESTDIR}/tests/selene_test.o: tests/selene_test.cpp 
@@ -233,6 +252,7 @@ ${OBJECTDIR}/src/utilities_nomain.o: ${OBJECTDIR}/src/utilities.o src/utilities.
 .test-conf:
 	@if [ "${TEST}" = "" ]; \
 	then  \
+	    ${TESTDIR}/TestFiles/f3 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	else  \

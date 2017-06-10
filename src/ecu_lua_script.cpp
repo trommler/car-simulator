@@ -7,6 +7,8 @@
 #include "ecu_lua_script.h"
 #include "utilities.h"
 #include <iostream>
+#include <algorithm>
+#include <exception>
 
 using namespace std;
 
@@ -21,12 +23,18 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
     if (utils::existsFile(luaScript))
     {
         lua_state_.Load(luaScript);
-        ecu_ident_ = ecuIdent;
+        if (lua_state_[ecuIdent.c_str()].exists())
+        {
+            ecu_ident_ = ecuIdent;
+            return;
+        }
+        else
+        {
+            using sel::State;
+            lua_state_.~State();
+        }
     }
-    else
-    {
-        throw;
-    }
+    throw exception();
 }
 
 /**
@@ -65,7 +73,7 @@ string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
     return "";
 }
 
-std::string EcuLuaScript::getSeed(uint8_t seed_level) const
+string EcuLuaScript::getSeed(uint8_t seed_level) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][READ_SEED][seed_level];
     if (val.exists())
@@ -73,4 +81,24 @@ std::string EcuLuaScript::getSeed(uint8_t seed_level) const
         return val;
     }
     return "";
+}
+
+/**
+ * Converts a literal hex string into a value vector.
+ * 
+ * @param hexString: the literal hex string (e.g. "41 6f 54")
+ * @return a vector with the byte values
+ */
+vector<uint8_t> EcuLuaScript::literalHexStrToBytes(string& hexString)
+{
+    // remove white spaces from string
+    hexString.erase(remove(hexString.begin(), hexString.end(), ' '), hexString.end());
+    vector<uint8_t> data;
+    for (unsigned int i = 0; i < hexString.length(); i += 2)
+    {
+        string byteString = hexString.substr(i, 2);
+        uint8_t byte = static_cast<uint8_t> (strtol(byteString.c_str(), NULL, 16));
+        data.push_back(byte);
+    }
+    return data;
 }

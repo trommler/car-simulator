@@ -10,6 +10,7 @@
 #include "lua.hpp"
 #include <string>
 #include <cstdint>
+#include <vector>
 
 constexpr char REQ_ID_FIELD[] = "RequestId";
 constexpr char RES_ID_FIELD[] = "ResponseId";
@@ -30,6 +31,7 @@ public:
     virtual std::uint16_t getResponseId() const;
     virtual std::string getSeed(std::uint8_t identifier) const;
     virtual std::string getDataByIdentifier(std::uint16_t identifier) const;
+    std::vector<std::uint8_t> literalHexStrToBytes(std::string& hexString);
 
 private:
     sel::State lua_state_;

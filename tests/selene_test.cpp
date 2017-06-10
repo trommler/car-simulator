@@ -35,7 +35,7 @@ void SeleneTest::testLuaScriptMethod()
     }
     else
     {
-        CPPUNIT_ASSERT_MESSAGE("Could not find test file 01!", false);
+        CPPUNIT_FAIL("Could not find test file 01!");
     }
 
     const std::string test_script02 = "tests/testscript02.lua";
@@ -56,6 +56,6 @@ void SeleneTest::testLuaScriptMethod()
     }
     else
     {
-        CPPUNIT_ASSERT_MESSAGE("Could not find test file 02!", false);
+        CPPUNIT_FAIL("Could not find test file 02!");
     }
 }
