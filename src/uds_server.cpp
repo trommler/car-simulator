@@ -10,6 +10,7 @@
 #include <iostream>
 #include <cstdint>
 #include <string>
+#include <exception>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ UdsServer::UdsServer(canid_t source,
 
     if (err != 0)
     {
-        throw;
+        throw exception();
     }
 }
 

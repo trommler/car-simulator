@@ -5,21 +5,9 @@
  * https://github.com/jeremyong/Selene for usage instructions.
  */
 
-#include "utilities.h"
+#include "ecu_lua_script.h"
 #include "ECU.h"
-
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <cstring>
-#include <libgen.h>
-#include <net/if.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <array>
-#include <cstdint>
-#include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -38,7 +26,8 @@ int main(int argc, char** argv)
         device = argv[1];
     }
 
-    ECU motor;
+    EcuLuaScript script("PCM", PATH_TO_LUA);
+    ECU motor(device, move(script));
     motor.initECU(device);
     return 0;
 }
