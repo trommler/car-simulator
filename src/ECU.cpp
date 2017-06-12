@@ -13,8 +13,7 @@ using namespace std;
 ECU::ECU(const string& device, EcuLuaScript&& ecuScript)
 : uds_server_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript))
 {
-    thread* t = new thread(&IsoTpSocket::readData, &uds_server_);
-    p_server_thread_ = std::make_unique<thread>(move(*t));
+    p_server_thread_ = std::make_unique<thread>(thread(&IsoTpSocket::readData, &uds_server_));
 }
 
 ECU::~ECU()
@@ -30,8 +29,7 @@ void ECU::initECU(string device)
     // todo implement more than 0 ecu
     if (p_server_thread_ == nullptr)
     {
-        thread* t = new thread(&IsoTpSocket::readData, &uds_server_);
-        p_server_thread_ = make_unique<thread>(move(*t));
+        p_server_thread_ = make_unique<thread>(thread(&IsoTpSocket::readData, &uds_server_));
     }
     usleep(5000);
 
