@@ -22,12 +22,25 @@ ecuTimer::ecuTimer(const ecuTimer& orig) {
 ecuTimer::~ecuTimer() {
 }
 
+/**
+ * set delay value for the timer
+ * @param delay time value, unit Millisecond
+ * @notice: the value will be set in both the slp_timer and cond_timer
+ * @return void
+ **/
 void ecuTimer::set_delay(int delayMS){
     this->_delay = delayMS * 1000;
     delayTime.tv_sec = (long) delayMS / 1000 ;
     delayTime.tv_nsec = (long) delayMS * 1000000 ;
 }
 
+/**
+ *   start the slp_timer and delay for the time value set before
+ *  @param none
+ *  @notice: slp_timer is perfect for single thread application
+ *          problems or bugs in multi threading need to be further tested
+ *  @return always 0
+ **/
 int ecuTimer::slp_delay(){
     printf("enter slp_delay for %d ms \n",this->_delay/1000);       // for debug propose
     usleep(_delay);
@@ -35,6 +48,12 @@ int ecuTimer::slp_delay(){
     return 0;
 }
 
+/*  start the cond_timer and delay for the time value set before
+ *  @param pthread_cond_t cond, signal for multi threading, should be defined outside
+ *         ptread_mutex_t mutex, signal for multi threading, should be defined outside
+ *  @notice: cond_timer is perfect for multi thread application
+ *  @return always 0
+ **/
 int ecuTimer::cond_delay(pthread_cond_t cond, pthread_mutex_t mutex){
     printf("enter cond_delay for %ld s \n",this->delayTime.tv_sec);       // for debug propose
     printf("enter cond_delay for %ld ns \n",this->delayTime.tv_nsec);       // for debug propose
@@ -44,6 +63,10 @@ int ecuTimer::cond_delay(pthread_cond_t cond, pthread_mutex_t mutex){
     return 0;
 }
 
+/**
+ * one little test function for timers
+ * @param testCode ,test conditions
+ */
 void timer_test(int testCode){
     ecuTimer timer1,timer2;
     char input;
@@ -83,6 +106,11 @@ void timer_test(int testCode){
     }
 }
 
+/**
+ * one example of how slp_timer is used in thread
+ * @param arg
+ * @return 
+ */
 void * thr_slp_dly(void * arg){
     printf("enter thread\n");
     pthread_mutex_lock(&mutex);
@@ -93,6 +121,11 @@ void * thr_slp_dly(void * arg){
     printf("delay finished, destruction\n");
 }
 
+/**
+ * one example of how cond_timer is used in thread
+ * @param arg
+ * @return 
+ */
 void * thr_cond_dly(void * arg){
     printf("enter thread\n");
     pthread_mutex_lock(&mutex);
