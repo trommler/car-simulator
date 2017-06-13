@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/ECU.o \
+	${OBJECTDIR}/src/ecuTimer.o \
 	${OBJECTDIR}/src/ecu_lua_script.o \
 	${OBJECTDIR}/src/isotp_socket.o \
 	${OBJECTDIR}/src/main.o \
@@ -88,6 +89,11 @@ ${OBJECTDIR}/src/ECU.o: src/ECU.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU.o src/ECU.cpp
+
+${OBJECTDIR}/src/ecuTimer.o: src/ecuTimer.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecuTimer.o src/ecuTimer.cpp
 
 ${OBJECTDIR}/src/ecu_lua_script.o: src/ecu_lua_script.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -181,6 +187,19 @@ ${OBJECTDIR}/src/ECU_nomain.o: ${OBJECTDIR}/src/ECU.o src/ECU.cpp
 	    $(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU_nomain.o src/ECU.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/ECU.o ${OBJECTDIR}/src/ECU_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/ecuTimer_nomain.o: ${OBJECTDIR}/src/ecuTimer.o src/ecuTimer.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/ecuTimer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua-5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecuTimer_nomain.o src/ecuTimer.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/ecuTimer.o ${OBJECTDIR}/src/ecuTimer_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/ecu_lua_script_nomain.o: ${OBJECTDIR}/src/ecu_lua_script.o src/ecu_lua_script.cpp 
