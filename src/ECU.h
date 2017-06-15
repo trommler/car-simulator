@@ -20,14 +20,11 @@ public:
     ECU() = delete;
     ECU(const string& device, EcuLuaScript&& ecuScript);
     virtual ~ECU();
-
-    void initECU(std::string device);
     void testECU(std::string device);
 
 private:
     std::unique_ptr<std::thread> p_server_thread_;
     UdsServer uds_server_;
 };
-
 
 #endif /* ECU_H */

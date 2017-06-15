@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <string>
 #include <exception>
+#include <array>
+#include <vector>
 
 using namespace std;
 
@@ -55,44 +57,14 @@ UdsServer::~UdsServer()
  * @see EcuLuaScript::getRequestId()
  * @see EcuLuaScript::getResponseId
  */
-void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noexcept
+void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     response_data_size_ = 0;
     switch (buffer[0])
     {
-            // TODO: Enhance the functionality. This are only a basic response test. 
-        case ECU_RESET_REQ:
-        {
-            if (!script_.getDataByIdentifier(0xf124).empty())
-            {
-                // FIXME: this is not the proper response, since this is only a simple test!
-                string tmpData = script_.getDataByIdentifier(0xf124);
-                sendData(tmpData.c_str(), tmpData.length());
-            }
-            break;
-        }
         case READ_DATA_BY_IDENTIFIER_REQ:
-        {
-            uint16_t temp = (buffer[1] << 8) + buffer[2];
-            // printf("READ_DATA_BY_IDENTIFIER_REQ %x \n", temp);
-            if (!script_.getDataByIdentifier(temp).empty())
-            {
-                //send positive response
-                response_data_[response_data_size_++] = READ_DATA_BY_IDENTIFIER_RES;
-                response_data_[response_data_size_++] = buffer[1];
-                response_data_[response_data_size_++] = buffer[2];
-                copyLuaScriptResponse(script_.getDataByIdentifier(temp));
-                sendData(response_data_, response_data_size_);
-            }
-            else
-            {
-                // send out of range
-                response_data_[response_data_size_++] = ERROR;
-                response_data_[response_data_size_++] = OUT_OF_RANGE;
-                sendData(response_data_, response_data_size_);
-            }
+            readDataByIdentifier(buffer, num_bytes);
             break;
-        }
         case TESTER_PRESENT_REQ:
         {
             // 0x7E0
@@ -144,14 +116,53 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noe
         }
             // TODO: implement all other requests ...
         default:
-            std::cerr << "Invalid UDS request received!\n";
+            cerr << "Invalid UDS request received!\n";
     }
 }
 
-void UdsServer::copyLuaScriptResponse(std::string lua_response)
+void UdsServer::copyLuaScriptResponse(string lua_response)
 {
     for (unsigned int i = 0; i < lua_response.length(); i++)
     {
         response_data_[response_data_size_++] = lua_response[i];
+    }
+}
+
+void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
+{
+    if (num_bytes < 3 || (num_bytes % 2) != 1) // check length
+    {
+        constexpr array<uint8_t, 2> nrc = {
+            ERROR,
+            INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT
+        };
+        sendData(nrc.data(), nrc.size());
+        return;
+    }
+
+    // TODO: check for max length
+
+    uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
+    const string data = script_.getDataByIdentifier(dataIdentifier);
+    if (!data.empty())
+    {
+        // send positive response
+        vector<uint8_t> resp(data.length() + 3);
+        resp = {
+            READ_DATA_BY_IDENTIFIER_RES,
+            buffer[1],
+            buffer[2]
+        };
+        resp.insert(resp.cend(), data.cbegin(), data.cend()); // insert payload
+        sendData(resp.data(), resp.size());
+    }
+    else
+    {
+        // send out of range
+        constexpr array<uint8_t, 2> nrc = {
+            ERROR,
+            REQUEST_OUT_OF_RANGE
+        };
+        sendData(nrc.data(), nrc.size());
     }
 }

@@ -34,7 +34,7 @@ public:
 
 protected:
     virtual void proceedReceivedData(const std::uint8_t* buffer,
-                                     std::size_t num_bytes) noexcept;
+                                     const std::size_t num_bytes) noexcept;
 
 private:
     canid_t source_;

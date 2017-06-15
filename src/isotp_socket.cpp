@@ -52,7 +52,7 @@ int IsoTpSocket::openSender() noexcept
     addr.can_ifindex = ifr.ifr_ifindex;
 
     auto bind_res = bind(skt,
-                         reinterpret_cast<struct sockaddr*>(&addr),
+                         reinterpret_cast<struct sockaddr*> (&addr),
                          sizeof(addr));
     if (bind_res < 0)
     {
@@ -138,7 +138,7 @@ int IsoTpSocket::openReceiver() noexcept
     addr.can_ifindex = ifr.ifr_ifindex;
 
     auto bind_res = bind(skt,
-                         reinterpret_cast<struct sockaddr*>(&addr),
+                         reinterpret_cast<struct sockaddr*> (&addr),
                          sizeof(addr));
     if (bind_res < 0)
     {
@@ -211,7 +211,7 @@ int IsoTpSocket::readData() noexcept
  * 
  * @see IsoTpSocket::readData()
  */
-void IsoTpSocket::proceedReceivedData(const uint8_t* buffer, size_t num_bytes) noexcept
+void IsoTpSocket::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     cout << __func__ << "() Received " << dec << num_bytes << " bytes.\n";
     for (unsigned i = 0; i < num_bytes; i++)
