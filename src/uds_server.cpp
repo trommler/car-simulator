@@ -130,18 +130,6 @@ void UdsServer::copyLuaScriptResponse(string lua_response)
 
 void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
-    if (num_bytes < 3 || (num_bytes % 2) != 1) // check length
-    {
-        constexpr array<uint8_t, 2> nrc = {
-            ERROR,
-            INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT
-        };
-        sendData(nrc.data(), nrc.size());
-        return;
-    }
-
-    // TODO: check for max length
-
     uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
     const string data = script_.getDataByIdentifier(dataIdentifier);
     if (!data.empty())

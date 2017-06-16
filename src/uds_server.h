@@ -30,7 +30,7 @@ private:
     uint8_t response_data_[4095];
     uint8_t response_data_size_ = 0;
     void copyLuaScriptResponse(std::string);
-    
+
     void readDataByIdentifier(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;
 };
 

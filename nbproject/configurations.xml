@@ -35,9 +35,9 @@
                      displayName="EcuLuaScriptTest"
                      projectFiles="true"
                      kind="TEST">
-        <itemPath>tests/ecu_lua_scrip_test_runner.cpp</itemPath>
         <itemPath>tests/ecu_lua_script_test.cpp</itemPath>
         <itemPath>tests/ecu_lua_script_test.h</itemPath>
+        <itemPath>tests/ecu_lua_script_test_runner.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2"
                      displayName="SeleneTest"
@@ -46,6 +46,14 @@
         <itemPath>tests/selene_test.cpp</itemPath>
         <itemPath>tests/selene_test.h</itemPath>
         <itemPath>tests/selene_test_runner.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4"
+                     displayName="UdsServerTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>src/tests/uds_server_test.cpp</itemPath>
+        <itemPath>src/tests/uds_server_test.h</itemPath>
+        <itemPath>src/tests/uds_server_test_runner.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1"
                      displayName="UtilitiesTest"
@@ -139,6 +147,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
@@ -159,6 +181,15 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/tests/uds_server_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -167,14 +198,14 @@
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="tests/ecu_lua_scrip_test_runner.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="tests/ecu_lua_script_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -270,6 +301,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
@@ -290,6 +335,15 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/tests/uds_server_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -298,14 +352,14 @@
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="tests/ecu_lua_scrip_test_runner.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="tests/ecu_lua_script_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -391,6 +445,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
@@ -411,6 +479,15 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/tests/uds_server_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -419,14 +496,14 @@
       </item>
       <item path="src/utilities.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="tests/ecu_lua_scrip_test_runner.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="tests/ecu_lua_script_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/ecu_lua_script_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
