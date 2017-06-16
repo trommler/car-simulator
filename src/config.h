@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   config.h
- * 
+ *
  */
 
 #ifndef CONFIG_H
@@ -14,7 +14,8 @@
 
 using namespace std;
 
-#define PATH_TO_LUA "tests/testscript03.lua"
+#define LUA_CONFIG_PATH "lua_config/"
+
 //#define CAN_DEVICE "vcan0"
 #define MAX_ECU 4
 

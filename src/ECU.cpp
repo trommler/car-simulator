@@ -25,10 +25,10 @@ ECU::~ECU()
     }
 }
 
-void ECU::testECU(string device)
+void ECU::testECU(const string &config_file, const string &device)
 {
     // test ecu
-    EcuLuaScript script("PCM", PATH_TO_LUA);
+    EcuLuaScript script("PCM", LUA_CONFIG_PATH + config_file);
     UdsServer tester(script.getResponseId(), script.getRequestId(), device, move(script));
 
     constexpr array<uint8_t, 3> ReadDataByIdentifier01 = {0x22, 0xf1, 0x90};

@@ -20,7 +20,7 @@ public:
     ECU() = delete;
     ECU(const string& device, EcuLuaScript&& ecuScript);
     virtual ~ECU();
-    void testECU(std::string device);
+    void testECU(const std::string &config_file, const std::string &device);
 
 private:
     std::unique_ptr<std::thread> p_server_thread_;
