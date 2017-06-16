@@ -128,6 +128,14 @@ void UdsServer::copyLuaScriptResponse(string lua_response)
     }
 }
 
+/**
+ * Handles the UDS `readDataByIdentifier` request. The ISO-TP layer already
+ * ensures the min. length of 3 bytes by filling up the request with zero bytes
+ * if necessary. 
+ * 
+ * @param buffer: the buffer containing the UDS message
+ * @param num_bytes: the length of the message in bytes (min. 3 bytes)
+ */
 void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];

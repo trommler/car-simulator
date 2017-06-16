@@ -1,6 +1,11 @@
 /**
  * @file uds_server_test.cpp
  *
+ * These test cases are used to ensure a proper UDS response from the 
+ * `UdsServer`. Since this task is done via ISO-TP, ensure the kernel module for
+ * virtual can is enabled (`sudo modprobe vcan`), the vcan anddress is added 
+ * (`sudo ip link add dev vcan0 type vcan`) and set up (`sudo ip link set up 
+ * vcan0`) before running these tests. 
  */
 
 #include "uds_server_test.h"
@@ -61,7 +66,6 @@ void UdsServerTest::testUdsReadDataByIdentifier()
     std::size_t num_bytes;
     EcuLuaScript script(ECU_IDENT, LUA_SCRIPT);
 
-
     TestReceiver testReceiver(script.getRequestId(), script.getResponseId(), DEVICE);
     testReceiver.openReceiver();
 
@@ -103,13 +107,13 @@ void UdsServerTest::testUdsReadDataByIdentifier()
 
 /**
  * Compares the incoming response data from the corresponding `UdsServer` with
- * the internal data set to test. This is done by the `setExpectedUdsRespData()`
- * function, so invoke this routine first and wait some time, to ensure the 
- * comparing data is fully copied.
+ * the expected internal data set. This is done by the 
+ * `setExpectedUdsRespData()`-function, so invoke this routine first and wait
+ * some time, to ensure the comparing data is fully copied.
  * 
  * @param buffer: the buffer with the incoming data
  * @param num_bytes: the size of the incoming data in bytes
- * @see UdsServerTestCase01::setExpectedUdsRespData()
+ * @see TestReceiver::setExpectedUdsRespData()
  */
 void TestReceiver::proceedReceivedData(const uint8_t* buffer,
                                        const size_t num_bytes) noexcept
@@ -124,14 +128,14 @@ void TestReceiver::proceedReceivedData(const uint8_t* buffer,
 
 /**
  * Copies the expected UDS response message into the internal member fields.
- * After that, the overridden, `proceedReceiveData()`-function will compare all
+ * After that, the overridden `proceedReceiveData()`-function will compare all
  * receiving results form the `UdsServer`-instance with the provided data set.
  * Use this function before calling `sendData()` or `proceedReceivedData()`
  * of the `UdsServer`-instance and wait some time, since this is a async task.
  * 
  * @param expBufferData: the expected UDS message response from the `UdsServer`
  * @param expNumBytes: the expected UDS message length form the `UdsServer`
- * @see UdsServerTestCase01::proceedReceivedData()
+ * @see TestReceiver::proceedReceivedData()
  */
 void TestReceiver::setExpectedUdsRespData(const uint8_t* expBufferData,
                                           const size_t expNumBytes) noexcept
