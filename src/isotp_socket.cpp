@@ -24,7 +24,7 @@
 
 using namespace std;
 
-constexpr size_t MAX_BUFSIZE = 4096; ///< max. 4096 bytes per UDS message 
+constexpr size_t MAX_BUFSIZE = 4096; ///< max. 4096 bytes per UDS message
 
 /**
  * Opens the ISO_TP socket for sending.

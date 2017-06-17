@@ -3,7 +3,7 @@
  *
  * These test cases are used to ensure a proper UDS response from the 
  * `UdsServer`. Since this task is done via ISO-TP, ensure the kernel module for
- * virtual can is enabled (`sudo modprobe vcan`), the vcan anddress is added 
+ * virtual can is enabled (`sudo modprobe vcan`), the vcan address is added 
  * (`sudo ip link add dev vcan0 type vcan`) and set up (`sudo ip link set up 
  * vcan0`) before running these tests. 
  */
@@ -66,10 +66,10 @@ void UdsServerTest::testUdsReadDataByIdentifier()
     std::size_t num_bytes;
     EcuLuaScript script(ECU_IDENT, LUA_SCRIPT);
 
-    TestReceiver testReceiver(script.getRequestId(), script.getResponseId(), DEVICE);
+    TestReceiver testReceiver(script.getResponseId(), script.getRequestId(), DEVICE);
     testReceiver.openReceiver();
 
-    UdsServer udsServer(script.getResponseId(), script.getRequestId(), DEVICE, std::move(script));
+    UdsServer udsServer(script.getRequestId(), script.getResponseId(), DEVICE, std::move(script));
     std::thread testThread(&IsoTpSocket::readData, &testReceiver); // run async in thread
     usleep(4000); // wait some time to ensure the thread is set up and running
 
