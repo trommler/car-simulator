@@ -28,6 +28,7 @@ UdsServer::UdsServer(canid_t source,
                      EcuLuaScript&& ecuScript)
 : IsoTpSocket(source, dest, device)
 , script_(move(ecuScript))
+, broadcastSkt_(dest, device)
 {
     int err = openReceiver();
     err |= openSender();
@@ -161,4 +162,33 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
         };
         sendData(nrc.data(), nrc.size());
     }
+}
+
+BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device)
+: IsoTpSocket(BROADCAST_ADDR, dest, device)
+{
+    int err = openReceiver();
+    if (err != 0)
+    {
+        throw exception();
+    }
+}
+
+BroadcastSkt::~BroadcastSkt()
+{
+    closeReceiver();
+}
+
+void BroadcastSkt::proceedReceivedData(const std::uint8_t* buffer,
+                                       const std::size_t num_bytes) noexcept
+{
+    // TODO: implement handling for TesterPresent
+    switch (buffer[0])
+    {
+            //case ???:
+        default:
+            cerr << "Invalid UDS broadcast request received!\n";
+
+    }
+
 }

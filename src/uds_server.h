@@ -9,6 +9,21 @@
 #include "isotp_socket.h"
 #include "ecu_lua_script.h"
 
+constexpr canid_t BROADCAST_ADDR = 0x42; //TODO: set the address according to the spec. 
+
+class BroadcastSkt : public IsoTpSocket
+{
+public:
+    BroadcastSkt() = delete;
+
+    BroadcastSkt(canid_t dest, const std::string& device);
+
+    virtual ~BroadcastSkt();
+
+    virtual void proceedReceivedData(const std::uint8_t* buffer,
+                                     const std::size_t num_bytes) noexcept override;
+};
+
 class UdsServer : public IsoTpSocket
 {
 public:
@@ -29,8 +44,9 @@ private:
     uint8_t securityAccessType = 0x00;
     uint8_t response_data_[4095];
     uint8_t response_data_size_ = 0;
-    void copyLuaScriptResponse(std::string);
+    const BroadcastSkt broadcastSkt_;
 
+    void copyLuaScriptResponse(std::string);
     void readDataByIdentifier(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;
 };
 
