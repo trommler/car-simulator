@@ -9,7 +9,7 @@
 #include "isotp_socket.h"
 #include "ecu_lua_script.h"
 
-constexpr canid_t BROADCAST_ADDR = 0x42; //TODO: set the address according to the spec. 
+constexpr canid_t BROADCAST_ADDR = 0x7e0; //TODO: set the address according to the spec. 
 
 class BroadcastSkt : public IsoTpSocket
 {
@@ -22,6 +22,8 @@ public:
 
     virtual void proceedReceivedData(const std::uint8_t* buffer,
                                      const std::size_t num_bytes) noexcept override;
+private:
+    std::unique_ptr<std::thread> p_server_thread_;    
 };
 
 class UdsServer : public IsoTpSocket

@@ -28,7 +28,7 @@ UdsServer::UdsServer(canid_t source,
                      EcuLuaScript&& ecuScript)
 : IsoTpSocket(source, dest, device)
 , script_(move(ecuScript))
-, broadcastSkt_(dest, device)
+, broadcastSkt_(source, device)
 {
     int err = openReceiver();
     err |= openSender();
@@ -165,9 +165,12 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
 }
 
 BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device)
-: IsoTpSocket(BROADCAST_ADDR, dest, device)
+: IsoTpSocket(dest, BROADCAST_ADDR, device)
 {
     int err = openReceiver();
+    err |= openSender();
+    p_server_thread_ = std::make_unique<thread>(&IsoTpSocket::readData, this);
+    
     if (err != 0)
     {
         throw exception();
@@ -177,18 +180,30 @@ BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device)
 BroadcastSkt::~BroadcastSkt()
 {
     closeReceiver();
+    closeSender();
+    
+    if (p_server_thread_ != nullptr)
+    {
+        p_server_thread_->join();
+    }
 }
 
 void BroadcastSkt::proceedReceivedData(const std::uint8_t* buffer,
                                        const std::size_t num_bytes) noexcept
 {
-    // TODO: implement handling for TesterPresent
     switch (buffer[0])
     {
-            //case ???:
+        case TESTER_PRESENT_REQ:
+        {
+            // TODO: implement handling for TesterPresent
+            // TODO: reset timer
+            constexpr array<uint8_t, 1> nrc = { TESTER_PRESENT_RES};
+            sendData(nrc.data(), nrc.size());
+            break;
+        }
         default:
+        {
             cerr << "Invalid UDS broadcast request received!\n";
-
+        }
     }
-
 }
