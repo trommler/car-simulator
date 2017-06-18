@@ -1,6 +1,6 @@
 /**
  * @file uds_server.cpp
- * 
+ *
  * Implementation of an UDS server, which receives requests and sends response
  * messages via ISO_TP.
  */
@@ -18,7 +18,7 @@ using namespace std;
 
 /**
  * Constructor. Opens the sockets for sending and receiving.
- * 
+ *
  * @param device: the name of the transmitting device (e. g. "vcan0")
  * @param ecuScript: the `EcuLuaScipt` as rvalue
  */
@@ -51,8 +51,8 @@ UdsServer::~UdsServer()
 /**
  * Handles the received UDS messages and sends back the response like defined in
  * the according Lua script.
- * 
- * @param buffer: the buffer containing the received data 
+ *
+ * @param buffer: the buffer containing the received data
  * @param num_bytes: the number of received bytes.
  * @see IsoTpSocket::sendData()
  * @see EcuLuaScript::getRequestId()
@@ -98,7 +98,7 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
             {
                 if (securityAccessType == buffer[1])
                 {
-                    // second request 
+                    // second request
                     response_data_[response_data_size_++] = SECURITY_ACCESS_RES;
 
                     // lua seed function
@@ -132,8 +132,8 @@ void UdsServer::copyLuaScriptResponse(string lua_response)
 /**
  * Handles the UDS `readDataByIdentifier` request. The ISO-TP layer already
  * ensures the min. length of 3 bytes by filling up the request with zero bytes
- * if necessary. 
- * 
+ * if necessary.
+ *
  * @param buffer: the buffer containing the UDS message
  * @param num_bytes: the length of the message in bytes (min. 3 bytes)
  */
@@ -170,7 +170,7 @@ BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device)
     int err = openReceiver();
     err |= openSender();
     p_server_thread_ = std::make_unique<thread>(&IsoTpSocket::readData, this);
-    
+
     if (err != 0)
     {
         throw exception();
@@ -181,10 +181,10 @@ BroadcastSkt::~BroadcastSkt()
 {
     closeReceiver();
     closeSender();
-    
+
     if (p_server_thread_ != nullptr)
     {
-        p_server_thread_->join();
+        p_server_thread_->detach();
     }
 }
 
