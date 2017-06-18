@@ -28,29 +28,26 @@ public:
     ecuTimer();
     ecuTimer(const ecuTimer& orig);
     virtual ~ecuTimer();
-    void set_delay(int delay);
-    int slp_delay();
-    int cond_delay(pthread_cond_t cond, pthread_mutex_t mutex);
-
+    //void set_delay(int delay);
+    //int slp_delay();
+    //int cond_delay(pthread_cond_t cond, pthread_mutex_t mutex);
     void start(int ms);
     void reset();
 
 private:
-    int delay_;
-
+    //int delay_;
     std::mutex mutex_;
     useconds_t duration_; // [ms]
     std::chrono::system_clock::time_point t_start_;
     int t_id;
 
 
-    struct timeval currentTime;
-    struct timespec delayTime;
-
-    // overwrite this in derived timers
-    virtual void timer_wakeup() = 0;
+    //struct timeval currentTime;
+    //struct timespec delayTime;
 
     void sleep();
+    virtual void wakeup() = 0;  // overwrite this in derived timers
+
 };
 
 
@@ -58,7 +55,7 @@ private:
 // TODO: write useful ones that do real uds stuff
 class SomePurposeTimer23_42 : public ecuTimer {
 private:
-    void timer_wakeup();
+    void wakeup();
 };
 
 //static pthread_t thread1,thread2;

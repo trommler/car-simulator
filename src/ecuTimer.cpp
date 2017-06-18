@@ -28,7 +28,12 @@ ecuTimer::ecuTimer(const ecuTimer& orig) {
 ecuTimer::~ecuTimer() {
 }
 
-
+/**
+ * start the timer
+ * if the timer is already running, calling this function resets the timer
+ * @param ms time value in milliseconds before the timer wakes up
+ * @return void
+ **/
 void ecuTimer::start(int ms)
 {
     mutex_.lock();
@@ -43,6 +48,10 @@ void ecuTimer::start(int ms)
 }
 
 
+/**
+ * this functions sleeps the appropriate amount of time
+ * @return void
+ **/
 void ecuTimer::sleep()
 {
     int id_begin;
@@ -87,11 +96,14 @@ void ecuTimer::sleep()
 
     if (cond)
     {
-        timer_wakeup();
+        wakeup();
     }
 }
 
-
+/**
+ * reset the timer
+ * @return void
+ */
 void ecuTimer::reset()
 {
     mutex_.lock();
@@ -101,19 +113,17 @@ void ecuTimer::reset()
 
 
 
-
-
 /**
  * set delay value for the timer
  * @param delay time value, unit Millisecond
  * @notice: the value will be set in both the slp_timer and cond_timer
  * @return void
  **/
-void ecuTimer::set_delay(int delayMS){
-    this->delay_ = delayMS * 1000;
-    delayTime.tv_sec = (long) delayMS / 1000 ;
-    delayTime.tv_nsec = (long) delayMS * 1000000 ;
-}
+//void ecuTimer::set_delay(int delayMS){
+    //this->delay_ = delayMS * 1000;
+    //delayTime.tv_sec = (long) delayMS / 1000 ;
+    //delayTime.tv_nsec = (long) delayMS * 1000000 ;
+//}
 
 /**
  *   start the slp_timer and delay for the time value set before
@@ -122,13 +132,13 @@ void ecuTimer::set_delay(int delayMS){
  *          problems or bugs in multi threading need to be further tested
  *  @return always 0
  **/
-int ecuTimer::slp_delay(){
-    printf("enter slp_delay for %d ms \n",this->delay_/1000);       // for debug propose
-    usleep(delay_);
-    printf("leave slp_delay for %d ms \n",this->delay_/1000);       // for debug propose
-    timer_wakeup();
-    return 0;
-}
+//int ecuTimer::slp_delay(){
+    //printf("enter slp_delay for %d ms \n",this->delay_/1000);       // for debug propose
+    //usleep(delay_);
+    //printf("leave slp_delay for %d ms \n",this->delay_/1000);       // for debug propose
+    //wakeup();
+    //return 0;
+//}
 
 /*  start the cond_timer and delay for the time value set before
  *  @param pthread_cond_t cond, signal for multi threading, should be defined outside
@@ -136,14 +146,14 @@ int ecuTimer::slp_delay(){
  *  @notice: cond_timer is perfect for multi thread application
  *  @return always 0
  **/
-int ecuTimer::cond_delay(pthread_cond_t cond, pthread_mutex_t mutex){
-    printf("enter cond_delay for %ld s \n",this->delayTime.tv_sec);       // for debug propose
-    printf("enter cond_delay for %ld ns \n",this->delayTime.tv_nsec);       // for debug propose
-    gettimeofday(&currentTime,NULL);
-    pthread_cond_timedwait(&cond,&mutex,&delayTime);
-    printf("leave cond_delay for %d ms \n",this->delay_/1000);       // for debug propose
-    return 0;
-}
+//int ecuTimer::cond_delay(pthread_cond_t cond, pthread_mutex_t mutex){
+    //printf("enter cond_delay for %ld s \n",this->delayTime.tv_sec);       // for debug propose
+    //printf("enter cond_delay for %ld ns \n",this->delayTime.tv_nsec);       // for debug propose
+    //gettimeofday(&currentTime,NULL);
+    //pthread_cond_timedwait(&cond,&mutex,&delayTime);
+    //printf("leave cond_delay for %d ms \n",this->delay_/1000);       // for debug propose
+    //return 0;
+//}
 
 
 /**
@@ -227,7 +237,7 @@ int ecuTimer::cond_delay(pthread_cond_t cond, pthread_mutex_t mutex){
  * overwritten wakeup function, just a demo.
  * in a real timer do some useful stuff here, like state switch of the server
  */
-void SomePurposeTimer23_42::timer_wakeup()
+void SomePurposeTimer23_42::wakeup()
 {
     cout << "you clearly wanted to call me to to something." << endl;
 }

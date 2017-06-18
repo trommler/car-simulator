@@ -38,9 +38,6 @@ UdsServer::UdsServer(canid_t source,
     {
         throw exception();
     }
-
-    // TODO: setup uds timers
-    //test_timer_.set_delay(3000);
 }
 
 /**
