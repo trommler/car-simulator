@@ -16,6 +16,7 @@
 #include <thread>
 
 using namespace std;
+using std::chrono::system_clock;
 
 ecuTimer::ecuTimer() {
 }
@@ -27,16 +28,50 @@ ecuTimer::~ecuTimer() {
 }
 
 
-void ecuTimer::sleep(int ms)
+void ecuTimer::start(int ms)
 {
-    useconds_t usec = ms;
-    usec *= 1000;
+    mutex_.lock();
+    t_start_ = system_clock::now();
+    duration_ = ms;
+    mutex_.unlock();
 
-    this->set_delay(ms);
-    thread t(&SomePurposeTimer23_42::slp_delay, this);
+    thread t(&ecuTimer::sleep, this);
     t.detach();
 }
 
+
+void ecuTimer::sleep()
+{
+    usleep(useconds_t(duration_) * useconds_t(1000));
+
+    while (true)
+    {
+        mutex_.lock();
+        auto diff = chrono::duration_cast<chrono::milliseconds>(system_clock::now() - t_start_);
+        mutex_.unlock();
+
+        if (diff.count() >= duration_)
+        {
+            break;
+        }
+        else
+        {
+            int sleep_for_ms = duration_ - diff.count();
+            usleep(useconds_t(sleep_for_ms) * useconds_t(1000));
+        }
+    }
+
+    // wakeup procedure depends on the derived class
+    timer_wakeup();
+}
+
+
+void ecuTimer::reset()
+{
+    mutex_.lock();
+    t_start_ = system_clock::now();
+    mutex_.unlock();
+}
 
 
 

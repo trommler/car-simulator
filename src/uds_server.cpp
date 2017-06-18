@@ -81,7 +81,11 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
         case TESTER_PRESENT_REQ:
         {
             // TODO: this is just an example how to start a timer, can be delete later
-            test_timer_.sleep(5000);
+            test_timer_.start(9000);
+            usleep(6000 * 1000);
+            test_timer_.reset();
+            usleep(6000 * 1000);
+            test_timer_.reset();
 
             // 0x7E0
             break;

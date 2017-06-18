@@ -20,7 +20,8 @@
 #include <sys/select.h>
 #include <unistd.h>
 #include <errno.h>
-using namespace std;
+#include <mutex>
+#include <chrono>
 
 class ecuTimer {
 public:
@@ -30,14 +31,25 @@ public:
     void set_delay(int delay);
     int slp_delay();
     int cond_delay(pthread_cond_t cond, pthread_mutex_t mutex);
-    void sleep(int ms);
+
+    void start(int ms);
+    void reset();
+
 private:
     int delay_;
+
+    std::mutex mutex_;
+    useconds_t duration_; // [ms]
+    std::chrono::system_clock::time_point t_start_;
+
+
     struct timeval currentTime;
     struct timespec delayTime;
 
     // overwrite this in derived timers
     virtual void timer_wakeup() = 0;
+
+    void sleep();
 };
 
 
