@@ -28,7 +28,7 @@ UdsServer::UdsServer(canid_t source,
                      EcuLuaScript&& ecuScript)
 : IsoTpSocket(source, dest, device)
 , script_(move(ecuScript))
-, broadcastSkt_(source, device)
+, broadcastSkt_(source, device, this)
 {
     int err = openReceiver();
     err |= openSender();
@@ -46,6 +46,14 @@ UdsServer::~UdsServer()
 {
     closeSender();
     closeReceiver();
+}
+
+/**
+ * test function, just to screw around
+ */
+void UdsServer::test_callback(int foo)
+{
+    cout << "test_callback:" << foo << endl;
 }
 
 /**
@@ -164,8 +172,8 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
     }
 }
 
-BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device)
-: IsoTpSocket(dest, BROADCAST_ADDR, device)
+BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device, UdsServer *uds_server)
+: IsoTpSocket(dest, BROADCAST_ADDR, device), uds_server_(uds_server)
 {
     int err = openReceiver();
     err |= openSender();
@@ -184,7 +192,7 @@ BroadcastSkt::~BroadcastSkt()
 
     if (p_server_thread_ != nullptr)
     {
-        p_server_thread_->detach();
+        p_server_thread_->join();
     }
 }
 
@@ -195,6 +203,9 @@ void BroadcastSkt::proceedReceivedData(const std::uint8_t* buffer,
     {
         case TESTER_PRESENT_REQ:
         {
+            uds_server_->test_callback(42);
+
+
             // TODO: implement handling for TesterPresent
             // TODO: reset timer
             constexpr array<uint8_t, 1> nrc = { TESTER_PRESENT_RES};

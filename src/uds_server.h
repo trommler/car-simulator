@@ -1,4 +1,4 @@
-/** 
+/**
  * @file uds_server.h
  *
  */
@@ -9,21 +9,25 @@
 #include "isotp_socket.h"
 #include "ecu_lua_script.h"
 
-constexpr canid_t BROADCAST_ADDR = 0x7e0; //TODO: set the address according to the spec. 
+// forward decl
+class UdsServer;
+
+constexpr canid_t BROADCAST_ADDR = 0x7e0; //TODO: set the address according to the spec.
 
 class BroadcastSkt : public IsoTpSocket
 {
 public:
     BroadcastSkt() = delete;
 
-    BroadcastSkt(canid_t dest, const std::string& device);
+    BroadcastSkt(canid_t dest, const std::string& device, UdsServer *uds_server);
 
     virtual ~BroadcastSkt();
 
     virtual void proceedReceivedData(const std::uint8_t* buffer,
                                      const std::size_t num_bytes) noexcept override;
 private:
-    std::unique_ptr<std::thread> p_server_thread_;    
+    UdsServer *uds_server_;
+    std::unique_ptr<std::thread> p_server_thread_;
 };
 
 class UdsServer : public IsoTpSocket
@@ -40,6 +44,8 @@ public:
 
     virtual void proceedReceivedData(const std::uint8_t* buffer,
                                      const std::size_t num_bytes) noexcept override;
+
+    void test_callback(int foo);
 
 private:
     const EcuLuaScript script_;
