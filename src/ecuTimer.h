@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   ecuTimer.h
  * Author: visen
  *
@@ -29,19 +29,31 @@ public:
     virtual ~ecuTimer();
     void set_delay(int delay);
     int slp_delay();
-    int cond_delay(pthread_cond_t cond, pthread_mutex_t mutex); 
+    int cond_delay(pthread_cond_t cond, pthread_mutex_t mutex);
+    void sleep(int ms);
 private:
-    int _delay;
+    int delay_;
     struct timeval currentTime;
     struct timespec delayTime;
+
+    // overwrite this in derived timers
+    virtual void timer_wakeup() = 0;
 };
 
-static pthread_t thread1,thread2;
-static pthread_cond_t cond;
-static pthread_mutex_t mutex; 
-void timer_test(int testCode);
-void * thr_slp_dly(void * arg);
-void * thr_cond_dly(void * arg);
+
+// just a silly example of an overwritten timer.
+// TODO: write useful ones that do real uds stuff
+class SomePurposeTimer23_42 : public ecuTimer {
+private:
+    void timer_wakeup();
+};
+
+//static pthread_t thread1,thread2;
+//static pthread_cond_t cond;
+//static pthread_mutex_t mutex;
+//void timer_test(int testCode);
+//void * thr_slp_dly(void * arg);
+//void * thr_cond_dly(void * arg);
 
 #endif /* ECUTIMER_H */
 

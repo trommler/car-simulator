@@ -29,6 +29,7 @@ UdsServer::UdsServer(canid_t source,
 : IsoTpSocket(source, dest, device)
 , script_(move(ecuScript))
 , broadcastSkt_(source, device, this)
+, test_timer_()
 {
     int err = openReceiver();
     err |= openSender();
@@ -37,6 +38,9 @@ UdsServer::UdsServer(canid_t source,
     {
         throw exception();
     }
+
+    // TODO: setup uds timers
+    //test_timer_.set_delay(3000);
 }
 
 /**
@@ -76,6 +80,9 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
             break;
         case TESTER_PRESENT_REQ:
         {
+            // TODO: this is just an example how to start a timer, can be delete later
+            test_timer_.sleep(5000);
+
             // 0x7E0
             break;
         }

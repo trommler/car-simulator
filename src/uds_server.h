@@ -8,11 +8,15 @@
 
 #include "isotp_socket.h"
 #include "ecu_lua_script.h"
+#include "ecuTimer.h"
 
 // forward decl
 class UdsServer;
 
+
+
 constexpr canid_t BROADCAST_ADDR = 0x7e0; //TODO: set the address according to the spec.
+
 
 class BroadcastSkt : public IsoTpSocket
 {
@@ -29,6 +33,8 @@ private:
     UdsServer *uds_server_;
     std::unique_ptr<std::thread> p_server_thread_;
 };
+
+
 
 class UdsServer : public IsoTpSocket
 {
@@ -53,6 +59,10 @@ private:
     uint8_t response_data_[4095];
     uint8_t response_data_size_ = 0;
     const BroadcastSkt broadcastSkt_;
+
+    // TODO: replace this proxy with useful timers
+    SomePurposeTimer23_42 test_timer_;
+
 
     void copyLuaScriptResponse(std::string);
     void readDataByIdentifier(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;
