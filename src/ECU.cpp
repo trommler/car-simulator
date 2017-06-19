@@ -12,17 +12,17 @@
 using namespace std;
 
 ECU::ECU(const string& device, EcuLuaScript&& ecuScript)
-: uds_server_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript))
+: broadcastSkt_(ecuScript.getRequestId(), device, &udsServer_)
+, udsServer_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript))
+, broadcastServerThread_(&IsoTpSocket::readData, &broadcastSkt_)
+, udsServerThread_(&IsoTpSocket::readData, &udsServer_)
 {
-    p_server_thread_ = std::make_unique<thread>(&IsoTpSocket::readData, &uds_server_);
 }
 
 ECU::~ECU()
 {
-    if (p_server_thread_ != nullptr)
-    {
-        p_server_thread_->join();
-    }
+    udsServerThread_.join();
+    broadcastServerThread_.join();
 }
 
 void ECU::testECU(const string &config_file, const string &device)

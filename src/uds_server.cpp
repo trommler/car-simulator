@@ -28,7 +28,6 @@ UdsServer::UdsServer(canid_t source,
                      EcuLuaScript&& ecuScript)
 : IsoTpSocket(source, dest, device)
 , script_(move(ecuScript))
-, broadcastSkt_(source, device, this)
 , test_timer_()
 {
     int err = openReceiver();
@@ -79,7 +78,7 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
         {
             // TODO: this is just an example how to start a timer, can be delete later
             test_timer_.start(2000);
-            usleep(1000*1000);
+            usleep(1000 * 1000);
             test_timer_.start(5000);
             test_timer_.start(5000);
             test_timer_.start(5000);
@@ -181,13 +180,12 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
     }
 }
 
-BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device, UdsServer *uds_server)
-: IsoTpSocket(dest, BROADCAST_ADDR, device), uds_server_(uds_server)
+BroadcastSkt::BroadcastSkt(canid_t dest, const string& device, UdsServer *uds_server)
+: IsoTpSocket(dest, BROADCAST_ADDR, device)
+, uds_server_(uds_server)
 {
     int err = openReceiver();
     err |= openSender();
-    p_server_thread_ = std::make_unique<thread>(&IsoTpSocket::readData, this);
-
     if (err != 0)
     {
         throw exception();
@@ -196,17 +194,12 @@ BroadcastSkt::BroadcastSkt(canid_t dest, const std::string& device, UdsServer *u
 
 BroadcastSkt::~BroadcastSkt()
 {
-    closeReceiver();
     closeSender();
-
-    if (p_server_thread_ != nullptr)
-    {
-        p_server_thread_->join();
-    }
+    closeReceiver();
 }
 
-void BroadcastSkt::proceedReceivedData(const std::uint8_t* buffer,
-                                       const std::size_t num_bytes) noexcept
+void BroadcastSkt::proceedReceivedData(const uint8_t* buffer,
+                                       const size_t num_bytes) noexcept
 {
     switch (buffer[0])
     {
@@ -214,11 +207,10 @@ void BroadcastSkt::proceedReceivedData(const std::uint8_t* buffer,
         {
             uds_server_->test_callback(42);
 
-
             // TODO: implement handling for TesterPresent
             // TODO: reset timer
-            constexpr array<uint8_t, 1> nrc = { TESTER_PRESENT_RES};
-            sendData(nrc.data(), nrc.size());
+            constexpr array<uint8_t, 1> tp = {TESTER_PRESENT_RES};
+            sendData(tp.data(), tp.size());
             break;
         }
         default:

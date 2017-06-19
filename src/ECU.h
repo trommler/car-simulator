@@ -23,8 +23,10 @@ public:
     void testECU(const std::string &config_file, const std::string &device);
 
 private:
-    std::unique_ptr<std::thread> p_server_thread_;
-    UdsServer uds_server_;
+    BroadcastSkt broadcastSkt_;
+    UdsServer udsServer_;
+    std::thread broadcastServerThread_;
+    std::thread udsServerThread_;
 };
 
 #endif /* ECU_H */

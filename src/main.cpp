@@ -13,7 +13,6 @@
 
 using namespace std;
 
-
 void start_server(const string &config_file, const string &device)
 {
     cout << "start_server for config file: " << config_file << endl;

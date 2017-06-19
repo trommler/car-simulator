@@ -14,8 +14,7 @@
 class UdsServer;
 
 
-
-constexpr canid_t BROADCAST_ADDR = 0x7e0; //TODO: set the address according to the spec.
+constexpr canid_t BROADCAST_ADDR = 0x7E0;
 
 
 class BroadcastSkt : public IsoTpSocket
@@ -31,7 +30,6 @@ public:
                                      const std::size_t num_bytes) noexcept override;
 private:
     UdsServer *uds_server_;
-    std::unique_ptr<std::thread> p_server_thread_;
 };
 
 
@@ -58,7 +56,6 @@ private:
     uint8_t securityAccessType = 0x00;
     uint8_t response_data_[4095];
     uint8_t response_data_size_ = 0;
-    const BroadcastSkt broadcastSkt_;
 
     // TODO: replace this proxy with useful timers
     SomePurposeTimer23_42 test_timer_;
