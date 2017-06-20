@@ -51,9 +51,9 @@
                      displayName="UdsServerTest"
                      projectFiles="true"
                      kind="TEST">
-        <itemPath>src/tests/uds_server_test.cpp</itemPath>
-        <itemPath>src/tests/uds_server_test.h</itemPath>
-        <itemPath>src/tests/uds_server_test_runner.cpp</itemPath>
+        <itemPath>tests/uds_server_test.cpp</itemPath>
+        <itemPath>tests/uds_server_test.h</itemPath>
+        <itemPath>tests/uds_server_test_runner.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1"
                      displayName="UtilitiesTest"
@@ -181,15 +181,6 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/tests/uds_server_test_runner.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -212,6 +203,12 @@
       <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utils_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -335,15 +332,6 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/tests/uds_server_test_runner.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -366,6 +354,12 @@
       <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utils_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -479,15 +473,6 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/tests/uds_server_test_runner.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -510,6 +495,12 @@
       <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/uds_server_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utils_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

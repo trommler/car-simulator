@@ -55,12 +55,12 @@ TESTFILES= \
 
 # Test Object Files
 TESTOBJECTFILES= \
-	${TESTDIR}/src/tests/uds_server_test.o \
-	${TESTDIR}/src/tests/uds_server_test_runner.o \
 	${TESTDIR}/tests/ecu_lua_script_test.o \
 	${TESTDIR}/tests/ecu_lua_script_test_runner.o \
 	${TESTDIR}/tests/selene_test.o \
 	${TESTDIR}/tests/selene_test_runner.o \
+	${TESTDIR}/tests/uds_server_test.o \
+	${TESTDIR}/tests/uds_server_test_runner.o \
 	${TESTDIR}/tests/utils_test.o \
 	${TESTDIR}/tests/utils_test_runner.o
 
@@ -138,7 +138,7 @@ ${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/selene_test.o ${TESTDIR}/tests/selene_
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
 
-${TESTDIR}/TestFiles/f4: ${TESTDIR}/src/tests/uds_server_test.o ${TESTDIR}/src/tests/uds_server_test_runner.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f4: ${TESTDIR}/tests/uds_server_test.o ${TESTDIR}/tests/uds_server_test_runner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f4 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
 
@@ -171,16 +171,16 @@ ${TESTDIR}/tests/selene_test_runner.o: tests/selene_test_runner.cpp
 	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/selene_test_runner.o tests/selene_test_runner.cpp
 
 
-${TESTDIR}/src/tests/uds_server_test.o: src/tests/uds_server_test.cpp 
-	${MKDIR} -p ${TESTDIR}/src/tests
+${TESTDIR}/tests/uds_server_test.o: tests/uds_server_test.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/src/tests/uds_server_test.o src/tests/uds_server_test.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/uds_server_test.o tests/uds_server_test.cpp
 
 
-${TESTDIR}/src/tests/uds_server_test_runner.o: src/tests/uds_server_test_runner.cpp 
-	${MKDIR} -p ${TESTDIR}/src/tests
+${TESTDIR}/tests/uds_server_test_runner.o: tests/uds_server_test_runner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/src/tests/uds_server_test_runner.o src/tests/uds_server_test_runner.cpp
+	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/uds_server_test_runner.o tests/uds_server_test_runner.cpp
 
 
 ${TESTDIR}/tests/utils_test.o: tests/utils_test.cpp 
