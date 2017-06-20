@@ -3,36 +3,12 @@
  *
  */
 
-#ifndef UDSSERVER_H
-#define UDSSERVER_H
+#ifndef UDS_SERVER_H
+#define UDS_SERVER_H
 
 #include "isotp_socket.h"
 #include "ecu_lua_script.h"
 #include "ecuTimer.h"
-
-// forward decl
-class UdsServer;
-
-
-constexpr canid_t BROADCAST_ADDR = 0x7E0;
-
-
-class BroadcastSkt : public IsoTpSocket
-{
-public:
-    BroadcastSkt() = delete;
-
-    BroadcastSkt(canid_t dest, const std::string& device, UdsServer *uds_server);
-
-    virtual ~BroadcastSkt();
-
-    virtual void proceedReceivedData(const std::uint8_t* buffer,
-                                     const std::size_t num_bytes) noexcept override;
-private:
-    UdsServer *uds_server_;
-};
-
-
 
 class UdsServer : public IsoTpSocket
 {
@@ -65,4 +41,4 @@ private:
     void readDataByIdentifier(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;
 };
 
-#endif /* UDSSERVER_H */
+#endif /* UDS_SERVER_H */

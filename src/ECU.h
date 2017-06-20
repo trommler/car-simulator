@@ -7,6 +7,7 @@
 #define ECU_H
 
 #include "selene.h"
+#include "broadcast_server.h"
 #include "uds_server.h"
 #include "ecu_lua_script.h"
 #include "config.h"
@@ -23,7 +24,7 @@ public:
     void testECU(const std::string &config_file, const std::string &device);
 
 private:
-    BroadcastSkt broadcastSkt_;
+    BroadcastServer broadcastServer_;
     UdsServer udsServer_;
     std::thread broadcastServerThread_;
     std::thread udsServerThread_;

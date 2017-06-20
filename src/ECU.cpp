@@ -12,9 +12,9 @@
 using namespace std;
 
 ECU::ECU(const string& device, EcuLuaScript&& ecuScript)
-: broadcastSkt_(ecuScript.getRequestId(), device, &udsServer_)
+: broadcastServer_(ecuScript.getRequestId(), device, &udsServer_)
 , udsServer_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript))
-, broadcastServerThread_(&IsoTpSocket::readData, &broadcastSkt_)
+, broadcastServerThread_(&IsoTpSocket::readData, &broadcastServer_)
 , udsServerThread_(&IsoTpSocket::readData, &udsServer_)
 {
 }

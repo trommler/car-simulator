@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/ECU.o \
+	${OBJECTDIR}/src/broadcast_server.o \
 	${OBJECTDIR}/src/ecuTimer.o \
 	${OBJECTDIR}/src/ecu_lua_script.o \
 	${OBJECTDIR}/src/isotp_socket.o \
@@ -92,6 +93,11 @@ ${OBJECTDIR}/src/ECU.o: src/ECU.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU.o src/ECU.cpp
+
+${OBJECTDIR}/src/broadcast_server.o: src/broadcast_server.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/broadcast_server.o src/broadcast_server.cpp
 
 ${OBJECTDIR}/src/ecuTimer.o: src/ecuTimer.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -206,6 +212,19 @@ ${OBJECTDIR}/src/ECU_nomain.o: ${OBJECTDIR}/src/ECU.o src/ECU.cpp
 	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU_nomain.o src/ECU.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/ECU.o ${OBJECTDIR}/src/ECU_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/broadcast_server_nomain.o: ${OBJECTDIR}/src/broadcast_server.o src/broadcast_server.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/broadcast_server.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/broadcast_server_nomain.o src/broadcast_server.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/broadcast_server.o ${OBJECTDIR}/src/broadcast_server_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/ecuTimer_nomain.o: ${OBJECTDIR}/src/ecuTimer.o src/ecuTimer.cpp 
