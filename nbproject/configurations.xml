@@ -10,6 +10,7 @@
       <itemPath>src/ecu_lua_script.h</itemPath>
       <itemPath>src/isotp_socket.h</itemPath>
       <itemPath>src/service_identifier.h</itemPath>
+      <itemPath>src/session_controller.h</itemPath>
       <itemPath>src/uds_server.h</itemPath>
       <itemPath>src/utilities.h</itemPath>
     </logicalFolder>
@@ -26,6 +27,7 @@
       <itemPath>src/ecu_lua_script.cpp</itemPath>
       <itemPath>src/isotp_socket.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
+      <itemPath>src/session_controller.cpp</itemPath>
       <itemPath>src/uds_server.cpp</itemPath>
       <itemPath>src/utilities.cpp</itemPath>
     </logicalFolder>
@@ -187,6 +189,10 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/session_controller.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/session_controller.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -342,6 +348,10 @@
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/session_controller.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/session_controller.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
@@ -486,6 +496,10 @@
       <item path="src/main.cpp" ex="true" tool="1" flavor2="11">
       </item>
       <item path="src/service_identifier.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/session_controller.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/session_controller.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
       </item>

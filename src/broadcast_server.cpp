@@ -7,6 +7,7 @@
 
 #include "broadcast_server.h"
 #include "service_identifier.h"
+#include <iostream>
 
 using namespace std;
 
@@ -17,9 +18,9 @@ using namespace std;
  * @param device: the hardware device (e.g "vcan0")
  * @param uds_server: only for testing purposes
  */
-BroadcastServer::BroadcastServer(canid_t dest, const string& device, UdsServer* uds_server)
+BroadcastServer::BroadcastServer(canid_t dest, const string& device, SessionController* pSesCtrl)
 : IsoTpSocket(dest, BROADCAST_ADDR, device)
-, uds_server_(uds_server)
+, pSessionCtrl_(pSesCtrl)
 {
     int err = openReceiver();
     err |= openSender();
@@ -51,10 +52,10 @@ void BroadcastServer::proceedReceivedData(const uint8_t* buffer,
     {
         case TESTER_PRESENT_REQ:
         {
-            uds_server_->test_callback(42);
-
             // TODO: implement handling for TesterPresent
             // TODO: reset timer
+
+            pSessionCtrl_->startSession_01();
             constexpr array<uint8_t, 1> tp = {TESTER_PRESENT_RES};
             sendData(tp.data(), tp.size());
             break;

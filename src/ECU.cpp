@@ -12,8 +12,8 @@
 using namespace std;
 
 ECU::ECU(const string& device, EcuLuaScript&& ecuScript)
-: broadcastServer_(ecuScript.getRequestId(), device, &udsServer_)
-, udsServer_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript))
+: broadcastServer_(ecuScript.getRequestId(), device, &sessionControl_)
+, udsServer_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, &sessionControl_, move(ecuScript))
 , broadcastServerThread_(&IsoTpSocket::readData, &broadcastServer_)
 , udsServerThread_(&IsoTpSocket::readData, &udsServer_)
 {
@@ -29,7 +29,8 @@ void ECU::testECU(const string &config_file, const string &device)
 {
     // test ecu
     EcuLuaScript script("PCM", LUA_CONFIG_PATH + config_file);
-    UdsServer tester(script.getResponseId(), script.getRequestId(), device, move(script));
+    SessionController dummy;
+    UdsServer tester(script.getResponseId(), script.getRequestId(), device, &dummy, move(script));
 
     constexpr array<uint8_t, 3> ReadDataByIdentifier01 = {0x22, 0xf1, 0x90};
     constexpr array<uint8_t, 3> ReadDataByIdentifier02 = {0x22, 0xf1, 0x24};
@@ -53,6 +54,12 @@ void ECU::testECU(const string &config_file, const string &device)
     usleep(2000);
     tester.sendData(diagnostic_session01.data(), diagnostic_session01.size());
     usleep(2000);
+
+    UdsSession ses = sessionControl_.getCurretnUdsSession();
+    if (ses == UdsSession::SESSION_01)
+    {
+        // ... do whatever you want to do during a particular session
+    }
 }
 
 

@@ -7,6 +7,7 @@
 
 #include "uds_server.h"
 #include "service_identifier.h"
+#include "session_controller.h"
 #include <iostream>
 #include <cstdint>
 #include <string>
@@ -25,10 +26,11 @@ using namespace std;
 UdsServer::UdsServer(canid_t source,
                      canid_t dest,
                      const string& device,
+                     SessionController* pSesCtrl,
                      EcuLuaScript&& ecuScript)
 : IsoTpSocket(source, dest, device)
+, pSessionCtrl_(pSesCtrl)
 , script_(move(ecuScript))
-, test_timer_()
 {
     int err = openReceiver();
     err |= openSender();
@@ -49,14 +51,6 @@ UdsServer::~UdsServer()
 }
 
 /**
- * test function, just to screw around
- */
-void UdsServer::test_callback(int foo)
-{
-    cout << "test_callback:" << foo << endl;
-}
-
-/**
  * Handles the received UDS messages and sends back the response like defined in
  * the according Lua script.
  *
@@ -74,23 +68,16 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
         case READ_DATA_BY_IDENTIFIER_REQ:
             readDataByIdentifier(buffer, num_bytes);
             break;
-        case TESTER_PRESENT_REQ:
-        {
-            // TODO: this is just an example how to start a timer, can be delete later
-            test_timer_.start(2000);
-            usleep(1000 * 1000);
-            test_timer_.start(5000);
-            test_timer_.start(5000);
-            test_timer_.start(5000);
-            test_timer_.start(5000);
-
-            // 0x7E0
-            break;
-        }
         case DIAGNOSTIC_SESSION_CONTROL_REQ:
         {
             response_data_[response_data_size_++] = DIAGNOSTIC_SESSION_CONTROL_RES;
             response_data_[response_data_size_++] = buffer[1];
+
+            UdsSession ses = pSessionCtrl_->getCurretnUdsSession();
+            if (ses == UdsSession::SESSION_01)
+            {
+                // TODO: Do some session related stuff here ...
+            }
 
             // lua session function
             sendData(response_data_, response_data_size_);

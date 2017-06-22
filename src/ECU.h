@@ -11,6 +11,7 @@
 #include "uds_server.h"
 #include "ecu_lua_script.h"
 #include "config.h"
+#include "session_controller.h"
 #include <string>
 #include <thread>
 #include <memory>
@@ -19,11 +20,12 @@ class ECU
 {
 public:
     ECU() = delete;
-    ECU(const string& device, EcuLuaScript&& ecuScript);
+    ECU(const std::string& device, EcuLuaScript&& ecuScript);
     virtual ~ECU();
     void testECU(const std::string &config_file, const std::string &device);
 
 private:
+    SessionController sessionControl_;
     BroadcastServer broadcastServer_;
     UdsServer udsServer_;
     std::thread broadcastServerThread_;

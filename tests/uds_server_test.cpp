@@ -69,7 +69,8 @@ void UdsServerTest::testUdsReadDataByIdentifier()
     TestReceiver testReceiver(script.getResponseId(), script.getRequestId(), DEVICE);
     testReceiver.openReceiver();
 
-    UdsServer udsServer(script.getRequestId(), script.getResponseId(), DEVICE, std::move(script));
+    SessionController dummy;
+    UdsServer udsServer(script.getRequestId(), script.getResponseId(), DEVICE, &dummy, std::move(script));
     std::thread testThread(&IsoTpSocket::readData, &testReceiver); // run async in thread
     usleep(4000); // wait some time to ensure the thread is set up and running
 
@@ -101,7 +102,6 @@ void UdsServerTest::testUdsReadDataByIdentifier()
     udsServer.proceedReceivedData(buffer, num_bytes);
 
     testReceiver.closeReceiver();
-    udsServer.proceedReceivedData(buffer, num_bytes); // send some garbage to close the receiver
     testThread.join();
 }
 
