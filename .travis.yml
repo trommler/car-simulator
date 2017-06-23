@@ -52,9 +52,11 @@ install:
 
     # install isotp
     - cd
+    - pwd
     - git clone https://github.com/hartkopp/can-isotp
     - cd can-isotp
-    - git apply $($PROJECT_DIR)/resources/0001-Kernel-version-patch-for-ISO-TP.patch
+    - pwd
+    - git apply $PROJECT_DIR/resources/0001-Kernel-version-patch-for-ISO-TP.patch
     - sudo apt-get install build-essential linux-headers-$(uname -r)
     - make
     - sudo make modules_install
