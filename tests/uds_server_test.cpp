@@ -102,6 +102,7 @@ void UdsServerTest::testUdsReadDataByIdentifier()
     udsServer.proceedReceivedData(buffer, num_bytes);
 
     testReceiver.closeReceiver();
+    udsServer.proceedReceivedData(buffer, num_bytes); // send some garbage to close the receiver
     testThread.join();
 }
 
