@@ -10,6 +10,8 @@
 
 #include <cstdint>
 
+#define SESSION_TIME 5000
+
 // Function Group: Diagnostic and Communications Management
 constexpr uint8_t DIAGNOSTIC_SESSION_CONTROL_REQ = 0x10;
 constexpr uint8_t DIAGNOSTIC_SESSION_CONTROL_RES = 0x50;

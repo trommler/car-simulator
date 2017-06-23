@@ -54,12 +54,6 @@ void ECU::testECU(const string &config_file, const string &device)
     usleep(2000);
     tester.sendData(diagnostic_session01.data(), diagnostic_session01.size());
     usleep(2000);
-
-    UdsSession ses = sessionControl_.getCurretnUdsSession();
-    if (ses == UdsSession::SESSION_01)
-    {
-        // ... do whatever you want to do during a particular session
-    }
 }
 
 

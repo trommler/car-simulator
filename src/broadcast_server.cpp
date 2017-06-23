@@ -55,7 +55,7 @@ void BroadcastServer::proceedReceivedData(const uint8_t* buffer,
             // TODO: implement handling for TesterPresent
             // TODO: reset timer
 
-            pSessionCtrl_->startSession_01();
+            pSessionCtrl_->reset();
             constexpr array<uint8_t, 1> tp = {TESTER_PRESENT_RES};
             sendData(tp.data(), tp.size());
             break;

@@ -73,10 +73,29 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
             response_data_[response_data_size_++] = DIAGNOSTIC_SESSION_CONTROL_RES;
             response_data_[response_data_size_++] = buffer[1];
 
-            UdsSession ses = pSessionCtrl_->getCurretnUdsSession();
-            if (ses == UdsSession::SESSION_01)
+            switch (buffer[1])
             {
-                // TODO: Do some session related stuff here ...
+                case 0x01:
+                {
+                    pSessionCtrl_->setCurrentUdsSession(UdsSession::DEFAULT);
+                    break;
+                }
+                case 0x02:
+                {
+                    pSessionCtrl_->setCurrentUdsSession(UdsSession::PROGRAMMING);
+                    pSessionCtrl_->start(SESSION_TIME);
+                    break;
+                }
+                case 0x03:
+                {
+                    pSessionCtrl_->setCurrentUdsSession(UdsSession::EXTENDED);
+                    pSessionCtrl_->start(SESSION_TIME);
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
             }
 
             // lua session function

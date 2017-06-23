@@ -11,10 +11,9 @@
 
 enum class UdsSession
 {
-    DEFAULT, ///< the default UDS session
-    SESSION_01, // TODO: rename the placeholder (Strg+R) and remove this comment
-    SESSION_02,
-    SESSION_03
+    DEFAULT=0x01, ///< the default UDS session
+    PROGRAMMING=0x02,
+    EXTENDED=0x03
 };
 
 class SessionController : public ecuTimer
@@ -27,8 +26,10 @@ public:
     SessionController& operator =(SessionController&& orig) = default;
     virtual ~SessionController() = default;
 
-    void startSession_01(); // TODO: refactor this function name (Strg+R) and remove this comment
+    void startSession();
+
     UdsSession getCurretnUdsSession() const noexcept;
+    void setCurrentUdsSession(UdsSession s) noexcept;
 
 private:
     std::atomic<UdsSession> session_{UdsSession::DEFAULT};
