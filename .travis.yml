@@ -54,6 +54,7 @@ install:
     - cd
     - git clone https://github.com/hartkopp/can-isotp
     - cd can-isotp
+    - git apply ../amos-ss17-proj4/resources/0001-Kernel-version-patch-for-ISO-TP.patch
     - sudo apt-get install build-essential linux-headers-$(uname -r)
     - make
     - sudo make modules_install
