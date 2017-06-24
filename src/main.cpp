@@ -7,7 +7,7 @@
 
 #include "ecu_lua_script.h"
 #include "ECU.h"
-#include "ecuTimer.h"
+#include "ecu_timer.h"
 #include "utilities.h"
 #include <string>
 

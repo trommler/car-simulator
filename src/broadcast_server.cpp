@@ -2,7 +2,7 @@
  * @file broadcast_server.cpp
  * 
  * This file contains the broadcast server which handles messages like 
- * `TesterPrsent`.
+ * `TesterPresent`.
  */
 
 #include "broadcast_server.h"
@@ -16,7 +16,7 @@ using namespace std;
  * 
  * @param dest: CAN destination address
  * @param device: the hardware device (e.g "vcan0")
- * @param uds_server: only for testing purposes
+ * @param pSesCtrl: pointer to access the `SessionController`
  */
 BroadcastServer::BroadcastServer(canid_t dest, const string& device, SessionController* pSesCtrl)
 : IsoTpSocket(dest, BROADCAST_ADDR, device)
@@ -52,9 +52,6 @@ void BroadcastServer::proceedReceivedData(const uint8_t* buffer,
     {
         case TESTER_PRESENT_REQ:
         {
-            // TODO: implement handling for TesterPresent
-            // TODO: reset timer
-
             pSessionCtrl_->reset();
             constexpr array<uint8_t, 1> tp = {TESTER_PRESENT_RES};
             sendData(tp.data(), tp.size());

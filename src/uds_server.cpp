@@ -62,92 +62,21 @@ UdsServer::~UdsServer()
  */
 void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
-    response_data_size_ = 0;
-    switch (buffer[0])
+    const uint8_t udsServiceIdentifier = buffer[0];
+    switch (udsServiceIdentifier)
     {
         case READ_DATA_BY_IDENTIFIER_REQ:
             readDataByIdentifier(buffer, num_bytes);
             break;
         case DIAGNOSTIC_SESSION_CONTROL_REQ:
-        {
-            response_data_[response_data_size_++] = DIAGNOSTIC_SESSION_CONTROL_RES;
-            response_data_[response_data_size_++] = buffer[1];
-
-            switch (buffer[1])
-            {
-                case 0x01:
-                {
-                    pSessionCtrl_->setCurrentUdsSession(UdsSession::DEFAULT);
-                    break;
-                }
-                case 0x02:
-                {
-                    pSessionCtrl_->setCurrentUdsSession(UdsSession::PROGRAMMING);
-                    pSessionCtrl_->start(SESSION_TIME);
-                    break;
-                }
-                case 0x03:
-                {
-                    pSessionCtrl_->setCurrentUdsSession(UdsSession::EXTENDED);
-                    pSessionCtrl_->start(SESSION_TIME);
-                    break;
-                }
-                default:
-                {
-                    break;
-                }
-            }
-
-            // lua session function
-            sendData(response_data_, response_data_size_);
-
+            diagnosticSessionControl(buffer, num_bytes);
             break;
-        }
         case SECURITY_ACCESS_REQ:
-        {
-            if (!script_.getSeed((buffer[1])).empty())
-            {
-                // send seed
-                response_data_[response_data_size_++] = SECURITY_ACCESS_REQ;
-                response_data_[response_data_size_++] = buffer[1];
-
-                // get lua file seed
-                securityAccessType = buffer[1] + 0x01;
-                copyLuaScriptResponse(script_.getSeed(buffer[1]));
-                sendData(response_data_, response_data_size_);
-            }
-            else
-            {
-                if (securityAccessType == buffer[1])
-                {
-                    // second request
-                    response_data_[response_data_size_++] = SECURITY_ACCESS_RES;
-
-                    // lua seed function
-
-                    sendData(response_data_, response_data_size_);
-                    securityAccessType = 0x00;
-                }
-                else
-                {
-                    response_data_[response_data_size_++] = ERROR;
-                    response_data_[response_data_size_++] = SUBFUNCTION_NOT_SUPPORTED;
-                    sendData(response_data_, response_data_size_);
-                }
-            }
+            securityAccess(buffer, num_bytes);
             break;
-        }
             // TODO: implement all other requests ...
         default:
             cerr << "Invalid UDS request received!\n";
-    }
-}
-
-void UdsServer::copyLuaScriptResponse(string lua_response)
-{
-    for (unsigned int i = 0; i < lua_response.length(); i++)
-    {
-        response_data_[response_data_size_++] = lua_response[i];
     }
 }
 
@@ -161,12 +90,12 @@ void UdsServer::copyLuaScriptResponse(string lua_response)
  */
 void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
-    uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
+    const uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
     const string data = script_.getDataByIdentifier(dataIdentifier);
     if (!data.empty())
     {
         // send positive response
-        vector<uint8_t> resp(data.length() + 3);
+        vector<uint8_t> resp(data.length() + 3); // data + UDS header
         resp = {
             READ_DATA_BY_IDENTIFIER_RES,
             buffer[1],
@@ -175,13 +104,88 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
         resp.insert(resp.cend(), data.cbegin(), data.cend()); // insert payload
         sendData(resp.data(), resp.size());
     }
-    else
+    else // send out of range
     {
-        // send out of range
         constexpr array<uint8_t, 2> nrc = {
             ERROR,
             REQUEST_OUT_OF_RANGE
         };
         sendData(nrc.data(), nrc.size());
+    }
+}
+
+/**
+ * Starts a session and sends back the corresponding response message.
+ * 
+ * @param buffer: the buffer containing the UDS message
+ * @param num_bytes: the length of the message in bytes
+ */
+void UdsServer::diagnosticSessionControl(const uint8_t* buffer, const size_t num_bytes)
+{
+    const uint8_t sessionId = buffer[1];
+    switch (sessionId)
+    {
+        case 0x01: // UdsSession::DEFAULT
+            pSessionCtrl_->setCurrentUdsSession(UdsSession::DEFAULT);
+            break;
+        case 0x02: // UdsSession::PROGRAMMING
+            pSessionCtrl_->setCurrentUdsSession(UdsSession::PROGRAMMING);
+            pSessionCtrl_->start(SESSION_TIME);
+            break;
+        case 0x03: // UdsSession::EXTENDED
+            pSessionCtrl_->setCurrentUdsSession(UdsSession::EXTENDED);
+            pSessionCtrl_->start(SESSION_TIME);
+            break;
+        default:
+            cerr << "Invalid session ID!\n";
+            break;
+    }
+
+    const array<uint8_t, 2> resp = {
+        DIAGNOSTIC_SESSION_CONTROL_RES,
+        sessionId
+    };
+    sendData(resp.data(), resp.size());
+}
+
+/**
+ * 
+ * @param buffer: the buffer containing the UDS message
+ * @param num_bytes: the length of the message in bytes
+ */
+void UdsServer::securityAccess(const uint8_t* buffer, const size_t num_bytes) noexcept
+{
+    const uint8_t seedId = buffer[1];
+    const string seed = script_.getSeed(seedId);
+    if (!seed.empty())
+    {
+        // send seed
+        vector<uint8_t> resp(seed.length() + 2); // data + UDS header
+        resp = {
+            SECURITY_ACCESS_REQ,
+            seedId
+        };
+        resp.insert(resp.cend(), seed.cbegin(), seed.cend() - 1); // insert payload - nullbyte
+        sendData(resp.data(), resp.size());
+        securityAccessType_ = seedId + 0x01;
+    }
+    else
+    {
+        if (securityAccessType_ == seedId)
+        {
+            // second request
+            constexpr array<uint8_t, 1> resp = {SECURITY_ACCESS_RES};
+            // Lua seed function
+            sendData(resp.data(), resp.size());
+            securityAccessType_ = 0x00;
+        }
+        else
+        {
+            constexpr array<uint8_t, 2> resp = {
+                ERROR,
+                SUBFUNCTION_NOT_SUPPORTED
+            };
+            sendData(resp.data(), resp.size());
+        }
     }
 }

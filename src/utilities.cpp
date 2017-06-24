@@ -1,6 +1,5 @@
 /**
  * @file utilities.cpp
- * @author Florian Bauer
  *
  * This file offers utility functions in the `utils` namespace for common used
  * file system operations.
@@ -50,7 +49,7 @@ bool utils::existsDirectory(const std::string& dirpath) noexcept
 
 
 /**
- * Checks if a string ends with another string
+ * Checks if a string ends with another string.
  *
  * @param s: the string to check
  * @param end: the ending to be checked for
@@ -68,9 +67,9 @@ bool utils::ends_with(const string &s, const string &end) noexcept
 
 
 /**
- * Get all available lua config files in a directory
+ * Get all available Lua config files in a directory.
  *
- * @param config_dir: the directory to check for lua files
+ * @param config_dir: the directory to check for Lua files
  * @return a vector containing all filenames is returned, on error an empty vector is returned
  */
 vector<string> utils::getConfigFilenames(const string &config_dir) noexcept

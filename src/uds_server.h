@@ -26,17 +26,14 @@ public:
     virtual void proceedReceivedData(const std::uint8_t* buffer,
                                      const std::size_t num_bytes) noexcept override;
 
-    void test_callback(int foo);
-
 private:
     SessionController* pSessionCtrl_;
     const EcuLuaScript script_;
-    uint8_t securityAccessType = 0x00;
-    uint8_t response_data_[4095];
-    uint8_t response_data_size_ = 0;
+    uint8_t securityAccessType_ = 0x00;
 
-    void copyLuaScriptResponse(std::string);
     void readDataByIdentifier(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;
+    void diagnosticSessionControl(const std::uint8_t* buffer, const std::size_t num_bytes);
+    void securityAccess(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;
 };
 
 #endif /* UDS_SERVER_H */

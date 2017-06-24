@@ -8,6 +8,12 @@
 
 using namespace std;
 
+/**
+ * Starts an UDS session. The session expires after 5000 milliseconds without
+ * a reset/extension message and returns to the default-session state.
+ * 
+ * @see SessionController::setCurrentUdsSession()
+ */
 void SessionController::startSession()
 {
     start(5000);
@@ -23,9 +29,14 @@ UdsSession SessionController::getCurretnUdsSession() const noexcept
     return session_;
 }
 
-void SessionController::setCurrentUdsSession(UdsSession s) noexcept
+/**
+ * Sets the current UDS session state.
+ * 
+ * @param ses: the UDS session enum to set
+ */
+void SessionController::setCurrentUdsSession(const UdsSession ses) noexcept
 {
-    session_ = s;
+    session_ = ses;
 }
 
 /**
@@ -35,11 +46,17 @@ void SessionController::setCurrentUdsSession(UdsSession s) noexcept
 void SessionController::wakeup()
 {
     if (session_ == UdsSession::DEFAULT)
+    {
         cout << "timer finished - DEFAULT" << endl;
-    if (session_ == UdsSession::PROGRAMMING)
+    }
+    else if (session_ == UdsSession::PROGRAMMING)
+    {
         cout << "timer finished - PROGRAMMING" << endl;
-    if (session_ == UdsSession::EXTENDED)
+    }
+    else if (session_ == UdsSession::EXTENDED)
+    {
         cout << "timer finished - EXTENDED" << endl;
+    }
 
     session_ = UdsSession::DEFAULT;
 }

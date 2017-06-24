@@ -1,6 +1,5 @@
 /**
  * @file utilities.h
- * @author Florian Bauer
  *
  */
 

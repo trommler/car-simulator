@@ -37,8 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/ECU.o \
 	${OBJECTDIR}/src/broadcast_server.o \
-	${OBJECTDIR}/src/ecuTimer.o \
 	${OBJECTDIR}/src/ecu_lua_script.o \
+	${OBJECTDIR}/src/ecu_timer.o \
 	${OBJECTDIR}/src/isotp_socket.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/session_controller.o \
@@ -100,15 +100,15 @@ ${OBJECTDIR}/src/broadcast_server.o: src/broadcast_server.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/broadcast_server.o src/broadcast_server.cpp
 
-${OBJECTDIR}/src/ecuTimer.o: src/ecuTimer.cpp
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecuTimer.o src/ecuTimer.cpp
-
 ${OBJECTDIR}/src/ecu_lua_script.o: src/ecu_lua_script.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_lua_script.o src/ecu_lua_script.cpp
+
+${OBJECTDIR}/src/ecu_timer.o: src/ecu_timer.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer.o src/ecu_timer.cpp
 
 ${OBJECTDIR}/src/isotp_socket.o: src/isotp_socket.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -233,19 +233,6 @@ ${OBJECTDIR}/src/broadcast_server_nomain.o: ${OBJECTDIR}/src/broadcast_server.o 
 	    ${CP} ${OBJECTDIR}/src/broadcast_server.o ${OBJECTDIR}/src/broadcast_server_nomain.o;\
 	fi
 
-${OBJECTDIR}/src/ecuTimer_nomain.o: ${OBJECTDIR}/src/ecuTimer.o src/ecuTimer.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/ecuTimer.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecuTimer_nomain.o src/ecuTimer.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/ecuTimer.o ${OBJECTDIR}/src/ecuTimer_nomain.o;\
-	fi
-
 ${OBJECTDIR}/src/ecu_lua_script_nomain.o: ${OBJECTDIR}/src/ecu_lua_script.o src/ecu_lua_script.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/ecu_lua_script.o`; \
@@ -257,6 +244,19 @@ ${OBJECTDIR}/src/ecu_lua_script_nomain.o: ${OBJECTDIR}/src/ecu_lua_script.o src/
 	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_lua_script_nomain.o src/ecu_lua_script.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/ecu_lua_script.o ${OBJECTDIR}/src/ecu_lua_script_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/ecu_timer_nomain.o: ${OBJECTDIR}/src/ecu_timer.o src/ecu_timer.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/ecu_timer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer_nomain.o src/ecu_timer.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/ecu_timer.o ${OBJECTDIR}/src/ecu_timer_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/isotp_socket_nomain.o: ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp 
