@@ -73,6 +73,16 @@ string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
     return "";
 }
 
+string EcuLuaScript::Session_getDataByIdentifier(std::string session, std::uint16_t identifier) const
+{
+    auto val = lua_state_[ecu_ident_.c_str()][session][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
+    if(val.exists())
+    {
+        return val;
+    }
+    return "";
+}
+
 string EcuLuaScript::getSeed(uint8_t seed_level) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][READ_SEED][seed_level];

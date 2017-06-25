@@ -91,7 +91,23 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
 void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
-    const string data = script_.getDataByIdentifier(dataIdentifier);
+    string data;
+    
+    if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::PROGRAMMING)
+    {
+        data = script_.Session_getDataByIdentifier("Programming", dataIdentifier);
+    }
+    else if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::EXTENDED)
+    {
+        data = script_.Session_getDataByIdentifier("Extended", dataIdentifier);
+    }
+    
+    if(data.empty())
+    {
+        data = script_.getDataByIdentifier(dataIdentifier);
+    }
+    
+    
     if (!data.empty())
     {
         // send positive response

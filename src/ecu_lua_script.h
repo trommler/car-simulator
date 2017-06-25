@@ -31,6 +31,7 @@ public:
     virtual std::uint16_t getResponseId() const;
     virtual std::string getSeed(std::uint8_t identifier) const;
     virtual std::string getDataByIdentifier(std::uint16_t identifier) const;
+    virtual std::string Session_getDataByIdentifier(std::string session,std::uint16_t identifier) const;
     std::vector<std::uint8_t> literalHexStrToBytes(std::string& hexString);
 
 private:
