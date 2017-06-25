@@ -32,9 +32,9 @@ void EcuLuaScriptTest::testEcuLuaScript()
 {
     const std::string ecuIdent = ECU_IDENT;
     const std::string luaScript = LUA_SCRIPT;
-    
+
     CPPUNIT_ASSERT_NO_THROW(EcuLuaScript ecuLuaScript(ecuIdent, luaScript));
- 
+
     // these tests are supposed to fail
     CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript(ecuIdent, "adsf"), std::exception);
     CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("hzlpfrt", luaScript), std::exception);
@@ -113,7 +113,7 @@ void EcuLuaScriptTest::testLiteralHexStrToBytes()
     {
         CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
     }
-    
+
     hexString = " 48 65 6c 6c 6"; // odd byte number
     expect = {0x48, 0x65, 0x6c, 0x6c, 0x6};
     result = ecuLuaScript.literalHexStrToBytes(hexString);
@@ -123,10 +123,46 @@ void EcuLuaScriptTest::testLiteralHexStrToBytes()
     {
         CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
     }
-    
+
     hexString = " 48 6h 6c gg 6f "; // not hex -> character gets ignored
     expect = {0x48, 0x6, 0x6c, 0x0, 0x6f};
     result = ecuLuaScript.literalHexStrToBytes(hexString);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+}
+
+void EcuLuaScriptTest::testAscii()
+{
+    EcuLuaScript ecuLuaScript(ECU_IDENT, LUA_SCRIPT);
+    std::string inputStr = "Hello";
+    std::string expect = " 48 65 6C 6C 6F ";
+    std::string result;
+
+    result = ecuLuaScript.ascii(inputStr);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    inputStr = "";
+    expect = "";
+    result = ecuLuaScript.ascii(inputStr);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    inputStr = "Möp™®"; // stressing the function with Unicode chars
+    expect = " 4D C3 B6 70 E2 84 A2 C2 AE ";
+    result = ecuLuaScript.ascii(inputStr);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
 
     for (unsigned i = 0; i < result.size(); i++)

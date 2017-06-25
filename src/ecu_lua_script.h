@@ -33,6 +33,13 @@ public:
     virtual std::string getDataByIdentifier(std::uint16_t identifier) const;
     std::vector<std::uint8_t> literalHexStrToBytes(std::string& hexString);
 
+    std::string ascii(const std::string& utf8_str) const noexcept;
+    std::string toByteResponse(std::size_t len, long value) const;
+    void sendRaw(const std::string& response) const;
+    void sleep(unsigned int ms) const;
+    int getCurrentSession() const;
+    void switchToSession(int ses);
+
 private:
     sel::State lua_state_;
     std::string ecu_ident_ = "";

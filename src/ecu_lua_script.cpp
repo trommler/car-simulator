@@ -9,6 +9,7 @@
 #include <iostream>
 #include <algorithm>
 #include <exception>
+#include <unistd.h>
 
 using namespace std;
 
@@ -101,4 +102,95 @@ vector<uint8_t> EcuLuaScript::literalHexStrToBytes(string& hexString)
         data.push_back(byte);
     }
     return data;
+}
+
+/**
+ * Convert the given string into another string that represents the hex bytes of 
+ * the input string. This is a convenience function to use ascii strings in 
+ * responses.
+ * 
+ * Example: 
+ *     `ascii("Hello")` -> `" 48 65 6C 6C 6F "`
+ * 
+ * @param utf8_str: the input string to convert
+ */
+std::string EcuLuaScript::ascii(const std::string& utf8_str) const noexcept
+{
+    static constexpr char lut[] = "0123456789ABCDEF";
+    const size_t len = utf8_str.length();
+    if (len == 0)
+    {
+        return "";
+    }
+
+    std::string output;
+    output.reserve(len * 3 + 1); // str length * (1 whitespace + 2 characters per byte) + last whitespace
+    unsigned char c;
+    for (size_t i = 0; i < len; i++)
+    {
+        c = utf8_str[i];
+        output.push_back(' ');
+        output.push_back(lut[c >> 4]);
+        output.push_back(lut[c & 15]);
+    }
+    output.push_back(' ');
+    return output;
+}
+
+/**
+ * Convert the given integer value into a hex byte string as used in requests 
+ * and responses. The parameter `len` gives the number of bytes that should be 
+ * returned.
+ * 
+ * Examples:
+ *     `toByteResponse(2, 13248)` -> `"33 C0"`
+ *     `toByteResponse(3, 13248)` -> `"00 33 C0"`
+ * 
+ * @param len: the length in bytes
+ * @param value: the numeric value to send (e.g. `123`, `0xff`)
+ */
+std::string EcuLuaScript::toByteResponse(std::size_t len, long value) const
+{
+    // TODO: implement
+    return "";
+}
+
+/**
+ * Send the given response (string of hex bytes) immediately.
+ * 
+ * @param response: the raw response message (e.g. "DE AD C0 DE")
+ */
+void EcuLuaScript::sendRaw(const std::string& response) const
+{
+    // TODO: implement
+}
+
+/**
+ * Suspend the script for the given number of milliseconds.
+ * 
+ * @param ms: time to sleep in milliseconds
+ */
+void EcuLuaScript::sleep(unsigned int ms) const
+{
+    usleep(ms * 1000);
+}
+
+/**
+ * Returns the currently active diagnostic session to be used in custom 
+ * functions.
+ */
+int EcuLuaScript::getCurrentSession() const
+{
+    // TODO: implement
+    return 0;
+}
+
+/**
+ * Switch to the given (numeric) diagnostic session.
+ * 
+ * @param ses: the session ID (e.g. `0x01` = DEFAULT, `0x02` = PROGRAMMING)
+ */
+void EcuLuaScript::switchToSession(int ses)
+{
+    // TODO: implement
 }
