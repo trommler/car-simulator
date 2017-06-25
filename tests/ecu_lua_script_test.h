@@ -18,6 +18,7 @@ class EcuLuaScriptTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST(testGetDataByIdentifier);
     CPPUNIT_TEST(testGetSeed);
     CPPUNIT_TEST(testLiteralHexStrToBytes);
+    CPPUNIT_TEST(testAscii);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -34,6 +35,7 @@ private:
     void testGetDataByIdentifier();
     void testGetSeed();
     void testLiteralHexStrToBytes();
+    void testAscii();
 
 };
 
