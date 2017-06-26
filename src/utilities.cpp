@@ -55,7 +55,7 @@ bool utils::existsDirectory(const std::string& dirpath) noexcept
  * @param end: the ending to be checked for
  * @return true if ending is the same, false otherwise
  */
-bool utils::ends_with(const string &s, const string &end) noexcept
+bool utils::endsWith(const string &s, const string &end) noexcept
 {
     if (s.length() < end.length())
     {
@@ -87,7 +87,7 @@ vector<string> utils::getConfigFilenames(const string &config_dir) noexcept
         while ((ent  = readdir(dir)) != nullptr)
         {
             string s(ent->d_name);
-            if (utils::ends_with(s, ".lua"))
+            if (utils::endsWith(s, ".lua"))
                 filenames.push_back(s);
         }
     }

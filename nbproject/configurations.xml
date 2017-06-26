@@ -99,6 +99,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs lua5.2`</linkerOptionItem>
+            <linkerOptionItem>`pkg-config --libs cppunit`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

@@ -14,6 +14,8 @@ class UtilsTest : public CPPUNIT_NS::TestFixture
 
     CPPUNIT_TEST(testExistsFile);
     CPPUNIT_TEST(testExistsDirectory);
+    CPPUNIT_TEST(testEndsWith);
+    CPPUNIT_TEST(testGetConfigFilenames);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -26,6 +28,8 @@ public:
 private:
     void testExistsFile();
     void testExistsDirectory();
+    void testEndsWith();
+    void testGetConfigFilenames();
 
 };
 

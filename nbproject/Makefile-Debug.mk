@@ -80,7 +80,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`pkg-config --libs lua5.2`  
+LDLIBSOPTIONS=`pkg-config --libs lua5.2` `pkg-config --libs cppunit`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -93,47 +93,47 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4: ${OBJECTFILES}
 ${OBJECTDIR}/src/ECU.o: src/ECU.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU.o src/ECU.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU.o src/ECU.cpp
 
 ${OBJECTDIR}/src/broadcast_server.o: src/broadcast_server.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/broadcast_server.o src/broadcast_server.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/broadcast_server.o src/broadcast_server.cpp
 
 ${OBJECTDIR}/src/ecu_lua_script.o: src/ecu_lua_script.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_lua_script.o src/ecu_lua_script.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_lua_script.o src/ecu_lua_script.cpp
 
 ${OBJECTDIR}/src/ecu_timer.o: src/ecu_timer.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer.o src/ecu_timer.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer.o src/ecu_timer.cpp
 
 ${OBJECTDIR}/src/isotp_socket.o: src/isotp_socket.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 ${OBJECTDIR}/src/session_controller.o: src/session_controller.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/session_controller.o src/session_controller.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/session_controller.o src/session_controller.cpp
 
 ${OBJECTDIR}/src/uds_server.o: src/uds_server.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/uds_server.o src/uds_server.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/uds_server.o src/uds_server.cpp
 
 ${OBJECTDIR}/src/utilities.o: src/utilities.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/utilities.o src/utilities.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/utilities.o src/utilities.cpp
 
 # Subprojects
 .build-subprojects:
@@ -162,49 +162,49 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/utils_test.o ${TESTDIR}/tests/utils_te
 ${TESTDIR}/tests/ecu_lua_script_test.o: tests/ecu_lua_script_test.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ecu_lua_script_test.o tests/ecu_lua_script_test.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ecu_lua_script_test.o tests/ecu_lua_script_test.cpp
 
 
 ${TESTDIR}/tests/ecu_lua_script_test_runner.o: tests/ecu_lua_script_test_runner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ecu_lua_script_test_runner.o tests/ecu_lua_script_test_runner.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ecu_lua_script_test_runner.o tests/ecu_lua_script_test_runner.cpp
 
 
 ${TESTDIR}/tests/selene_test.o: tests/selene_test.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/selene_test.o tests/selene_test.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/selene_test.o tests/selene_test.cpp
 
 
 ${TESTDIR}/tests/selene_test_runner.o: tests/selene_test_runner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/selene_test_runner.o tests/selene_test_runner.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/selene_test_runner.o tests/selene_test_runner.cpp
 
 
 ${TESTDIR}/tests/uds_server_test.o: tests/uds_server_test.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/uds_server_test.o tests/uds_server_test.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/uds_server_test.o tests/uds_server_test.cpp
 
 
 ${TESTDIR}/tests/uds_server_test_runner.o: tests/uds_server_test_runner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/uds_server_test_runner.o tests/uds_server_test_runner.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/uds_server_test_runner.o tests/uds_server_test_runner.cpp
 
 
 ${TESTDIR}/tests/utils_test.o: tests/utils_test.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/utils_test.o tests/utils_test.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/utils_test.o tests/utils_test.cpp
 
 
 ${TESTDIR}/tests/utils_test_runner.o: tests/utils_test_runner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/utils_test_runner.o tests/utils_test_runner.cpp
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/utils_test_runner.o tests/utils_test_runner.cpp
 
 
 ${OBJECTDIR}/src/ECU_nomain.o: ${OBJECTDIR}/src/ECU.o src/ECU.cpp 
@@ -215,7 +215,7 @@ ${OBJECTDIR}/src/ECU_nomain.o: ${OBJECTDIR}/src/ECU.o src/ECU.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU_nomain.o src/ECU.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU_nomain.o src/ECU.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/ECU.o ${OBJECTDIR}/src/ECU_nomain.o;\
 	fi
@@ -228,7 +228,7 @@ ${OBJECTDIR}/src/broadcast_server_nomain.o: ${OBJECTDIR}/src/broadcast_server.o 
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/broadcast_server_nomain.o src/broadcast_server.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/broadcast_server_nomain.o src/broadcast_server.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/broadcast_server.o ${OBJECTDIR}/src/broadcast_server_nomain.o;\
 	fi
@@ -241,7 +241,7 @@ ${OBJECTDIR}/src/ecu_lua_script_nomain.o: ${OBJECTDIR}/src/ecu_lua_script.o src/
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_lua_script_nomain.o src/ecu_lua_script.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_lua_script_nomain.o src/ecu_lua_script.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/ecu_lua_script.o ${OBJECTDIR}/src/ecu_lua_script_nomain.o;\
 	fi
@@ -254,7 +254,7 @@ ${OBJECTDIR}/src/ecu_timer_nomain.o: ${OBJECTDIR}/src/ecu_timer.o src/ecu_timer.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer_nomain.o src/ecu_timer.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer_nomain.o src/ecu_timer.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/ecu_timer.o ${OBJECTDIR}/src/ecu_timer_nomain.o;\
 	fi
@@ -267,7 +267,7 @@ ${OBJECTDIR}/src/isotp_socket_nomain.o: ${OBJECTDIR}/src/isotp_socket.o src/isot
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/isotp_socket_nomain.o src/isotp_socket.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/isotp_socket_nomain.o src/isotp_socket.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/isotp_socket.o ${OBJECTDIR}/src/isotp_socket_nomain.o;\
 	fi
@@ -280,7 +280,7 @@ ${OBJECTDIR}/src/main_nomain.o: ${OBJECTDIR}/src/main.o src/main.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main_nomain.o src/main.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main_nomain.o src/main.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/main_nomain.o;\
 	fi
@@ -293,7 +293,7 @@ ${OBJECTDIR}/src/session_controller_nomain.o: ${OBJECTDIR}/src/session_controlle
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/session_controller_nomain.o src/session_controller.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/session_controller_nomain.o src/session_controller.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/session_controller.o ${OBJECTDIR}/src/session_controller_nomain.o;\
 	fi
@@ -306,7 +306,7 @@ ${OBJECTDIR}/src/uds_server_nomain.o: ${OBJECTDIR}/src/uds_server.o src/uds_serv
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/uds_server_nomain.o src/uds_server.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/uds_server_nomain.o src/uds_server.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/uds_server.o ${OBJECTDIR}/src/uds_server_nomain.o;\
 	fi
@@ -319,7 +319,7 @@ ${OBJECTDIR}/src/utilities_nomain.o: ${OBJECTDIR}/src/utilities.o src/utilities.
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/utilities_nomain.o src/utilities.cpp;\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` `pkg-config --cflags cppunit` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/utilities_nomain.o src/utilities.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/utilities.o ${OBJECTDIR}/src/utilities_nomain.o;\
 	fi
