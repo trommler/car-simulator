@@ -8,10 +8,14 @@
 #include "utilities.h"
 #include <iostream>
 #include <algorithm>
-#include <exception>
+#include <stdexcept>
 #include <unistd.h>
+#include <climits>
 
 using namespace std;
+
+/// Look-up table for (uppercase) hexadecimal digits [0..F]
+static constexpr char HEX_LUT[] = "0123456789ABCDEF";
 
 /**
  * Constructor. 
@@ -29,13 +33,8 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
             ecu_ident_ = ecuIdent;
             return;
         }
-        else
-        {
-            using sel::State;
-            lua_state_.~State();
-        }
     }
-    throw exception();
+    throw invalid_argument("No, or invalid Lua script!");
 }
 
 /**
@@ -74,10 +73,10 @@ string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
     return "";
 }
 
-string EcuLuaScript::Session_getDataByIdentifier(std::string session, std::uint16_t identifier) const
+string EcuLuaScript::Session_getDataByIdentifier(string session, uint16_t identifier) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][session][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
-    if(val.exists())
+    if (val.exists())
     {
         return val;
     }
@@ -105,10 +104,14 @@ vector<uint8_t> EcuLuaScript::literalHexStrToBytes(string& hexString)
     // remove white spaces from string
     hexString.erase(remove(hexString.begin(), hexString.end(), ' '), hexString.end());
     vector<uint8_t> data;
-    for (unsigned int i = 0; i < hexString.length(); i += 2)
+    // plus `% 2` just in case of a "odd" byte number
+    data.reserve(hexString.length() / 2 + (hexString.length() % 2));
+    string byteString;
+    uint8_t byte;
+    for (size_t i = 0; i < hexString.length(); i += 2)
     {
-        string byteString = hexString.substr(i, 2);
-        uint8_t byte = static_cast<uint8_t> (strtol(byteString.c_str(), NULL, 16));
+        byteString = hexString.substr(i, 2);
+        byte = static_cast<uint8_t> (strtol(byteString.c_str(), NULL, 16));
         data.push_back(byte);
     }
     return data;
@@ -124,53 +127,103 @@ vector<uint8_t> EcuLuaScript::literalHexStrToBytes(string& hexString)
  * 
  * @param utf8_str: the input string to convert
  */
-std::string EcuLuaScript::ascii(const std::string& utf8_str) const noexcept
+string EcuLuaScript::ascii(const string& utf8_str) const noexcept
 {
-    static constexpr char lut[] = "0123456789ABCDEF";
     const size_t len = utf8_str.length();
     if (len == 0)
     {
         return "";
     }
 
-    std::string output;
-    output.reserve(len * 3 + 1); // str length * (1 whitespace + 2 characters per byte) + last whitespace
+    string output;
+    // str length * (1 whitespace + 2 characters per byte) + last whitespace
+    output.reserve(len * 3 + 1);
     unsigned char c;
-    for (size_t i = 0; i < len; i++)
+    for (size_t i = 0; i < len; ++i)
     {
         c = utf8_str[i];
         output.push_back(' ');
-        output.push_back(lut[c >> 4]);
-        output.push_back(lut[c & 15]);
+        output.push_back(HEX_LUT[c >> 4]);
+        output.push_back(HEX_LUT[c & 0x0F]);
     }
     output.push_back(' ');
     return output;
 }
 
 /**
- * Convert the given integer value into a hex byte string as used in requests 
- * and responses. The parameter `len` gives the number of bytes that should be 
- * returned.
+ * Convert the given unsigned value into a hex byte string as used in requests 
+ * and responses. The parameter `len` gives the number of bytes that gets 
+ * returned. In case `len` equals 0 or exceeds the `INT_MAX` limit, a empty 
+ * string is returned.
  * 
  * Examples:
- *     `toByteResponse(2, 13248)` -> `"33 C0"`
- *     `toByteResponse(3, 13248)` -> `"00 33 C0"`
+ *     `toByteResponse(13248, 2)` -> `"33 C0"`
+ *     `toByteResponse(13248, 3)` -> `"00 33 C0"`
+ *     `toByteResponse(13248, 1)` -> `"C0"`
+ *     `toByteResponse(13248)` -> `"00 00 00 00 00 00 33 C0"`
  * 
- * @param len: the length in bytes
  * @param value: the numeric value to send (e.g. `123`, `0xff`)
+ * @param len: the length in bytes [default = sizeof(unsigned long)]
  */
-std::string EcuLuaScript::toByteResponse(std::size_t len, long value) const
+string EcuLuaScript::toByteResponse(unsigned long value,
+                                    size_t len /* = sizeof(unsigned long) */) const noexcept
 {
-    // TODO: implement
+    if (len > INT_MAX)
+    {
+        // it seams, someone is trying to provoke a segfault
+        return "";
+    }
+
+    static constexpr int CHAR_SP = 3; // character space for 2 hex digits + 1 whitespace
+    const int zeroFill = len - sizeof(value);
+
+    if (zeroFill < 0)
+    {
+        // truncated value
+        const size_t space = len * CHAR_SP;
+        char str[space];
+        for (size_t i = 0, j = (len * 2 - 1) * 4; i < space; i += CHAR_SP, j -= 8)
+        {
+            str[i] = HEX_LUT[(value >> j) & 0x0F];
+            str[i + 1] = HEX_LUT[(value >> (j - 4)) & 0x0F];
+            str[i + 2] = ' ';
+        }
+        str[space - 1] = '\0';
+        return str;
+    }
+    else
+    {
+        // fill up wit zeros
+        const size_t space = ((sizeof(value) + zeroFill) * CHAR_SP);
+        const size_t valSpace = zeroFill * CHAR_SP;
+        char str[space];
+        for (size_t i = 0; i < valSpace; i += CHAR_SP)
+        {
+            str[i] = '0';
+            str[i + 1] = '0';
+            str[i + 2] = ' ';
+        }
+
+        // insert hex values
+        for (size_t i = valSpace, j = (sizeof(value) * 2 - 1) * 4; i < space; i += CHAR_SP, j -= 8)
+        {
+            str[i] = HEX_LUT[(value >> j) & 0x0F];
+            str[i + 1] = HEX_LUT[(value >> (j - 4)) & 0x0F];
+            str[i + 2] = ' ';
+        }
+        str[space - 1] = '\0';
+        return str;
+    }
+
     return "";
 }
 
 /**
- * Send the given response (string of hex bytes) immediately.
+ * Sends the given response (string of hex bytes) immediately.
  * 
- * @param response: the raw response message (e.g. "DE AD C0 DE")
+ * @param response: the raw response message to send (e.g. "DE AD C0 DE")
  */
-void EcuLuaScript::sendRaw(const std::string& response) const
+void EcuLuaScript::sendRaw(const string& response) const
 {
     // TODO: implement
 }

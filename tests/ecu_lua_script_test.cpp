@@ -150,7 +150,7 @@ void EcuLuaScriptTest::testAscii()
         CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
     }
 
-    inputStr = "";
+    inputStr = ""; // empty string
     expect = "";
     result = ecuLuaScript.ascii(inputStr);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
@@ -171,3 +171,122 @@ void EcuLuaScriptTest::testAscii()
     }
 }
 
+void EcuLuaScriptTest::testToByteResponse()
+{
+    EcuLuaScript ecuLuaScript(ECU_IDENT, LUA_SCRIPT);
+    unsigned long inputValue;
+    unsigned int len;
+    std::string expect;
+    std::string result;
+
+    inputValue = 0x12'34'56'78;
+    len = 8;
+    expect = "00 00 00 00 12 34 56 78";
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    inputValue = 0x12'34'56'78;
+    expect = "00 00 00 00 12 34 56 78";
+    result = ecuLuaScript.toByteResponse(inputValue); // no len -> 8 = default
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    inputValue = 0x12'34'56'78;
+    len = 9;
+    expect = "00 00 00 00 00 12 34 56 78";
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    inputValue = 0x12'34'56'78;
+    len = 2;
+    expect = "56 78";
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    inputValue = 0xff'ff'ff'ff'ff'ff'ff'ff;
+    len = 1;
+    expect = "FF";
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    inputValue = 0xff'ff'ff'ff'ff'ff'ff'ff;
+    len = 9;
+    expect = "00 FF FF FF FF FF FF FF FF";
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    // len = 0 -> empty string
+    inputValue = 0xff'ff'ff'ff'ff'ff'ff'ff;
+    len = 0;
+    expect = "";
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+
+    // len = -1 -> do some naughty stuff
+    inputValue = 0xff'ff'ff'ff'ff'ff'ff'ff;
+    len = -1;
+    expect = "";
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+
+    // inputValue = -1 -> do some more naughty stuff
+    inputValue = -1;
+    expect = "FF FF FF FF FF FF FF FF";
+    result = ecuLuaScript.toByteResponse(inputValue);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    // and even more naughty stuff
+    inputValue = -1;
+    len = 512;
+    expect = std::string("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ")
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF FF FF FF FF";
+
+    result = ecuLuaScript.toByteResponse(inputValue, len);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+}

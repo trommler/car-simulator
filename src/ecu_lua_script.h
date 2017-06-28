@@ -31,11 +31,11 @@ public:
     virtual std::uint16_t getResponseId() const;
     virtual std::string getSeed(std::uint8_t identifier) const;
     virtual std::string getDataByIdentifier(std::uint16_t identifier) const;
-    virtual std::string Session_getDataByIdentifier(std::string session,std::uint16_t identifier) const;
+    virtual std::string Session_getDataByIdentifier(std::string session, std::uint16_t identifier) const;
     std::vector<std::uint8_t> literalHexStrToBytes(std::string& hexString);
 
     std::string ascii(const std::string& utf8_str) const noexcept;
-    std::string toByteResponse(std::size_t len, long value) const;
+    std::string toByteResponse(unsigned long value, std::size_t len = sizeof (unsigned long)) const noexcept;
     void sendRaw(const std::string& response) const;
     void sleep(unsigned int ms) const;
     int getCurrentSession() const;
