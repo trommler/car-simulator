@@ -91,7 +91,7 @@ Install the `lua5.2`, `liblua5.2-0`, and `liblua5.2-dev` packages with:
 
     sudo apt install lua5.2 liblua5.2-0 liblua5.2-dev
 
-Include Lua support in the C++ file with
+Include Lua support in the C++ file with:
 
 ```cpp
 #include <lua.hpp>
@@ -131,7 +131,7 @@ genhtml coverage.info --output-directory out
 
 ## Set-Up an IDE
 
-You can choose the easy way with the [NetBeans Set-Up](resources/NetBeansSetUp.md) or the harder one with the [Eclipse Set-Up](resources/EclipseSetUp.md)
+You can choose the easy way with the [NetBeans Set-Up](NetBeansSetUp.md) or the harder one with the [Eclipse Set-Up](EclipseSetUp.md)
 
 _(Author's note: NetBeans is more comfortable in any way)_
 
