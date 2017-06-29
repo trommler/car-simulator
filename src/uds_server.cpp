@@ -95,11 +95,11 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
     
     if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::PROGRAMMING)
     {
-        data = script_.Session_getDataByIdentifier("Programming", dataIdentifier);
+        data = script_.getDataByIdentifier(dataIdentifier, "Programming");
     }
     else if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::EXTENDED)
     {
-        data = script_.Session_getDataByIdentifier("Extended", dataIdentifier);
+        data = script_.getDataByIdentifier(dataIdentifier, "Extended");
     }
     
     if(data.empty())

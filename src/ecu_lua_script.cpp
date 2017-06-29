@@ -67,7 +67,7 @@ uint16_t EcuLuaScript::getResponseId() const
  * Reads the data according to `ReadDataByIdentifier`-table in the Lua script.
  * 
  * @param identifier: the identifier to access the field in the Lua table
- * @return the identifier field on success, otherwise an empty std::string
+ * @return the identifier field on success, otherwise an empty string
  */
 string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
 {
@@ -79,7 +79,14 @@ string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
     return "";
 }
 
-string EcuLuaScript::Session_getDataByIdentifier(string session, uint16_t identifier) const
+/**
+ * Overload with additional sessions handling.
+ * 
+ * @param identifier: the identifier to access the field in the Lua table
+ * @param session: the session as string (e.g. "Programming")
+ * @return the identifier field on success, otherwise an empty string
+ */
+string EcuLuaScript::getDataByIdentifier(uint16_t identifier, const string& session) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][session][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
     if (val.exists())
