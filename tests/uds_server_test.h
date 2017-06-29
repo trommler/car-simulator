@@ -9,6 +9,9 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include "isotp_socket.h"
 
+/**
+ * Simple test receiver class to mock a responding device. Use only for testing.
+ */ 
 class TestReceiver : public IsoTpSocket
 {
 public:
@@ -43,8 +46,8 @@ class UdsServerTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    UdsServerTest();
-    virtual ~UdsServerTest();
+    UdsServerTest() = default;
+    virtual ~UdsServerTest() = default;
     void setUp();
     void tearDown();
 
@@ -55,4 +58,3 @@ private:
 };
 
 #endif /* UDS_SERVER_TEST_H */
-

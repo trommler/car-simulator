@@ -11,17 +11,13 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UtilsTest);
 
-UtilsTest::UtilsTest() { }
-
-UtilsTest::~UtilsTest() { }
-
 void UtilsTest::setUp() { }
 
 void UtilsTest::tearDown() { }
 
 void UtilsTest::testExistsFile()
 {
-    const std::string file_path = "tests/testscript01.lua";
+    const std::string file_path = "tests/test_config_dir/testscript01.lua";
     bool result = utils::existsFile(file_path);
     CPPUNIT_ASSERT_MESSAGE("File does not exist!", result);
 
@@ -49,7 +45,7 @@ void UtilsTest::testExistsDirectory()
     CPPUNIT_ASSERT_EQUAL(true, result);
 
     // this check is supposed to fail
-    result = utils::existsDirectory("tests/testscript01.lua");
+    result = utils::existsDirectory("tests/test_config_dir/testscript01.lua");
     CPPUNIT_ASSERT_EQUAL(false, result);
 }
 

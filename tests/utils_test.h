@@ -20,8 +20,8 @@ class UtilsTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    UtilsTest();
-    virtual ~UtilsTest();
+    UtilsTest() = default;
+    virtual ~UtilsTest() = default;
     void setUp();
     void tearDown();
 

@@ -12,9 +12,6 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SeleneTest);
 
-SeleneTest::SeleneTest() { }
-
-SeleneTest::~SeleneTest() { }
 
 void SeleneTest::setUp() { }
 
@@ -22,7 +19,7 @@ void SeleneTest::tearDown() { }
 
 void SeleneTest::testLuaScriptMethod()
 {
-    const std::string test_script01 = "tests/testscript01.lua";
+    const std::string test_script01 = "tests/test_config_dir/testscript01.lua";
     if (utils::existsFile(test_script01))
     {
         sel::State state;
@@ -38,7 +35,7 @@ void SeleneTest::testLuaScriptMethod()
         CPPUNIT_FAIL("Could not find test file 01!");
     }
 
-    const std::string test_script02 = "tests/testscript02.lua";
+    const std::string test_script02 = "tests/test_config_dir/testscript02.lua";
     if (utils::existsFile(test_script02))
     {
         sel::State state;

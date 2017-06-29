@@ -17,8 +17,8 @@ class SeleneTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    SeleneTest();
-    virtual ~SeleneTest();
+    SeleneTest() = default;
+    virtual ~SeleneTest() = default;
     void setUp();
     void tearDown();
 

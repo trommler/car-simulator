@@ -8,17 +8,9 @@
 #include "ecu_lua_script.h"
 
 const std::string ECU_IDENT = "PCM";
-const std::string LUA_SCRIPT = "tests/testscript03.lua";
+const std::string LUA_SCRIPT = "tests/test_config_dir/testscript03.lua";
 
 CPPUNIT_TEST_SUITE_REGISTRATION(EcuLuaScriptTest);
-
-EcuLuaScriptTest::EcuLuaScriptTest()
-{
-}
-
-EcuLuaScriptTest::~EcuLuaScriptTest()
-{
-}
 
 void EcuLuaScriptTest::setUp()
 {

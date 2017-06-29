@@ -16,17 +16,9 @@
 
 const std::string DEVICE = "vcan0";
 const std::string ECU_IDENT = "PCM";
-const std::string LUA_SCRIPT = "tests/testscript03.lua";
+const std::string LUA_SCRIPT = "tests/test_config_dir/testscript03.lua";
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UdsServerTest);
-
-UdsServerTest::UdsServerTest()
-{
-}
-
-UdsServerTest::~UdsServerTest()
-{
-}
 
 void UdsServerTest::setUp()
 {

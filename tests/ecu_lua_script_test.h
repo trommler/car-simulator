@@ -25,8 +25,8 @@ class EcuLuaScriptTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    EcuLuaScriptTest();
-    virtual ~EcuLuaScriptTest();
+    EcuLuaScriptTest() = default;
+    virtual ~EcuLuaScriptTest() = default;
     void setUp();
     void tearDown();
 
