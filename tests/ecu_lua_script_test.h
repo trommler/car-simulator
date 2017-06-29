@@ -20,6 +20,7 @@ class EcuLuaScriptTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST(testLiteralHexStrToBytes);
     CPPUNIT_TEST(testAscii);
     CPPUNIT_TEST(testToByteResponse);
+    CPPUNIT_TEST(testGetRaw);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -38,6 +39,7 @@ private:
     void testLiteralHexStrToBytes();
     void testAscii();
     void testToByteResponse();
+    void testGetRaw();
 
 };
 

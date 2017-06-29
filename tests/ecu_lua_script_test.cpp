@@ -288,5 +288,48 @@ void EcuLuaScriptTest::testToByteResponse()
     {
         CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
     }
+}
 
+void EcuLuaScriptTest::testGetRaw()
+{
+    EcuLuaScript ecuLuaScript(ECU_IDENT, LUA_SCRIPT);
+    std::string identStr;
+    std::string expect;
+    std::string result;
+
+    identStr = "10 02";
+    expect = "50 02 00 19 01 f4";
+    result = ecuLuaScript.getRaw(identStr);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    identStr = "22 fa bc";
+    expect = "10 33 11";
+    result = ecuLuaScript.getRaw(identStr);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    identStr = "22 F1 90";
+    expect = "62 F1 90" + ecuLuaScript.ascii("SALGA2EV9HA298784");
+    result = ecuLuaScript.getRaw(identStr);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
+
+    identStr = "22 F1 90";
+    expect = "62 F1 90 53 41 4C 47 41 32 45 56 39 48 41 32 39 38 37 38 34 ";
+    result = ecuLuaScript.getRaw(identStr);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
 }

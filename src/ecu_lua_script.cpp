@@ -27,10 +27,16 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
 {
     if (utils::existsFile(luaScript))
     {
+        // inject the C++ functions into the Lua script
+        lua_state_["ascii"] = &ascii;
+        lua_state_["toByteResponse"] = &toByteResponse;
+
         lua_state_.Load(luaScript);
         if (lua_state_[ecuIdent.c_str()].exists())
         {
             ecu_ident_ = ecuIdent;
+
+
             return;
         }
     }
@@ -126,8 +132,13 @@ vector<uint8_t> EcuLuaScript::literalHexStrToBytes(string& hexString)
  *     `ascii("Hello")` -> `" 48 65 6C 6C 6F "`
  * 
  * @param utf8_str: the input string to convert
+ * @return a literal string of hex bytes (e.g. " 12 4A FF ") or an empty string 
+ * on error
+ * 
+ * @note To allow a seamless string concatenation, the returned string always
+ * begins and ends with an whitespace.
  */
-string EcuLuaScript::ascii(const string& utf8_str) const noexcept
+string EcuLuaScript::ascii(const string& utf8_str) noexcept
 {
     const size_t len = utf8_str.length();
     if (len == 0)
@@ -163,10 +174,10 @@ string EcuLuaScript::ascii(const string& utf8_str) const noexcept
  *     `toByteResponse(13248)` -> `"00 00 00 00 00 00 33 C0"`
  * 
  * @param value: the numeric value to send (e.g. `123`, `0xff`)
- * @param len: the length in bytes [default = sizeof(unsigned long)]
+ * @param len: the length in bytes [default = sizeof(unsigned long) -> 8 on x64]
  */
 string EcuLuaScript::toByteResponse(unsigned long value,
-                                    size_t len /* = sizeof(unsigned long) */) const noexcept
+                                    size_t len /* = sizeof(unsigned long) */) noexcept
 {
     if (len > INT_MAX)
     {
@@ -256,4 +267,22 @@ int EcuLuaScript::getCurrentSession() const
 void EcuLuaScript::switchToSession(int ses)
 {
     // TODO: implement
+}
+
+/**
+ * Gets the raw data entries form the Lua "Raw"-Table. All entries, as well as 
+ * the identifiers of the corresponding entries, are literal hex byte strings 
+ * (e.g. "12 FF 00").
+ * 
+ * @param identStr: the identifier string for the entry in the Lua "Raw"-table
+ * @return the raw data as literal hex byte string or an empty string on error
+ */
+string EcuLuaScript::getRaw(const string& identStr) const
+{
+    auto val = lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()];
+    if (val.exists())
+    {
+        return val;
+    }
+    return "";
 }

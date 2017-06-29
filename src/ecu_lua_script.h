@@ -27,15 +27,16 @@ public:
     EcuLuaScript(const std::string& ecuIdent, const std::string& luaScript);
     virtual ~EcuLuaScript() = default;
 
-    virtual std::uint16_t getRequestId() const;
-    virtual std::uint16_t getResponseId() const;
-    virtual std::string getSeed(std::uint8_t identifier) const;
-    virtual std::string getDataByIdentifier(std::uint16_t identifier) const;
-    virtual std::string Session_getDataByIdentifier(std::string session, std::uint16_t identifier) const;
+    std::uint16_t getRequestId() const;
+    std::uint16_t getResponseId() const;
+    std::string getSeed(std::uint8_t identifier) const;
+    std::string getDataByIdentifier(std::uint16_t identifier) const;
+    std::string Session_getDataByIdentifier(std::string session, std::uint16_t identifier) const;
+    std::string getRaw(const std::string& identStr) const;
     std::vector<std::uint8_t> literalHexStrToBytes(std::string& hexString);
 
-    std::string ascii(const std::string& utf8_str) const noexcept;
-    std::string toByteResponse(unsigned long value, std::size_t len = sizeof (unsigned long)) const noexcept;
+    static std::string ascii(const std::string& utf8_str) noexcept;
+    static std::string toByteResponse(unsigned long value, std::size_t len = sizeof (unsigned long)) noexcept;
     void sendRaw(const std::string& response) const;
     void sleep(unsigned int ms) const;
     int getCurrentSession() const;
