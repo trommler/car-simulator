@@ -7,7 +7,6 @@
 #define ECU_LUA_SCRIPT_H
 
 #include "selene.h"
-#include "lua.hpp"
 #include <string>
 #include <cstdint>
 #include <vector>
@@ -33,7 +32,7 @@ public:
     std::string getDataByIdentifier(std::uint16_t identifier) const;
     std::string getDataByIdentifier(std::uint16_t identifier, const std::string& session) const;
     std::string getRaw(const std::string& identStr) const;
-    std::vector<std::uint8_t> literalHexStrToBytes(std::string& hexString);
+    std::vector<std::uint8_t> literalHexStrToBytes(const std::string& hexString) const;
 
     static std::string ascii(const std::string& utf8_str) noexcept;
     static std::string toByteResponse(unsigned long value, std::size_t len = sizeof (unsigned long)) noexcept;
@@ -44,7 +43,7 @@ public:
 
 private:
     sel::State lua_state_;
-    std::string ecu_ident_ = "";
+    std::string ecu_ident_;
 
 };
 

@@ -14,10 +14,10 @@
 
 using namespace std;
 
-/// Look-up table for (uppercase) hexadecimal digits [0..F]
+/// Look-up table for (uppercase) hexadecimal digits [0..F].
 static constexpr char HEX_LUT[] = "0123456789ABCDEF";
 
-/// Defines maximal size of an UDS message in bytes
+/// Defines the maximum size of an UDS message in bytes.
 static constexpr int MAX_UDS_SIZE = 4096;
 
 /**
@@ -38,8 +38,6 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         if (lua_state_[ecuIdent.c_str()].exists())
         {
             ecu_ident_ = ecuIdent;
-
-
             return;
         }
     }
@@ -115,18 +113,20 @@ string EcuLuaScript::getSeed(uint8_t seed_level) const
  * @param hexString: the literal hex string (e.g. "41 6f 54")
  * @return a vector with the byte values
  */
-vector<uint8_t> EcuLuaScript::literalHexStrToBytes(string& hexString)
+vector<uint8_t> EcuLuaScript::literalHexStrToBytes(const string& hexString) const
 {
+    // make a working copy
+    string tmpStr = hexString;
     // remove white spaces from string
-    hexString.erase(remove(hexString.begin(), hexString.end(), ' '), hexString.end());
+    tmpStr.erase(remove(tmpStr.begin(), tmpStr.end(), ' '), tmpStr.cend());
     vector<uint8_t> data;
     // plus `% 2` just in case of a "odd" byte number
-    data.reserve(hexString.length() / 2 + (hexString.length() % 2));
+    data.reserve(tmpStr.length() / 2 + (tmpStr.length() % 2));
     string byteString;
     uint8_t byte;
-    for (size_t i = 0; i < hexString.length(); i += 2)
+    for (size_t i = 0; i < tmpStr.length(); i += 2)
     {
-        byteString = hexString.substr(i, 2);
+        byteString = tmpStr.substr(i, 2);
         byte = static_cast<uint8_t> (strtol(byteString.c_str(), NULL, 16));
         data.push_back(byte);
     }
@@ -233,7 +233,6 @@ string EcuLuaScript::toByteResponse(unsigned long value,
         str[space - 1] = '\0';
         return str;
     }
-
     return "";
 }
 
