@@ -1,17 +1,17 @@
 /**
- * @file ECU.cpp
+ * @file electronic_control_unit.cpp
  * 
  * This file contains a class which constitutes a Electronic Control Unit (ECU). 
  */
 
-#include "ECU.h"
+#include "electronic_control_unit.h"
 #include "isotp_socket.h"
 #include <array>
 #include <unistd.h>
 
 using namespace std;
 
-ECU::ECU(const string& device, EcuLuaScript&& ecuScript)
+ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&& ecuScript)
 : broadcastServer_(ecuScript.getRequestId(), device, &sessionControl_)
 , udsServer_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, &sessionControl_, move(ecuScript))
 , broadcastServerThread_(&IsoTpSocket::readData, &broadcastServer_)
@@ -19,13 +19,13 @@ ECU::ECU(const string& device, EcuLuaScript&& ecuScript)
 {
 }
 
-ECU::~ECU()
+ElectronicControlUnit::~ElectronicControlUnit()
 {
     udsServerThread_.join();
     broadcastServerThread_.join();
 }
 
-void ECU::testECU(const string &config_file, const string &device)
+void ElectronicControlUnit::testECU(const string &config_file, const string &device)
 {
     // test ecu
     EcuLuaScript script("PCM", LUA_CONFIG_PATH + config_file);

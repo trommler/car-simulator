@@ -6,7 +6,7 @@
  */
 
 #include "ecu_lua_script.h"
-#include "ECU.h"
+#include "electronic_control_unit.h"
 #include "ecu_timer.h"
 #include "utilities.h"
 #include <string>
@@ -18,7 +18,7 @@ void start_server(const string &config_file, const string &device)
     cout << "start_server for config file: " << config_file << endl;
 
     EcuLuaScript script("PCM", LUA_CONFIG_PATH + config_file);
-    ECU ecu(device, move(script));
+    ElectronicControlUnit ecu(device, move(script));
 
     ecu.testECU(config_file, device);
 }

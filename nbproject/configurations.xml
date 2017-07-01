@@ -4,10 +4,10 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>src/ECU.h</itemPath>
       <itemPath>src/broadcast_server.h</itemPath>
       <itemPath>src/ecu_lua_script.h</itemPath>
       <itemPath>src/ecu_timer.h</itemPath>
+      <itemPath>src/electronic_control_unit.h</itemPath>
       <itemPath>src/isotp_socket.h</itemPath>
       <itemPath>src/service_identifier.h</itemPath>
       <itemPath>src/session_controller.h</itemPath>
@@ -21,10 +21,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>src/ECU.cpp</itemPath>
       <itemPath>src/broadcast_server.cpp</itemPath>
       <itemPath>src/ecu_lua_script.cpp</itemPath>
       <itemPath>src/ecu_timer.cpp</itemPath>
+      <itemPath>src/electronic_control_unit.cpp</itemPath>
       <itemPath>src/isotp_socket.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
       <itemPath>src/session_controller.cpp</itemPath>
@@ -166,10 +166,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/broadcast_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/broadcast_server.h" ex="false" tool="3" flavor2="0">
@@ -181,6 +177,10 @@
       <item path="src/ecu_timer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ecu_timer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/electronic_control_unit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/electronic_control_unit.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -325,10 +325,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/broadcast_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/broadcast_server.h" ex="false" tool="3" flavor2="0">
@@ -340,6 +336,10 @@
       <item path="src/ecu_timer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ecu_timer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/electronic_control_unit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/electronic_control_unit.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -474,10 +474,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/ECU.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ECU.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/broadcast_server.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/broadcast_server.h" ex="false" tool="3" flavor2="0">
@@ -489,6 +485,10 @@
       <item path="src/ecu_timer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ecu_timer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/electronic_control_unit.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/electronic_control_unit.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="11">
       </item>

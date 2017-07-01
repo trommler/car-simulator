@@ -1,10 +1,10 @@
 /** 
- * @file ECU.h
+ * @file electronic_control_unit.h
  * 
  */
 
-#ifndef ECU_H
-#define ECU_H
+#ifndef ELECTRONIC_CONTROL_UNIT_H
+#define ELECTRONIC_CONTROL_UNIT_H
 
 #include "selene.h"
 #include "broadcast_server.h"
@@ -16,12 +16,12 @@
 #include <thread>
 #include <memory>
 
-class ECU
+class ElectronicControlUnit
 {
 public:
-    ECU() = delete;
-    ECU(const std::string& device, EcuLuaScript&& ecuScript);
-    virtual ~ECU();
+    ElectronicControlUnit() = delete;
+    ElectronicControlUnit(const std::string& device, EcuLuaScript&& ecuScript);
+    virtual ~ElectronicControlUnit();
     void testECU(const std::string &config_file, const std::string &device);
 
 private:
@@ -32,4 +32,4 @@ private:
     std::thread udsServerThread_;
 };
 
-#endif /* ECU_H */
+#endif /* ELECTRONIC_CONTROL_UNIT_H */

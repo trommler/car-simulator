@@ -35,10 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/ECU.o \
 	${OBJECTDIR}/src/broadcast_server.o \
 	${OBJECTDIR}/src/ecu_lua_script.o \
 	${OBJECTDIR}/src/ecu_timer.o \
+	${OBJECTDIR}/src/electronic_control_unit.o \
 	${OBJECTDIR}/src/isotp_socket.o \
 	${OBJECTDIR}/src/session_controller.o \
 	${OBJECTDIR}/src/uds_server.o \
@@ -89,11 +89,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/amos-ss17-proj4 ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/src/ECU.o: src/ECU.cpp
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU.o src/ECU.cpp
-
 ${OBJECTDIR}/src/broadcast_server.o: src/broadcast_server.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
@@ -108,6 +103,11 @@ ${OBJECTDIR}/src/ecu_timer.o: src/ecu_timer.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer.o src/ecu_timer.cpp
+
+${OBJECTDIR}/src/electronic_control_unit.o: src/electronic_control_unit.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/electronic_control_unit.o src/electronic_control_unit.cpp
 
 ${OBJECTDIR}/src/isotp_socket.o: src/isotp_socket.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -201,19 +201,6 @@ ${TESTDIR}/tests/utils_test_runner.o: tests/utils_test_runner.cpp
 	$(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/utils_test_runner.o tests/utils_test_runner.cpp
 
 
-${OBJECTDIR}/src/ECU_nomain.o: ${OBJECTDIR}/src/ECU.o src/ECU.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/ECU.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ECU_nomain.o src/ECU.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/src/ECU.o ${OBJECTDIR}/src/ECU_nomain.o;\
-	fi
-
 ${OBJECTDIR}/src/broadcast_server_nomain.o: ${OBJECTDIR}/src/broadcast_server.o src/broadcast_server.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/broadcast_server.o`; \
@@ -251,6 +238,19 @@ ${OBJECTDIR}/src/ecu_timer_nomain.o: ${OBJECTDIR}/src/ecu_timer.o src/ecu_timer.
 	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ecu_timer_nomain.o src/ecu_timer.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/src/ecu_timer.o ${OBJECTDIR}/src/ecu_timer_nomain.o;\
+	fi
+
+${OBJECTDIR}/src/electronic_control_unit_nomain.o: ${OBJECTDIR}/src/electronic_control_unit.o src/electronic_control_unit.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/src/electronic_control_unit.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Wall -I/usr/include/lua5.2 -ISelene/include `pkg-config --cflags lua5.2` -std=c++14  -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/electronic_control_unit_nomain.o src/electronic_control_unit.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/src/electronic_control_unit.o ${OBJECTDIR}/src/electronic_control_unit_nomain.o;\
 	fi
 
 ${OBJECTDIR}/src/isotp_socket_nomain.o: ${OBJECTDIR}/src/isotp_socket.o src/isotp_socket.cpp 
