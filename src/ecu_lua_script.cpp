@@ -118,7 +118,7 @@ vector<uint8_t> EcuLuaScript::literalHexStrToBytes(const string& hexString) cons
     // make a working copy
     string tmpStr = hexString;
     // remove white spaces from string
-    tmpStr.erase(remove(tmpStr.begin(), tmpStr.end(), ' '), tmpStr.cend());
+    tmpStr.erase(remove(tmpStr.begin(), tmpStr.end(), ' '), tmpStr.end());
     vector<uint8_t> data;
     // plus `% 2` just in case of a "odd" byte number
     data.reserve(tmpStr.length() / 2 + (tmpStr.length() % 2));
