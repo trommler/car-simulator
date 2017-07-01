@@ -17,6 +17,9 @@ using namespace std;
 /// Look-up table for (uppercase) hexadecimal digits [0..F]
 static constexpr char HEX_LUT[] = "0123456789ABCDEF";
 
+/// Defines maximal size of an UDS message in bytes
+static constexpr int MAX_UDS_SIZE = 4096;
+
 /**
  * Constructor. 
  * 
@@ -170,9 +173,8 @@ string EcuLuaScript::ascii(const string& utf8_str) noexcept
 
 /**
  * Convert the given unsigned value into a hex byte string as used in requests 
- * and responses. The parameter `len` gives the number of bytes that gets 
- * returned. In case `len` equals 0 or exceeds the `INT_MAX` limit, a empty 
- * string is returned.
+ * and responses. The parameter `len` [0..4096] gives the number of bytes that
+ * gets returned. In case `len` equals 0 or a empty string is returned.
  * 
  * Examples:
  *     `toByteResponse(13248, 2)` -> `"33 C0"`
@@ -186,10 +188,9 @@ string EcuLuaScript::ascii(const string& utf8_str) noexcept
 string EcuLuaScript::toByteResponse(unsigned long value,
                                     size_t len /* = sizeof(unsigned long) */) noexcept
 {
-    if (len > INT_MAX)
+    if (len > MAX_UDS_SIZE)
     {
-        // it seams, someone is trying to provoke a segfault
-        return "";
+        len = MAX_UDS_SIZE;
     }
 
     static constexpr int CHAR_SP = 3; // character space for 2 hex digits + 1 whitespace

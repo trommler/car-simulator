@@ -238,11 +238,21 @@ void EcuLuaScriptTest::testToByteResponse()
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
 
     // len = -1 -> do some naughty stuff
-    inputValue = 0xff'ff'ff'ff'ff'ff'ff'ff;
+    inputValue = 0x00;
     len = -1;
-    expect = "";
+
+    for (int i = 0; i < 4096 - 1; ++i)
+    {
+        expect += "00 ";
+    }
+    expect += "00";
+
     result = ecuLuaScript.toByteResponse(inputValue, len);
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", static_cast<decltype(result.size())> (4096 * 3 - 1), result.size());
+    for (unsigned i = 0; i < result.size(); i++)
+    {
+        CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
+    }
 
     // inputValue = -1 -> do some more naughty stuff
     inputValue = -1;
