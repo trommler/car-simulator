@@ -63,20 +63,29 @@ UdsServer::~UdsServer()
 void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint8_t udsServiceIdentifier = buffer[0];
-    switch (udsServiceIdentifier)
+    
+    if (!script_.getRaw(intToHexString(buffer, num_bytes)).empty())
     {
-        case READ_DATA_BY_IDENTIFIER_REQ:
-            readDataByIdentifier(buffer, num_bytes);
-            break;
-        case DIAGNOSTIC_SESSION_CONTROL_REQ:
-            diagnosticSessionControl(buffer, num_bytes);
-            break;
-        case SECURITY_ACCESS_REQ:
-            securityAccess(buffer, num_bytes);
-            break;
-            // TODO: implement all other requests ...
-        default:
-            cerr << "Invalid UDS request received!\n";
+        std::vector<unsigned char> raw = script_.literalHexStrToBytes(script_.getRaw(intToHexString(buffer, num_bytes)));
+        sendData(raw.data(), raw.size());
+    }
+    else
+    {
+        switch (udsServiceIdentifier)
+        {
+            case READ_DATA_BY_IDENTIFIER_REQ:
+                readDataByIdentifier(buffer, num_bytes);
+                break;
+            case DIAGNOSTIC_SESSION_CONTROL_REQ:
+                diagnosticSessionControl(buffer, num_bytes);
+                break;
+            case SECURITY_ACCESS_REQ:
+                securityAccess(buffer, num_bytes);
+                break;
+                // TODO: implement all other requests ...
+            default:
+                cerr << "Invalid UDS request received!\n";
+        }
     }
 }
 
@@ -204,4 +213,56 @@ void UdsServer::securityAccess(const uint8_t* buffer, const size_t num_bytes) no
             sendData(resp.data(), resp.size());
         }
     }
+}
+
+std::string UdsServer::intToHexString(const uint8_t* buffer, const std::size_t num_bytes)
+{
+    string a = "";
+    
+    for(int i = 0; i < num_bytes; i++)
+    {
+        if((buffer[i] / 16) > 9)
+        {
+            if((buffer[i] / 16) == 0x0a)
+                a.append("A");
+            else if((buffer[i] / 16) == 0x0b)
+                a.append("B");
+            else if((buffer[i] / 16) == 0x0c)
+                a.append("C");
+            else if((buffer[i] / 16) == 0x0d)
+                a.append("D");
+            else if((buffer[i] / 16) == 0x0e)
+                a.append("E");
+            else if((buffer[i] / 16) == 0x0f)
+                a.append("F");
+        }
+        else
+        {
+            a.append(std::to_string(buffer[i] / 16));
+        }
+        if((buffer[i] % 16) > 9)
+        {
+            if((buffer[i] % 16) == 0x0a)
+                a.append("A");
+            else if((buffer[i] % 16) == 0x0b)
+                a.append("B");
+            else if((buffer[i] % 16) == 0x0c)
+                a.append("C");
+            else if((buffer[i] % 16) == 0x0d)
+                a.append("D");
+            else if((buffer[i] % 16) == 0x0e)
+                a.append("E");
+            else if((buffer[i] % 16) == 0x0f)
+                a.append("F");
+        }
+        else
+        {
+            a.append(std::to_string(buffer[i] % 16));
+        }
+        if(!(i == num_bytes-1))
+        {
+            a.append(" ");
+        }
+    }
+    return a;
 }
