@@ -1,4 +1,4 @@
-PCM = {
+Main = {
     RequestId = 0x102,
     ResponseId = 0x202,
 
@@ -7,21 +7,21 @@ PCM = {
     	[0x03] = "0x6677",
     },
 
-    Programming = 
+    Programming =
     {
-    	
+
 	ReadDataByIdentifier =
-	{	
+	{
 		[0x0003] = "0003",
 		[0x0004] = "0004",
 	}
     },
 
-    Extended = 
+    Extended =
     {
-    	
+
 	ReadDataByIdentifier =
-	{	
+	{
 		[0x0005] = "0005",
 		[0x0006] = "0006",
 	}
@@ -29,12 +29,12 @@ PCM = {
 
     Raw =
     {
-        
+
 	["22 F1 90"] = ascii("SALGA2EV9HA298784"),
         ["22 FA BC"] = "10 33 11",
 	["23 FA BC"] = "01 02 03 04 05 06 07",
 	["24 FA BC"] = "01 02 03 04 05 06 07 08 09",
-        
+
         myCounter=0,
         ["221289"] = function (request)
             myCounter = myCounter * 1;

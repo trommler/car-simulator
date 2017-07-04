@@ -1,4 +1,4 @@
-PCM = {
+Main = {
     RequestId = 0x100,
     ResponseId = 0x200,
 

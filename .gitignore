@@ -31,6 +31,7 @@
 # editor tmp files
 *~
 *.swp
+session.vim
 
 # IDE project meta files
 .cproject
@@ -39,9 +40,6 @@ build/
 dist/
 .settings/
 .dep.inc
-
-# vim swap files
-*.swp
 
 # ctags file
 tags

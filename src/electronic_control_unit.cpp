@@ -28,7 +28,7 @@ ElectronicControlUnit::~ElectronicControlUnit()
 void ElectronicControlUnit::testECU(const string &config_file, const string &device)
 {
     // test ecu
-    EcuLuaScript script("PCM", LUA_CONFIG_PATH + config_file);
+    EcuLuaScript script("Main", LUA_CONFIG_PATH + config_file);
     SessionController dummy;
     UdsServer tester(script.getResponseId(), script.getRequestId(), device, &dummy, move(script));
 
