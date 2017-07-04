@@ -9,7 +9,7 @@
 #include "ecu_timer.h"
 #include <atomic>
 
-enum class UdsSession
+enum UdsSession
 {
     DEFAULT = 0x01, ///< the default UDS session
     PROGRAMMING = 0x02,

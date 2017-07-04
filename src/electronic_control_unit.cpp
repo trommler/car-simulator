@@ -17,6 +17,7 @@ ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&
 , broadcastServerThread_(&IsoTpSocket::readData, &broadcastServer_)
 , udsServerThread_(&IsoTpSocket::readData, &udsServer_)
 {
+    ecuScript.setSessionController(&sessionControl_);
 }
 
 ElectronicControlUnit::~ElectronicControlUnit()

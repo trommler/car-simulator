@@ -7,6 +7,7 @@
 #define ECU_LUA_SCRIPT_H
 
 #include "selene.h"
+#include "session_controller.h"
 #include <string>
 #include <cstdint>
 #include <vector>
@@ -37,15 +38,17 @@ public:
 
     static std::string ascii(const std::string& utf8_str) noexcept;
     static std::string toByteResponse(unsigned int value, unsigned int len = sizeof(unsigned long)) noexcept;
-    void sendRaw(const std::string& response) const;
     static void sleep(unsigned int ms) noexcept;
+    void sendRaw(const std::string& response) const;
     int getCurrentSession() const;
     void switchToSession(int ses);
-    //static void foo(const std::string& utf8_str) noexcept;
+
+    void setSessionController(SessionController *sc) noexcept {pSessionCtrl_ = sc;}
 
 private:
     sel::State lua_state_;
     std::string ecu_ident_;
+    SessionController* pSessionCtrl_;
 
 };
 

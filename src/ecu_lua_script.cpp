@@ -34,6 +34,9 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         lua_state_["ascii"] = &ascii;
         lua_state_["toByteResponse"] = &toByteResponse;
         lua_state_["sleep"] = &sleep;
+        //lua_state_["getCurrentSession"] = &getCurrentSession;
+        //lua_state_["switchToSession"] = &switchToSession;
+        //lua_state_["sendRaw"] = &sendRaw;
 
         lua_state_.Load(luaScript);
         if (lua_state_[ecuIdent.c_str()].exists())
@@ -263,8 +266,7 @@ void EcuLuaScript::sleep(unsigned int ms) noexcept
  */
 int EcuLuaScript::getCurrentSession() const
 {
-    // TODO: implement
-    return 0;
+    return pSessionCtrl_->getCurretnUdsSession();
 }
 
 /**
@@ -274,7 +276,7 @@ int EcuLuaScript::getCurrentSession() const
  */
 void EcuLuaScript::switchToSession(int ses)
 {
-    // TODO: implement
+    pSessionCtrl_->setCurrentUdsSession(UdsSession(ses));
 }
 
 /**
