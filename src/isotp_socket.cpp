@@ -206,7 +206,7 @@ int IsoTpSocket::readData() noexcept
  * Proceeds the received data. This is the default implementation, which simply
  * prints out the received data in hexadecimal notation to `std::out`. This 
  * function is supposed be overridden to do something useful with the received 
- * data. To do this, derive an new class from `IsoTpSocket` and override the 
+ * data. To do this, derive a new class from `IsoTpSocket` and override the 
  * function to your likings.
  * 
  * @see IsoTpSocket::readData()
@@ -214,7 +214,7 @@ int IsoTpSocket::readData() noexcept
 void IsoTpSocket::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     cout << __func__ << "() Received " << dec << num_bytes << " bytes.\n";
-    for (unsigned i = 0; i < num_bytes; i++)
+    for (size_t i = 0; i < num_bytes; i++)
     {
         cout << " 0x"
                 << hex

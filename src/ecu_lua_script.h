@@ -33,17 +33,17 @@ public:
     std::string getDataByIdentifier(std::uint16_t identifier) const;
     std::string getDataByIdentifier(std::uint16_t identifier, const std::string& session) const;
     std::string getRaw(const std::string& identStr) const;
-    bool hasRaw(const std::string &identStr) const;
+    bool hasRaw(const std::string& identStr) const;
     std::vector<std::uint8_t> literalHexStrToBytes(const std::string& hexString) const;
 
     static std::string ascii(const std::string& utf8_str) noexcept;
-    static std::string toByteResponse(unsigned int value, unsigned int len = sizeof(unsigned long)) noexcept;
+    static std::string toByteResponse(std::uint32_t value, std::uint32_t len = sizeof(std::uint32_t)) noexcept;
     static void sleep(unsigned int ms) noexcept;
     void sendRaw(const std::string& response) const;
     int getCurrentSession() const;
     void switchToSession(int ses);
 
-    void setSessionController(SessionController *sc) noexcept {pSessionCtrl_ = sc;}
+    void setSessionController(SessionController* sc) noexcept {pSessionCtrl_ = sc;}
 
 private:
     sel::State lua_state_;

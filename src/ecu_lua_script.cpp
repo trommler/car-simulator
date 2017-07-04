@@ -178,7 +178,7 @@ string EcuLuaScript::ascii(const string& utf8_str) noexcept
 /**
  * Convert the given unsigned value into a hex byte string as used in requests
  * and responses. The parameter `len` [0..4096] gives the number of bytes that
- * gets returned. In case `len` equals 0 or a empty string is returned.
+ * gets returned. In case `len` equals 0, a empty string is returned.
  *
  * Examples:
  *     `toByteResponse(13248, 2)` -> `"33 C0"`
@@ -187,10 +187,10 @@ string EcuLuaScript::ascii(const string& utf8_str) noexcept
  *     `toByteResponse(13248)` -> `"00 00 00 00 00 00 33 C0"`
  *
  * @param value: the numeric value to send (e.g. `123`, `0xff`)
- * @param len: the length in bytes [default = sizeof(unsigned long) -> 8 on x64]
+ * @param len: the length in bytes [default = 4]
  */
-string EcuLuaScript::toByteResponse(unsigned int value,
-                                    unsigned int len /* = sizeof(unsigned long) */) noexcept
+string EcuLuaScript::toByteResponse(uint32_t value,
+                                    uint32_t len /* = 4 */) noexcept
 {
     if (len > MAX_UDS_SIZE)
     {
@@ -285,7 +285,7 @@ void EcuLuaScript::switchToSession(int ses)
  * @param identStr: the identifier string for the entry in the Lua "Raw"-table
  * @return true if identifier is in the raw section, false otherwise
  */
-bool EcuLuaScript::hasRaw(const string &identStr) const
+bool EcuLuaScript::hasRaw(const string& identStr) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()];
     return val.exists();
