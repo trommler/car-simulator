@@ -63,8 +63,9 @@ UdsServer::~UdsServer()
 void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint8_t udsServiceIdentifier = buffer[0];
-    
-    if (!script_.getRaw(intToHexString(buffer, num_bytes)).empty())
+    const bool isRaw = script_.hasRaw(intToHexString(buffer, num_bytes));
+
+    if (isRaw)
     {
         std::vector<unsigned char> raw = script_.literalHexStrToBytes(script_.getRaw(intToHexString(buffer, num_bytes)));
         sendData(raw.data(), raw.size());
@@ -82,7 +83,7 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
             case SECURITY_ACCESS_REQ:
                 securityAccess(buffer, num_bytes);
                 break;
-                // TODO: implement all other requests ...
+            // TODO: implement all other requests ...
             default:
                 cerr << "Invalid UDS request received!\n";
         }
@@ -101,7 +102,7 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
 {
     const uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
     string data;
-    
+
     if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::PROGRAMMING)
     {
         data = script_.getDataByIdentifier(dataIdentifier, "Programming");
@@ -110,13 +111,13 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
     {
         data = script_.getDataByIdentifier(dataIdentifier, "Extended");
     }
-    
+
     if(data.empty())
     {
         data = script_.getDataByIdentifier(dataIdentifier);
     }
-    
-    
+
+
     if (!data.empty())
     {
         // send positive response
@@ -141,7 +142,7 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
 
 /**
  * Starts a session and sends back the corresponding response message.
- * 
+ *
  * @param buffer: the buffer containing the UDS message
  * @param num_bytes: the length of the message in bytes
  */
@@ -174,7 +175,7 @@ void UdsServer::diagnosticSessionControl(const uint8_t* buffer, const size_t num
 }
 
 /**
- * 
+ *
  * @param buffer: the buffer containing the UDS message
  * @param num_bytes: the length of the message in bytes
  */
@@ -218,8 +219,8 @@ void UdsServer::securityAccess(const uint8_t* buffer, const size_t num_bytes) no
 std::string UdsServer::intToHexString(const uint8_t* buffer, const std::size_t num_bytes)
 {
     string a = "";
-    
-    for(int i = 0; i < num_bytes; i++)
+
+    for(unsigned int i = 0; i < num_bytes; i++)
     {
         if((buffer[i] / 16) > 9)
         {

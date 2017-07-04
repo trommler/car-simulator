@@ -9,32 +9,31 @@ Main = {
 
     Programming =
     {
-
-	ReadDataByIdentifier =
-	{
-		[0x0003] = "0003",
-		[0x0004] = "0004",
-	}
+        ReadDataByIdentifier =
+        {
+            [0x0003] = "0003",
+            [0x0004] = "0004",
+        }
     },
 
     Extended =
     {
-
-	ReadDataByIdentifier =
-	{
-		[0x0005] = "0005",
-		[0x0006] = "0006",
-	}
+        ReadDataByIdentifier =
+        {
+            [0x0005] = "0005",
+            [0x0006] = "0006",
+        }
     },
 
     Raw =
     {
-
-	["22 F1 90"] = ascii("SALGA2EV9HA298784"),
+        ["22 F1 90"] = ascii("SALGA2EV9HA298784"),
+        ["33 33 33"] = function()
+            return ascii("BEEF")
+        end,
         ["22 FA BC"] = "10 33 11",
-	["23 FA BC"] = "01 02 03 04 05 06 07",
-	["24 FA BC"] = "01 02 03 04 05 06 07 08 09",
-
+        ["23 FA BC"] = "01 02 03 04 05 06 07",
+        ["24 FA BC"] = "01 02 03 04 05 06 07 08 09",
         myCounter=0,
         ["221289"] = function (request)
             myCounter = myCounter * 1;
@@ -50,5 +49,3 @@ Main = {
         [0x1e23] = "231132",
     }
 }
-
-

@@ -21,7 +21,7 @@ void start_server(const string &config_file, const string &device)
     EcuLuaScript script("Main", LUA_CONFIG_PATH + config_file);
     ElectronicControlUnit ecu(device, move(script));
 
-    ecu.testECU(config_file, device);
+    //ecu.testECU(config_file, device);
 }
 
 void vitural_timer(){
@@ -87,12 +87,12 @@ int main(int argc, char** argv)
     vector<string> config_files = utils::getConfigFilenames(LUA_CONFIG_PATH);
     vector<thread> threads;
 
-    thread timer(vitural_timer);
-    threads.push_back(move(timer));
-    usleep(50000);
-    thread session_control(session_control_test, device);
-    threads.push_back(move(session_control));
-    usleep(50000);
+    //thread timer(vitural_timer);
+    //threads.push_back(move(timer));
+    //usleep(50000);
+    //thread session_control(session_control_test, device);
+    //threads.push_back(move(session_control));
+    //usleep(50000);
 
     for (const string &config_file : config_files)
     {
