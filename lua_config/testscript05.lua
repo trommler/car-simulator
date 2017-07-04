@@ -1,3 +1,6 @@
+myCounter = 0
+
+
 Main = {
     RequestId = 0x102,
     ResponseId = 0x202,
@@ -29,16 +32,13 @@ Main = {
     {
         ["22 F1 90"] = ascii("SALGA2EV9HA298784"),
         ["33 33 33"] = function()
-            return ascii("BEEF")
+            myCounter = myCounter + 1
+            sleep(1000)
+            return toByteResponse(myCounter, 3)
         end,
         ["22 FA BC"] = "10 33 11",
         ["23 FA BC"] = "01 02 03 04 05 06 07",
-        ["24 FA BC"] = "01 02 03 04 05 06 07 08 09",
-        myCounter=0,
-        ["221289"] = function (request)
-            myCounter = myCounter * 1;
-            return "62 1289" + toByteResponse(2, myCounter);
-        end
+        ["24 FA BC"] = "01 02 03 04 05 06 07 08 09"
     },
 
     ReadDataByIdentifier = { -- "=" on tables is necessary

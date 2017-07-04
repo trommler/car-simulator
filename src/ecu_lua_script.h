@@ -36,7 +36,7 @@ public:
     std::vector<std::uint8_t> literalHexStrToBytes(const std::string& hexString) const;
 
     static std::string ascii(const std::string& utf8_str) noexcept;
-    static std::string toByteResponse(unsigned long value, std::size_t len = sizeof (unsigned long)) noexcept;
+    static std::string toByteResponse(unsigned int value, unsigned int len = sizeof(unsigned long)) noexcept;
     void sendRaw(const std::string& response) const;
     static void sleep(unsigned int ms) noexcept;
     int getCurrentSession() const;

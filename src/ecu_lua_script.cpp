@@ -186,8 +186,8 @@ string EcuLuaScript::ascii(const string& utf8_str) noexcept
  * @param value: the numeric value to send (e.g. `123`, `0xff`)
  * @param len: the length in bytes [default = sizeof(unsigned long) -> 8 on x64]
  */
-string EcuLuaScript::toByteResponse(unsigned long value,
-                                    size_t len /* = sizeof(unsigned long) */) noexcept
+string EcuLuaScript::toByteResponse(unsigned int value,
+                                    unsigned int len /* = sizeof(unsigned long) */) noexcept
 {
     if (len > MAX_UDS_SIZE)
     {
@@ -303,12 +303,10 @@ string EcuLuaScript::getRaw(const string& identStr) const
 
     if (val.isFunction())
     {
-        cout << "is a function" << endl;
         return lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()]();
     }
     else
     {
-        cout << "is not a function" << endl;
         return val; // will be cast into string
     }
 }

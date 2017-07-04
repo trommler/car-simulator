@@ -220,9 +220,9 @@ void EcuLuaScriptTest::testToByteResponse()
         CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
     }
 
-    inputValue = 0xff'ff'ff'ff'ff'ff'ff'ff;
+    inputValue = 0xff'ff'ff'ff;
     len = 9;
-    expect = "00 FF FF FF FF FF FF FF FF";
+    expect = "00 00 00 00 00 FF FF FF FF";
     result = ecuLuaScript.toByteResponse(inputValue, len);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
     for (unsigned i = 0; i < result.size(); i++)
@@ -256,7 +256,7 @@ void EcuLuaScriptTest::testToByteResponse()
 
     // inputValue = -1 -> do some more naughty stuff
     inputValue = -1;
-    expect = "FF FF FF FF FF FF FF FF";
+    expect = "00 00 00 00 FF FF FF FF";
     result = ecuLuaScript.toByteResponse(inputValue);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
     for (unsigned i = 0; i < result.size(); i++)
@@ -282,7 +282,7 @@ void EcuLuaScriptTest::testToByteResponse()
             + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
             + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
             + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "
-            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF FF FF FF FF";
+            + "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF";
 
     result = ecuLuaScript.toByteResponse(inputValue, len);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
