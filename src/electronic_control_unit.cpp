@@ -13,7 +13,7 @@ using namespace std;
 
 ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&& ecuScript)
 : broadcastServer_(ecuScript.getRequestId(), device, &sessionControl_)
-, udsServer_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, &sessionControl_, move(ecuScript))
+, udsServer_(ecuScript.getResponseId(), ecuScript.getRequestId(), device, &sessionControl_, move(ecuScript))
 , broadcastServerThread_(&IsoTpSocket::readData, &broadcastServer_)
 , udsServerThread_(&IsoTpSocket::readData, &udsServer_)
 {

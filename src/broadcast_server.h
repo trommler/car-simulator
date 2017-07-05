@@ -10,7 +10,7 @@
 #include "session_controller.h"
 
 /// CAN address for broadcast messages like `TesterPresent`
-constexpr canid_t BROADCAST_ADDR = 0x7E0;
+constexpr canid_t BROADCAST_ADDR = 0x7DF;
 
 class BroadcastServer : public IsoTpSocket
 {
