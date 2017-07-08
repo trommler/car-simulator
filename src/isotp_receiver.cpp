@@ -1,25 +1,21 @@
 /**
- * @file isotp_sender.cpp
- *
- * This file holds a basic sender and receiver class to transmit data over CAN
- * using the ISO-TP protocol. The received data is handled by the 
+ * @file isotp_receiver.cpp
+ * 
+ * This file holds a basic receiver class to transmit data over CAN using the 
+ * ISO-TP protocol. The received data is handled by the 
  * `proceedReceivedData()`-function. To do something useful with the received
  * information, derive a new class from this one and override 
  * `proceedReceivedData()` with the new data handling (e.g. a routine to send
  * a proper response).
  */
 
-#include "isotp_socket.h"
-#include "service_identifier.h"
+#include "isotp_receiver.h"
 #include <net/if.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
-#include <array>
 #include <iostream>
 #include <unistd.h>
 #include <cstring>
-#include <cerrno>
-#include <cstdint>
 #include <iomanip>
 
 using namespace std;
@@ -27,96 +23,41 @@ using namespace std;
 constexpr size_t MAX_BUFSIZE = 4096; ///< max. 4096 bytes per UDS message
 
 /**
- * Opens the ISO_TP socket for sending.
- *
- * @return 0 on success, otherwise a negative value
- * @see IsoTpSocket::closeSender()
+ * Constructor. Opens the receiver socket.
+ * 
+ * @param source:
+ * @param dest:
+ * @param device: the device used for the transmission (e.g. "vcan0")
  */
-int IsoTpSocket::openSender() noexcept
+IsoTpReceiver::IsoTpReceiver(canid_t source,
+                             canid_t dest,
+                             const string& device)
+: source_(source)
+, dest_(dest)
+, device_(device)
 {
-    struct sockaddr_can addr;
-    addr.can_addr.tp.tx_id = source_; // sender
-    addr.can_addr.tp.rx_id = dest_; // receiver
-    addr.can_family = AF_CAN;
-
-    int skt = socket(PF_CAN, SOCK_DGRAM, CAN_ISOTP);
-    if (skt < 0)
+    int err = openReceiver();
+    if (err != 0)
     {
-        cerr << __func__ << "() socket: " << strerror(errno) << '\n';
-        return -1;
+        throw exception();
     }
-
-    struct ifreq ifr;
-    strncpy(ifr.ifr_name, device_.c_str(), device_.length() + 1);
-    ioctl(skt, SIOCGIFINDEX, &ifr);
-    addr.can_ifindex = ifr.ifr_ifindex;
-
-    auto bind_res = bind(skt,
-                         reinterpret_cast<struct sockaddr*> (&addr),
-                         sizeof(addr));
-    if (bind_res < 0)
-    {
-        cerr << __func__ << "() bind: " << strerror(errno) << '\n';
-        close(skt);
-        return -2;
-    }
-    send_skt_ = skt;
-
-    return 0;
 }
 
 /**
- * Closes the ISO_TP socket for sending.
- * 
- * @see IsoTpSocket::openSender()
+ * Destructor. Closes the receiver socket.
  */
-void IsoTpSocket::closeSender() noexcept
+IsoTpReceiver::~IsoTpReceiver()
 {
-    if (send_skt_ < 0)
-    {
-        cerr << __func__ << "() Sender socket is already closed!\n";
-        return;
-    }
-    close(send_skt_);
-    send_skt_ = -1;
-}
-
-/**
- * Send the given number of bytes located in the buffer. The sender socket
- * has to be opened first.
- * 
- * @param buffer: the pointer to the data buffer
- * @param size: the number of bytes to write in the socket
- * @return the number of sent bytes or a negative value on error
- * @see IsoTpSocket::openSender()
- * @see IsoTpSocket::closeSender()
- */
-int IsoTpSocket::sendData(const void* buffer, size_t size) noexcept
-{
-    if (send_skt_ < 0)
-    {
-        cerr << __func__ << "() Invalid socket file descriptor!\n";
-        return -1;
-    }
-
-    auto bytes_sent = write(send_skt_, buffer, size);
-    if (bytes_sent < 0)
-    {
-        cerr << __func__ << "() write: " << strerror(errno) << '\n';
-        return -2;
-    }
-
-    cout << __func__ << "() Sent " << dec << bytes_sent << " bytes." << endl;
-    return bytes_sent;
+    closeReceiver();
 }
 
 /**
  * Opens the socket for receiving the via ISO_TP transmitted data.
  *
  * @return 0 on success, otherwise a negative value
- * @see IsoTpSocket::closeReceiver()
+ * @see IsoTpReceiver::closeReceiver()
  */
-int IsoTpSocket::openReceiver() noexcept
+int IsoTpReceiver::openReceiver() noexcept
 {
     isOnExit_ = false;
     struct sockaddr_can addr;
@@ -154,9 +95,9 @@ int IsoTpSocket::openReceiver() noexcept
 /**
  * Closes the socket for receiving data.
  * 
- * @see IsoTpSocket::openReceiver()
+ * @see IsoTpReceiver::openReceiver()
  */
-void IsoTpSocket::closeReceiver() noexcept
+void IsoTpReceiver::closeReceiver() noexcept
 {
     isOnExit_ = true;
 
@@ -176,10 +117,10 @@ void IsoTpSocket::closeReceiver() noexcept
  * `proceedReceivedData()`-function to your likings.
  * 
  * @return 0 on success, otherwise a negative value
- * @see IsoTpSocket::proceedReceivedData()
- * @see IsoTpSocket::closeReceiver()
+ * @see IsoTpReceiver::proceedReceivedData()
+ * @see IsoTpReceiver::closeReceiver()
  */
-int IsoTpSocket::readData() noexcept
+int IsoTpReceiver::readData() noexcept
 {
     if (receive_skt_ < 0)
     {
@@ -209,9 +150,9 @@ int IsoTpSocket::readData() noexcept
  * data. To do this, derive a new class from `IsoTpSocket` and override the 
  * function to your likings.
  * 
- * @see IsoTpSocket::readData()
+ * @see IsoTpReceiver::readData()
  */
-void IsoTpSocket::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
+void IsoTpReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     cout << __func__ << "() Received " << dec << num_bytes << " bytes.\n";
     for (size_t i = 0; i < num_bytes; i++)

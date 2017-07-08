@@ -30,8 +30,8 @@ public:
     std::uint16_t getRequestId() const;
     std::uint16_t getResponseId() const;
     std::string getSeed(std::uint8_t identifier) const;
-    std::string getDataByIdentifier(std::uint16_t identifier) const;
-    std::string getDataByIdentifier(std::uint16_t identifier, const std::string& session) const;
+    std::string getDataByIdentifier(const std::string& identifier) const;
+    std::string getDataByIdentifier(const std::string& identifier, const std::string& session) const;
     std::string getRaw(const std::string& identStr) const;
     bool hasRaw(const std::string& identStr) const;
     std::vector<std::uint8_t> literalHexStrToBytes(const std::string& hexString) const;
@@ -43,7 +43,7 @@ public:
     int getCurrentSession() const;
     void switchToSession(int ses);
 
-    void setSessionController(SessionController* sc) noexcept {pSessionCtrl_ = sc;}
+    void setSessionController(SessionController* pSesCtrl) noexcept;
 
 private:
     sel::State lua_state_;

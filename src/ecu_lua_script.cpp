@@ -21,7 +21,7 @@ static constexpr char HEX_LUT[] = "0123456789ABCDEF";
 static constexpr int MAX_UDS_SIZE = 4096;
 
 /**
- * Constructor.
+ * Constructor. Loads a Lua script and injects common used functions.
  *
  * @param ecuIdent: the identifier name for the ECU (e.g. "PCM")
  * @param luaScript: the path to the Lua script
@@ -74,7 +74,7 @@ uint16_t EcuLuaScript::getResponseId() const
  * @param identifier: the identifier to access the field in the Lua table
  * @return the identifier field on success, otherwise an empty string
  */
-string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
+string EcuLuaScript::getDataByIdentifier(const string& identifier) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
     if (val.exists())
@@ -91,7 +91,7 @@ string EcuLuaScript::getDataByIdentifier(uint16_t identifier) const
  * @param session: the session as string (e.g. "Programming")
  * @return the identifier field on success, otherwise an empty string
  */
-string EcuLuaScript::getDataByIdentifier(uint16_t identifier, const string& session) const
+string EcuLuaScript::getDataByIdentifier(const string& identifier, const string& session) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][session][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
     if (val.exists())
@@ -311,4 +311,14 @@ string EcuLuaScript::getRaw(const string& identStr) const
     {
         return val; // will be cast into string
     }
+}
+
+/**
+ * Sets the SessionController required for session handling.
+ * 
+ * @param pSesCtrl: pointer to the orchestrating `SessionController`
+ */
+void EcuLuaScript::setSessionController(SessionController* pSesCtrl) noexcept
+{
+    pSessionCtrl_ = pSesCtrl;
 }

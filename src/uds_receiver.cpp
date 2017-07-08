@@ -1,53 +1,29 @@
-/**
- * @file uds_server.cpp
- *
+/** 
+ * @file uds_receiver.cpp
+ * 
  * Implementation of an UDS server, which receives requests and sends response
  * messages via ISO_TP.
  */
 
-#include "uds_server.h"
+#include "uds_receiver.h"
 #include "service_identifier.h"
-#include "session_controller.h"
-#include <iostream>
-#include <cstdint>
-#include <string>
-#include <exception>
-#include <array>
 #include <vector>
+#include <array>
+#include <iostream>
 
 using namespace std;
 
-/**
- * Constructor. Opens the sockets for sending and receiving.
- *
- * @param device: the name of the transmitting device (e. g. "vcan0")
- * @param ecuScript: the `EcuLuaScipt` as rvalue
- */
-UdsServer::UdsServer(canid_t source,
-                     canid_t dest,
-                     const string& device,
-                     SessionController* pSesCtrl,
-                     EcuLuaScript&& ecuScript)
-: IsoTpSocket(source, dest, device)
-, pSessionCtrl_(pSesCtrl)
+UdsReceiver::UdsReceiver(canid_t source,
+                         canid_t dest,
+                         const string& device,
+                         EcuLuaScript&& ecuScript,
+                         const IsoTpSender& sender,
+                         SessionController* pSesCtrl)
+: IsoTpReceiver(source, dest, device)
 , script_(move(ecuScript))
+, sender_(sender)
+, pSessionCtrl_(pSesCtrl)
 {
-    int err = openReceiver();
-    err |= openSender();
-
-    if (err != 0)
-    {
-        throw exception();
-    }
-}
-
-/**
- * Destructor. Closes the sockets for sending and receiving.
- */
-UdsServer::~UdsServer()
-{
-    closeSender();
-    closeReceiver();
 }
 
 /**
@@ -56,19 +32,19 @@ UdsServer::~UdsServer()
  *
  * @param buffer: the buffer containing the received data
  * @param num_bytes: the number of received bytes.
- * @see IsoTpSocket::sendData()
+ * @see IsoTpSender::sendData()
  * @see EcuLuaScript::getRequestId()
- * @see EcuLuaScript::getResponseId
+ * @see EcuLuaScript::getResponseId()
  */
-void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
+void UdsReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint8_t udsServiceIdentifier = buffer[0];
     const bool isRaw = script_.hasRaw(intToHexString(buffer, num_bytes));
 
     if (isRaw)
     {
-        std::vector<unsigned char> raw = script_.literalHexStrToBytes(script_.getRaw(intToHexString(buffer, num_bytes)));
-        sendData(raw.data(), raw.size());
+        vector<unsigned char> raw = script_.literalHexStrToBytes(script_.getRaw(intToHexString(buffer, num_bytes)));
+        sender_.sendData(raw.data(), raw.size());
     }
     else
     {
@@ -81,9 +57,9 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
                 diagnosticSessionControl(buffer, num_bytes);
                 break;
             case SECURITY_ACCESS_REQ:
-                securityAccess(buffer, num_bytes);
+                //                securityAccess(buffer, num_bytes);
                 break;
-            // TODO: implement all other requests ...
+                // TODO: implement all other requests ...
             default:
                 cerr << "Invalid UDS request received!\n";
         }
@@ -98,23 +74,23 @@ void UdsServer::proceedReceivedData(const uint8_t* buffer, const size_t num_byte
  * @param buffer: the buffer containing the UDS message
  * @param num_bytes: the length of the message in bytes (min. 3 bytes)
  */
-void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
+void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
     string data;
 
     if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::PROGRAMMING)
     {
-        data = script_.getDataByIdentifier(dataIdentifier, "Programming");
+        data = script_.getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Programming");
     }
     else if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::EXTENDED)
     {
-        data = script_.getDataByIdentifier(dataIdentifier, "Extended");
+        data = script_.getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Extended");
     }
-
-    if(data.empty())
+    else // default session
     {
-        data = script_.getDataByIdentifier(dataIdentifier);
+        const string resp = EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier));
+        data = script_.getDataByIdentifier(resp);
     }
 
 
@@ -128,7 +104,7 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
             buffer[2]
         };
         resp.insert(resp.cend(), data.cbegin(), data.cend()); // insert payload
-        sendData(resp.data(), resp.size());
+        sender_.sendData(resp.data(), resp.size());
     }
     else // send out of range
     {
@@ -136,7 +112,7 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
             ERROR,
             REQUEST_OUT_OF_RANGE
         };
-        sendData(nrc.data(), nrc.size());
+        sender_.sendData(nrc.data(), nrc.size());
     }
 }
 
@@ -146,7 +122,7 @@ void UdsServer::readDataByIdentifier(const uint8_t* buffer, const size_t num_byt
  * @param buffer: the buffer containing the UDS message
  * @param num_bytes: the length of the message in bytes
  */
-void UdsServer::diagnosticSessionControl(const uint8_t* buffer, const size_t num_bytes)
+void UdsReceiver::diagnosticSessionControl(const uint8_t* buffer, const size_t num_bytes)
 {
     const uint8_t sessionId = buffer[1];
     switch (sessionId)
@@ -171,7 +147,7 @@ void UdsServer::diagnosticSessionControl(const uint8_t* buffer, const size_t num
         DIAGNOSTIC_SESSION_CONTROL_RES,
         sessionId
     };
-    sendData(resp.data(), resp.size());
+    sender_.sendData(resp.data(), resp.size());
 }
 
 /**
@@ -179,7 +155,7 @@ void UdsServer::diagnosticSessionControl(const uint8_t* buffer, const size_t num
  * @param buffer: the buffer containing the UDS message
  * @param num_bytes: the length of the message in bytes
  */
-void UdsServer::securityAccess(const uint8_t* buffer, const size_t num_bytes) noexcept
+void UdsReceiver::securityAccess(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint8_t seedId = buffer[1];
     const string seed = script_.getSeed(seedId);
@@ -192,7 +168,7 @@ void UdsServer::securityAccess(const uint8_t* buffer, const size_t num_bytes) no
             seedId
         };
         resp.insert(resp.cend(), seed.cbegin(), seed.cend() - 1); // insert payload - nullbyte
-        sendData(resp.data(), resp.size());
+        sender_.sendData(resp.data(), resp.size());
         securityAccessType_ = seedId + 0x01;
     }
     else
@@ -202,7 +178,7 @@ void UdsServer::securityAccess(const uint8_t* buffer, const size_t num_bytes) no
             // second request
             constexpr array<uint8_t, 1> resp = {SECURITY_ACCESS_RES};
             // Lua seed function
-            sendData(resp.data(), resp.size());
+            sender_.sendData(resp.data(), resp.size());
             securityAccessType_ = 0x00;
         }
         else
@@ -211,56 +187,56 @@ void UdsServer::securityAccess(const uint8_t* buffer, const size_t num_bytes) no
                 ERROR,
                 SUBFUNCTION_NOT_SUPPORTED
             };
-            sendData(resp.data(), resp.size());
+            sender_.sendData(resp.data(), resp.size());
         }
     }
 }
 
-std::string UdsServer::intToHexString(const uint8_t* buffer, const std::size_t num_bytes)
+string UdsReceiver::intToHexString(const uint8_t* buffer, const size_t num_bytes)
 {
     string a = "";
 
-    for(unsigned int i = 0; i < num_bytes; i++)
+    for (unsigned int i = 0; i < num_bytes; i++)
     {
-        if((buffer[i] / 16) > 9)
+        if ((buffer[i] / 16) > 9)
         {
-            if((buffer[i] / 16) == 0x0a)
+            if ((buffer[i] / 16) == 0x0a)
                 a.append("A");
-            else if((buffer[i] / 16) == 0x0b)
+            else if ((buffer[i] / 16) == 0x0b)
                 a.append("B");
-            else if((buffer[i] / 16) == 0x0c)
+            else if ((buffer[i] / 16) == 0x0c)
                 a.append("C");
-            else if((buffer[i] / 16) == 0x0d)
+            else if ((buffer[i] / 16) == 0x0d)
                 a.append("D");
-            else if((buffer[i] / 16) == 0x0e)
+            else if ((buffer[i] / 16) == 0x0e)
                 a.append("E");
-            else if((buffer[i] / 16) == 0x0f)
+            else if ((buffer[i] / 16) == 0x0f)
                 a.append("F");
         }
         else
         {
-            a.append(std::to_string(buffer[i] / 16));
+            a.append(to_string(buffer[i] / 16));
         }
-        if((buffer[i] % 16) > 9)
+        if ((buffer[i] % 16) > 9)
         {
-            if((buffer[i] % 16) == 0x0a)
+            if ((buffer[i] % 16) == 0x0a)
                 a.append("A");
-            else if((buffer[i] % 16) == 0x0b)
+            else if ((buffer[i] % 16) == 0x0b)
                 a.append("B");
-            else if((buffer[i] % 16) == 0x0c)
+            else if ((buffer[i] % 16) == 0x0c)
                 a.append("C");
-            else if((buffer[i] % 16) == 0x0d)
+            else if ((buffer[i] % 16) == 0x0d)
                 a.append("D");
-            else if((buffer[i] % 16) == 0x0e)
+            else if ((buffer[i] % 16) == 0x0e)
                 a.append("E");
-            else if((buffer[i] % 16) == 0x0f)
+            else if ((buffer[i] % 16) == 0x0f)
                 a.append("F");
         }
         else
         {
-            a.append(std::to_string(buffer[i] % 16));
+            a.append(to_string(buffer[i] % 16));
         }
-        if(!(i == num_bytes-1))
+        if (!(i == num_bytes - 1))
         {
             a.append(" ");
         }

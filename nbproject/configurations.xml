@@ -4,14 +4,15 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>src/broadcast_server.h</itemPath>
+      <itemPath>src/broadcast_receiver.h</itemPath>
       <itemPath>src/ecu_lua_script.h</itemPath>
       <itemPath>src/ecu_timer.h</itemPath>
       <itemPath>src/electronic_control_unit.h</itemPath>
-      <itemPath>src/isotp_socket.h</itemPath>
+      <itemPath>src/isotp_receiver.h</itemPath>
+      <itemPath>src/isotp_sender.h</itemPath>
       <itemPath>src/service_identifier.h</itemPath>
       <itemPath>src/session_controller.h</itemPath>
-      <itemPath>src/uds_server.h</itemPath>
+      <itemPath>src/uds_receiver.h</itemPath>
       <itemPath>src/utilities.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -21,14 +22,15 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>src/broadcast_server.cpp</itemPath>
+      <itemPath>src/broadcast_receiver.cpp</itemPath>
       <itemPath>src/ecu_lua_script.cpp</itemPath>
       <itemPath>src/ecu_timer.cpp</itemPath>
       <itemPath>src/electronic_control_unit.cpp</itemPath>
-      <itemPath>src/isotp_socket.cpp</itemPath>
+      <itemPath>src/isotp_receiver.cpp</itemPath>
+      <itemPath>src/isotp_sender.cpp</itemPath>
       <itemPath>src/main.cpp</itemPath>
       <itemPath>src/session_controller.cpp</itemPath>
-      <itemPath>src/uds_server.cpp</itemPath>
+      <itemPath>src/uds_receiver.cpp</itemPath>
       <itemPath>src/utilities.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -43,6 +45,14 @@
         <itemPath>tests/ecu_lua_script_test.h</itemPath>
         <itemPath>tests/ecu_lua_script_test_runner.cpp</itemPath>
       </logicalFolder>
+      <logicalFolder name="f5"
+                     displayName="IsoTpSenderTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/isotp_sender_test.cpp</itemPath>
+        <itemPath>tests/isotp_sender_test.h</itemPath>
+        <itemPath>tests/isotp_sender_test_runner.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="SeleneTest"
                      projectFiles="true"
@@ -51,13 +61,13 @@
         <itemPath>tests/selene_test.h</itemPath>
         <itemPath>tests/selene_test_runner.cpp</itemPath>
       </logicalFolder>
-      <logicalFolder name="f4"
-                     displayName="UdsServerTest"
+      <logicalFolder name="f6"
+                     displayName="UdsReceiverTest"
                      projectFiles="true"
                      kind="TEST">
-        <itemPath>tests/uds_server_test.cpp</itemPath>
-        <itemPath>tests/uds_server_test.h</itemPath>
-        <itemPath>tests/uds_server_test_runner.cpp</itemPath>
+        <itemPath>tests/uds_receiver_test.cpp</itemPath>
+        <itemPath>tests/uds_receiver_test.h</itemPath>
+        <itemPath>tests/uds_receiver_test_runner.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1"
                      displayName="UtilitiesTest"
@@ -152,7 +162,7 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <folder path="TestFiles/f4">
+      <folder path="TestFiles/f5">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
         </cTool>
@@ -160,15 +170,29 @@
           <commandLine>`cppunit-config --cflags`</commandLine>
         </ccTool>
         <linkerTool>
-          <output>${TESTDIR}/TestFiles/f4</output>
+          <output>${TESTDIR}/TestFiles/f5</output>
           <linkerLibItems>
             <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/broadcast_server.cpp" ex="false" tool="1" flavor2="0">
+      <folder path="TestFiles/f6">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f6</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="src/broadcast_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/broadcast_server.h" ex="false" tool="3" flavor2="0">
+      <item path="src/broadcast_receiver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ecu_lua_script.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -182,9 +206,13 @@
       </item>
       <item path="src/electronic_control_unit.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/isotp_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
+      <item path="src/isotp_receiver.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/isotp_sender.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/isotp_sender.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -194,9 +222,9 @@
       </item>
       <item path="src/session_controller.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/uds_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
+      <item path="src/uds_receiver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -211,17 +239,23 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="tests/isotp_sender_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/isotp_sender_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/isotp_sender_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      <item path="tests/uds_receiver_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      <item path="tests/uds_receiver_test.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="tests/uds_server_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      <item path="tests/uds_receiver_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utils_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -311,7 +345,7 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <folder path="TestFiles/f4">
+      <folder path="TestFiles/f5">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
         </cTool>
@@ -319,15 +353,29 @@
           <commandLine>`cppunit-config --cflags`</commandLine>
         </ccTool>
         <linkerTool>
-          <output>${TESTDIR}/TestFiles/f4</output>
+          <output>${TESTDIR}/TestFiles/f5</output>
           <linkerLibItems>
             <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/broadcast_server.cpp" ex="false" tool="1" flavor2="0">
+      <folder path="TestFiles/f6">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f6</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="src/broadcast_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/broadcast_server.h" ex="false" tool="3" flavor2="0">
+      <item path="src/broadcast_receiver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ecu_lua_script.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -341,9 +389,13 @@
       </item>
       <item path="src/electronic_control_unit.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/isotp_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
+      <item path="src/isotp_receiver.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/isotp_sender.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/isotp_sender.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -353,9 +405,9 @@
       </item>
       <item path="src/session_controller.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/uds_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
+      <item path="src/uds_receiver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -370,17 +422,23 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="tests/isotp_sender_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/isotp_sender_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/isotp_sender_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      <item path="tests/uds_receiver_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      <item path="tests/uds_receiver_test.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="tests/uds_server_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      <item path="tests/uds_receiver_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utils_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -460,7 +518,7 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <folder path="TestFiles/f4">
+      <folder path="TestFiles/f5">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
         </cTool>
@@ -468,15 +526,29 @@
           <commandLine>`cppunit-config --cflags`</commandLine>
         </ccTool>
         <linkerTool>
-          <output>${TESTDIR}/TestFiles/f4</output>
+          <output>${TESTDIR}/TestFiles/f5</output>
           <linkerLibItems>
             <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <item path="src/broadcast_server.cpp" ex="false" tool="1" flavor2="0">
+      <folder path="TestFiles/f6">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f6</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="src/broadcast_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/broadcast_server.h" ex="false" tool="3" flavor2="0">
+      <item path="src/broadcast_receiver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/ecu_lua_script.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -490,9 +562,13 @@
       </item>
       <item path="src/electronic_control_unit.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/isotp_socket.cpp" ex="false" tool="1" flavor2="11">
+      <item path="src/isotp_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/isotp_socket.h" ex="false" tool="3" flavor2="0">
+      <item path="src/isotp_receiver.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/isotp_sender.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/isotp_sender.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="true" tool="1" flavor2="11">
       </item>
@@ -502,9 +578,9 @@
       </item>
       <item path="src/session_controller.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/uds_server.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/uds_receiver.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/uds_server.h" ex="false" tool="3" flavor2="0">
+      <item path="src/uds_receiver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/utilities.cpp" ex="false" tool="1" flavor2="11">
       </item>
@@ -519,17 +595,23 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="tests/isotp_sender_test.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/isotp_sender_test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/isotp_sender_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="tests/uds_server_test.cpp" ex="false" tool="1" flavor2="0">
+      <item path="tests/uds_receiver_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="tests/uds_server_test.h" ex="false" tool="3" flavor2="0">
+      <item path="tests/uds_receiver_test.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="tests/uds_server_test_runner.cpp" ex="false" tool="1" flavor2="0">
+      <item path="tests/uds_receiver_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utils_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

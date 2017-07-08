@@ -8,7 +8,7 @@
 #include "ecu_lua_script.h"
 
 const std::string ECU_IDENT = "PCM";
-const std::string LUA_SCRIPT = "tests/test_config_dir/testscript03.lua";
+const std::string LUA_SCRIPT = "tests/test_config_dir/testscript05.lua";
 
 CPPUNIT_TEST_SUITE_REGISTRATION(EcuLuaScriptTest);
 
@@ -53,23 +53,23 @@ void EcuLuaScriptTest::testGetDataByIdentifier()
     EcuLuaScript ecuLuaScript(ECU_IDENT, LUA_SCRIPT);
     std::uint16_t identifier = 0xf190;
     std::string expect = "SALGA2EV9HA298784";
-    std::string result = ecuLuaScript.getDataByIdentifier(identifier);
+    std::string result = ecuLuaScript.getDataByIdentifier(EcuLuaScript::toByteResponse(identifier, 2));
     CPPUNIT_ASSERT_EQUAL(expect, result);
 
     identifier = 0xf124;
     expect = "HPLA-12345-AB";
-    result = ecuLuaScript.getDataByIdentifier(identifier);
+    result = ecuLuaScript.getDataByIdentifier(EcuLuaScript::toByteResponse(identifier, 2));
     CPPUNIT_ASSERT_EQUAL(expect, result);
 
     identifier = 0x1e23;
     expect = "231132";
-    result = ecuLuaScript.getDataByIdentifier(identifier);
+    result = ecuLuaScript.getDataByIdentifier(EcuLuaScript::toByteResponse(identifier, 2));
     CPPUNIT_ASSERT_EQUAL(expect, result);
 
     // this is supposed to fail
     identifier = 0xf123;
     expect = "";
-    result = ecuLuaScript.getDataByIdentifier(identifier);
+    result = ecuLuaScript.getDataByIdentifier(EcuLuaScript::toByteResponse(identifier, 2));
     CPPUNIT_ASSERT_EQUAL(expect, result);
 }
 
@@ -317,8 +317,8 @@ void EcuLuaScriptTest::testGetRaw()
         CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
     }
 
-    identStr = "22 F1 90";
-    expect = "62 F1 90" + ecuLuaScript.ascii("SALGA2EV9HA298784");
+    identStr = "22 F1 91";
+    expect = "62 F1 91" + ecuLuaScript.ascii("SALGA2EV9HA298784");
     result = ecuLuaScript.getRaw(identStr);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
     for (unsigned i = 0; i < result.size(); i++)
@@ -326,8 +326,8 @@ void EcuLuaScriptTest::testGetRaw()
         CPPUNIT_ASSERT_EQUAL(expect.at(i), result.at(i));
     }
 
-    identStr = "22 F1 90";
-    expect = "62 F1 90 53 41 4C 47 41 32 45 56 39 48 41 32 39 38 37 38 34 ";
+    identStr = "22 F1 91";
+    expect = "62 F1 91 53 41 4C 47 41 32 45 56 39 48 41 32 39 38 37 38 34 ";
     result = ecuLuaScript.getRaw(identStr);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Size mismatch!", expect.size(), result.size());
     for (unsigned i = 0; i < result.size(); i++)

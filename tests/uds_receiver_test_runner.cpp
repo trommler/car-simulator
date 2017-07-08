@@ -1,6 +1,17 @@
-/** 
- * @file uds_server_test_runner.cpp
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
+
+/* 
+ * File:   uds_receiver_test_runner.cpp
+ * Author: bauer
+ * 
+ * Created on 07.07.2017, 23:43:20
+ */
+
+// CppUnit site http://sourceforge.net/projects/cppunit/files
 
 #include <cppunit/BriefTestProgressListener.h>
 #include <cppunit/CompilerOutputter.h>
