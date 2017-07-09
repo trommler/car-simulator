@@ -12,7 +12,7 @@
 #include <string>
 
 /// CAN address for broadcast messages like `TesterPresent`
-static constexpr canid_t BROADCAST_ADDR = 0x7DF;
+static constexpr canid_t BROADCAST_ADDR = 0x000;
 
 class BroadcastReceiver : public IsoTpReceiver
 {
@@ -31,6 +31,7 @@ public:
 
     virtual void proceedReceivedData(const std::uint8_t* buffer,
                                      const std::size_t num_bytes) noexcept override;
+    void diagnosticSessionControl(const uint8_t* buffer, const size_t num_bytes);
 
 private:
     const IsoTpSender& sender_;

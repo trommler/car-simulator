@@ -1,6 +1,7 @@
 Main = {
     RequestId = 0x101,
     ResponseId = 0x201,
+    BroadcastId = 0x300,
 
     Seed = {
     	[0x01] = "0x4455",

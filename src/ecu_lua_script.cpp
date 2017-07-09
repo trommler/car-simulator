@@ -68,6 +68,11 @@ uint16_t EcuLuaScript::getResponseId() const
     return int(lua_state_[ecu_ident_.c_str()][RES_ID_FIELD]);
 }
 
+uint16_t EcuLuaScript::getBroadcastId() const
+{
+    return int(lua_state_[ecu_ident_.c_str()][BROADCAST_ID_FIELD]);
+}
+
 /**
  * Reads the data according to `ReadDataByIdentifier`-table in the Lua script.
  *

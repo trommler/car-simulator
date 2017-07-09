@@ -14,6 +14,7 @@
 
 constexpr char REQ_ID_FIELD[] = "RequestId";
 constexpr char RES_ID_FIELD[] = "ResponseId";
+constexpr char BROADCAST_ID_FIELD[] = "BroadcastId";
 constexpr char READ_DATA_BY_IDENTIFIER_TABLE[] = "ReadDataByIdentifier";
 constexpr char READ_SEED[] = "Seed";
 constexpr char RAW_TABLE[] = "Raw";
@@ -29,6 +30,7 @@ public:
 
     std::uint16_t getRequestId() const;
     std::uint16_t getResponseId() const;
+    std::uint16_t getBroadcastId() const;
     std::string getSeed(std::uint8_t identifier) const;
     std::string getDataByIdentifier(const std::string& identifier) const;
     std::string getDataByIdentifier(const std::string& identifier, const std::string& session) const;

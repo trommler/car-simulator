@@ -51,8 +51,11 @@ void UdsReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_by
         switch (udsServiceIdentifier)
         {
             case READ_DATA_BY_IDENTIFIER_REQ:
+            {
                 readDataByIdentifier(buffer, num_bytes);
+                pSessionCtrl_->reset();
                 break;
+            }
             case DIAGNOSTIC_SESSION_CONTROL_REQ:
                 diagnosticSessionControl(buffer, num_bytes);
                 break;

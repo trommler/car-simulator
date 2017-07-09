@@ -4,6 +4,7 @@ myCounter = 0
 Main = {
     RequestId = 0x102,
     ResponseId = 0x202,
+    BroadcastId = 0x300,
 
     Seed = {
     	[0x01] = "0x4455",
