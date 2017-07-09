@@ -31,10 +31,10 @@ public:
 private:
     SessionController sessionControl_;
     const IsoTpSender sender_;
-    BroadcastReceiver broadcastReceiver_;
     UdsReceiver udsReceiver_;
-    std::thread broadcastReceiverThread_;
+    BroadcastReceiver broadcastReceiver_;
     std::thread udsReceiverThread_;
+    std::thread broadcastReceiverThread_;
 };
 
 #endif /* ELECTRONIC_CONTROL_UNIT_H */

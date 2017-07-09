@@ -1,5 +1,5 @@
 /** 
- * @file: ecu_lua_script.h
+ * @file ecu_lua_script.h
  *
  */
 

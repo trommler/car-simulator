@@ -13,6 +13,8 @@
 
 class UdsReceiver : public IsoTpReceiver
 {
+    friend class BroadcastReceiver;
+
 public:
     UdsReceiver() = delete;
     UdsReceiver(canid_t source,
@@ -26,8 +28,8 @@ public:
     UdsReceiver(UdsReceiver&& orig) = default;
     UdsReceiver& operator =(UdsReceiver&& orig) = default;
     virtual ~UdsReceiver() = default;
-    
-    void proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept override;
+
+    virtual void proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept override;
 
 private:
     EcuLuaScript script_;

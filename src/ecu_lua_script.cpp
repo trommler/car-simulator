@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <stdexcept>
 #include <unistd.h>
-#include <climits>
 
 using namespace std;
 
@@ -43,18 +42,20 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         {
             ecu_ident_ = ecuIdent;
 
-            if (lua_state_[ecu_ident_.c_str()][REQ_ID_FIELD].exists())
+            auto requId = lua_state_[ecu_ident_.c_str()][REQ_ID_FIELD];
+            if (requId.exists())
             {
-                requestId_ = int(lua_state_[ecu_ident_.c_str()][REQ_ID_FIELD]);
+                requestId_ = int(requId);
             }
             else
             {
                 throw invalid_argument("No 'RequestId'-field in the Lua ECU table!");
             }
 
-            if (lua_state_[ecu_ident_.c_str()][RES_ID_FIELD])
+            auto respId = lua_state_[ecu_ident_.c_str()][RES_ID_FIELD];
+            if (respId.exists())
             {
-                responseId_ = int(lua_state_[ecu_ident_.c_str()][RES_ID_FIELD]);
+                responseId_ = int(respId);
             }
             else
             {

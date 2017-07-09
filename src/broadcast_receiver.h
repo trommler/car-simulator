@@ -7,7 +7,7 @@
 #define BROADCAST_RECEIVER_H
 
 #include "isotp_receiver.h"
-#include "isotp_sender.h"
+#include "uds_receiver.h"
 #include "session_controller.h"
 #include <string>
 
@@ -21,7 +21,7 @@ public:
     BroadcastReceiver() = delete;
     BroadcastReceiver(canid_t source,
                       const std::string& device,
-                      const IsoTpSender& sender,
+                      UdsReceiver* udsRec,
                       SessionController* pSesCtrl);
     BroadcastReceiver(const BroadcastReceiver& orig) = default;
     BroadcastReceiver& operator =(const BroadcastReceiver& orig) = default;
@@ -31,10 +31,9 @@ public:
 
     virtual void proceedReceivedData(const std::uint8_t* buffer,
                                      const std::size_t num_bytes) noexcept override;
-    void diagnosticSessionControl(const uint8_t* buffer, const size_t num_bytes);
 
 private:
-    const IsoTpSender& sender_;
+    UdsReceiver* pUdsReceiver_;
     SessionController* pSessionCtrl_;
 
 };
