@@ -15,6 +15,8 @@
 
 using namespace std;
 
+constexpr size_t MAX_UDS_MSG_SIZE = 4096; ///< max. 4096 bytes per UDS message
+
 /**
  * Constructor. Opens the sender socket.
  * 
@@ -111,6 +113,12 @@ void IsoTpSender::closeSender() noexcept
  */
 int IsoTpSender::sendData(const void* buffer, size_t size) const noexcept
 {
+    if (size > MAX_UDS_MSG_SIZE)
+    {
+        cerr << __func__ << "() Message size exceeds the maximum of 4096 bytes!\n";
+        return 0;
+    }
+
     if (send_skt_ < 0)
     {
         cerr << __func__ << "() Invalid socket file descriptor!\n";

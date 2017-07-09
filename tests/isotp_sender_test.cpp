@@ -34,7 +34,7 @@ void IsoTpSenderTest::testIsoTpSender()
     int expect;
     int result;
     std::array<uint8_t, 2> trash = {0x01, 0x02};
-    
+
     IsoTpSender* pIsoTpSender1;
     CPPUNIT_ASSERT_NO_THROW(pIsoTpSender1 = new IsoTpSender(SOURCE_ADDR, DEST_ADDR, DEVICE));
     expect = 2;
@@ -96,16 +96,20 @@ void IsoTpSenderTest::testSendData()
     result = isoTpSender.sendData(tc01.data(), tc01.size());
     CPPUNIT_ASSERT_EQUAL_MESSAGE("01 Size mismatch!", expect, result);
 
-    //    // these tests are supposed to fail
-    //    std::vector<std::uint8_t> tc02(6000, 0x06); // UDS message size exceeds 4096 bytes  
-    //    expect = 4096;
-    //    result = isoTpSender.sendData(tc02.data(), tc02.size());
-    //    CPPUNIT_ASSERT_EQUAL_MESSAGE("02 Size mismatch!", expect, result);
+    std::vector<std::uint8_t> tc02(4096, 0x05); // boundary test for max UDS message size  
+    expect = 4096;
+    result = isoTpSender.sendData(tc02.data(), tc02.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("02 Size mismatch!", expect, result);
+
+    // these tests are supposed to fail
+    std::vector<std::uint8_t> tc03(4097, 0x06); // UDS message size exceeds 4096 bytes  
+    expect = 0;
+    result = isoTpSender.sendData(tc03.data(), tc03.size());
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("03 Size mismatch!", expect, result);
 
     isoTpSender.closeSender(); // sending with closed socket
     expect = -1;
     result = isoTpSender.sendData(tc01.data(), tc01.size());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("03 Size mismatch!", expect, result);
-    // TODO: write more test cases
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("04 Size mismatch!", expect, result);
 }
 
