@@ -42,6 +42,25 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         if (lua_state_[ecuIdent.c_str()].exists())
         {
             ecu_ident_ = ecuIdent;
+
+            if (lua_state_[ecu_ident_.c_str()][REQ_ID_FIELD].exists())
+            {
+                requestId_ = int(lua_state_[ecu_ident_.c_str()][REQ_ID_FIELD]);
+            }
+            else
+            {
+                throw invalid_argument("No 'RequestId'-field in the Lua ECU table!");
+            }
+
+            if (lua_state_[ecu_ident_.c_str()][RES_ID_FIELD])
+            {
+                responseId_ = int(lua_state_[ecu_ident_.c_str()][RES_ID_FIELD]);
+            }
+            else
+            {
+                throw invalid_argument("No 'ResponseId'-field in the Lua ECU table!");
+            }
+
             return;
         }
     }
@@ -49,23 +68,27 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
 }
 
 /**
- * Gets the UDS request ID according to the loaded Lua script.
+ * Gets the UDS request ID according to the loaded Lua script. Since this call
+ * is very common, the value is cached at the instantiation to avoid expensive 
+ * access operations on the Lua file.
  *
  * @return the request ID or 0 on error
  */
 uint16_t EcuLuaScript::getRequestId() const
 {
-    return int(lua_state_[ecu_ident_.c_str()][REQ_ID_FIELD]);
+    return requestId_;
 }
 
 /**
- * Gets the UDS response ID according to the loaded Lua script.
+ * Gets the UDS response ID according to the loaded Lua script. Since this call
+ * is very common, the value is cached at the instantiation to avoid expensive 
+ * access operations on the Lua file.
  *
  * @return the response ID or 0 on error
  */
 uint16_t EcuLuaScript::getResponseId() const
 {
-    return int(lua_state_[ecu_ident_.c_str()][RES_ID_FIELD]);
+    return responseId_;
 }
 
 uint16_t EcuLuaScript::getBroadcastId() const

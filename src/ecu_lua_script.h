@@ -51,6 +51,8 @@ private:
     sel::State lua_state_;
     std::string ecu_ident_;
     SessionController* pSessionCtrl_;
+    std::uint16_t requestId_;
+    std::uint16_t responseId_;
 
 };
 

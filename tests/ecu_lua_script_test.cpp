@@ -23,13 +23,17 @@ void EcuLuaScriptTest::tearDown()
 void EcuLuaScriptTest::testEcuLuaScript()
 {
     const std::string ecuIdent = ECU_IDENT;
-    const std::string luaScript = LUA_SCRIPT;
+    std::string luaScript = LUA_SCRIPT;
 
     CPPUNIT_ASSERT_NO_THROW(EcuLuaScript ecuLuaScript(ecuIdent, luaScript));
 
     // these tests are supposed to fail
-    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript(ecuIdent, "adsf"), std::exception);
-    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("hzlpfrt", luaScript), std::exception);
+    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript(ecuIdent, "adsf"), std::invalid_argument);
+    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("hzlpfrt", luaScript), std::invalid_argument);
+
+    luaScript = "tests/test_config_dir/invalid_testscript01.lua";
+    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC01", luaScript), std::invalid_argument);
+    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC02", luaScript), std::invalid_argument);
 }
 
 void EcuLuaScriptTest::testGetRequestId()
