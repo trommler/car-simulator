@@ -1,6 +1,7 @@
 PCM = {
     RequestId = 0x100,
     ResponseId = 0x200,
+    BroadcastId = 0x300,
 
     ReadDataByIdentifier = {
         ["F1 90"] = "SALGA2EV9HA298784",
