@@ -32,13 +32,10 @@ Main = {
     Raw =
     {
         ["22 F1 90"] = ascii("SALGA2EV9HA298784"),
-        ["33 33 33"] = function()
+        ["33 33 33"] = function(request)
             myCounter = myCounter + 1
             sendRaw("F00")
-            sleep(1000)
-            sendRaw("DEAD")
-            sleep(1000)
-            sendRaw("BEEF")
+            sendRaw(request)
             return toByteResponse(myCounter, 3)
         end,
         ["22 FA BC"] = "10 33 11",

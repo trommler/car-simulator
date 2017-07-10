@@ -343,9 +343,13 @@ string EcuLuaScript::getRaw(const string& identStr) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()];
 
+    string identNoSpaces(identStr);
+    identNoSpaces.erase(remove_if(identNoSpaces.begin(), identNoSpaces.end(), ::isspace),
+                        identNoSpaces.end());
+
     if (val.isFunction())
     {
-        return lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()]();
+        return lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()](identNoSpaces.c_str());
     }
     else
     {
