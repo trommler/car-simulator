@@ -33,8 +33,8 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         lua_state_["ascii"] = &ascii;
         lua_state_["toByteResponse"] = &toByteResponse;
         lua_state_["sleep"] = &sleep;
-        // some lambda magic for the member functions 
-        lua_state_["getCurrentSession"] = [=]()-> int {return this->getCurrentSession();}; 
+        // some lambda magic for the member functions
+        lua_state_["getCurrentSession"] = [=]()-> int {return this->getCurrentSession();};
         lua_state_["switchToSession"] = [=](int ses){return this->switchToSession(ses);};
         lua_state_["sendRaw"] = [=](const string& msg){this->sendRaw(msg);};
 
@@ -63,6 +63,16 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
                 throw invalid_argument("No 'ResponseId'-field in the Lua ECU table!");
             }
 
+            auto broadcastId = lua_state_[ecu_ident_.c_str()][BROADCAST_ID_FIELD];
+            if (broadcastId.exists())
+            {
+                broadcastId_ = int(broadcastId);
+            }
+            else
+            {
+                throw invalid_argument("No 'BroadcastId'-field in the Lua ECU table!");
+            }
+
             return;
         }
     }
@@ -71,7 +81,7 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
 
 /**
  * Gets the UDS request ID according to the loaded Lua script. Since this call
- * is very common, the value is cached at the instantiation to avoid expensive 
+ * is very common, the value is cached at the instantiation to avoid expensive
  * access operations on the Lua file.
  *
  * @return the request ID or 0 on error
@@ -83,7 +93,7 @@ uint16_t EcuLuaScript::getRequestId() const
 
 /**
  * Gets the UDS response ID according to the loaded Lua script. Since this call
- * is very common, the value is cached at the instantiation to avoid expensive 
+ * is very common, the value is cached at the instantiation to avoid expensive
  * access operations on the Lua file.
  *
  * @return the response ID or 0 on error
@@ -95,7 +105,7 @@ uint16_t EcuLuaScript::getResponseId() const
 
 uint16_t EcuLuaScript::getBroadcastId() const
 {
-    return int(lua_state_[ecu_ident_.c_str()][BROADCAST_ID_FIELD]);
+    return broadcastId_;
 }
 
 /**
@@ -346,7 +356,7 @@ string EcuLuaScript::getRaw(const string& identStr) const
 
 /**
  * Sets the SessionController required for session handling.
- * 
+ *
  * @param pSesCtrl: pointer to the orchestrating `SessionController`
  */
 void EcuLuaScript::setSessionController(SessionController* pSesCtrl) noexcept

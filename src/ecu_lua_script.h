@@ -1,4 +1,4 @@
-/** 
+/**
  * @file ecu_lua_script.h
  *
  */
@@ -53,6 +53,7 @@ private:
     SessionController* pSessionCtrl_;
     std::uint16_t requestId_;
     std::uint16_t responseId_;
+    std::uint16_t broadcastId_;
 
 };
 

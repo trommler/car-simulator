@@ -1,7 +1,7 @@
 /**
  * @file electronic_control_unit.cpp
- * 
- * This file contains a class which constitutes a Electronic Control Unit (ECU). 
+ *
+ * This file contains a class which constitutes a Electronic Control Unit (ECU).
  */
 
 #include "electronic_control_unit.h"
@@ -17,6 +17,7 @@ ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&
 , udsReceiverThread_(&IsoTpReceiver::readData, &udsReceiver_)
 , broadcastReceiverThread_(&IsoTpReceiver::readData, &broadcastReceiver_)
 {
+    ecuScript.setSessionController(&sessionControl_);
 }
 
 ElectronicControlUnit::~ElectronicControlUnit()
