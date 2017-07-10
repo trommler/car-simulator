@@ -124,7 +124,7 @@ string EcuLuaScript::getDataByIdentifier(const string& identifier) const
 
     if (val.isFunction())
     {
-        return lua_state_[ecu_ident_.c_str()][READ_DATA_BY_IDENTIFIER_TABLE][identifier](identNoSpaces.c_str());
+        return val(identNoSpaces.c_str());
     }
     else
     {
@@ -142,11 +142,19 @@ string EcuLuaScript::getDataByIdentifier(const string& identifier) const
 string EcuLuaScript::getDataByIdentifier(const string& identifier, const string& session) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][session][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
-    if (val.exists())
+
+    string identNoSpaces(identifier);
+    identNoSpaces.erase(remove_if(identNoSpaces.begin(), identNoSpaces.end(), ::isspace),
+                        identNoSpaces.end());
+
+    if (val.isFunction())
+    {
+        return val(identNoSpaces.c_str());
+    }
+    else
     {
         return val;
     }
-    return "";
 }
 
 string EcuLuaScript::getSeed(uint8_t seed_level) const
@@ -403,7 +411,7 @@ string EcuLuaScript::getRaw(const string& identStr) const
 
     if (val.isFunction())
     {
-        return lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()](identNoSpaces.c_str());
+        return val(identNoSpaces.c_str());
     }
     else
     {
