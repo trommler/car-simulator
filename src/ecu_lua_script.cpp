@@ -117,11 +117,19 @@ uint16_t EcuLuaScript::getBroadcastId() const
 string EcuLuaScript::getDataByIdentifier(const string& identifier) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
-    if (val.exists())
+
+    string identNoSpaces(identifier);
+    identNoSpaces.erase(remove_if(identNoSpaces.begin(), identNoSpaces.end(), ::isspace),
+                        identNoSpaces.end());
+
+    if (val.isFunction())
+    {
+        return lua_state_[ecu_ident_.c_str()][READ_DATA_BY_IDENTIFIER_TABLE][identifier](identNoSpaces.c_str());
+    }
+    else
     {
         return val;
     }
-    return "";
 }
 
 /**
@@ -287,7 +295,52 @@ string EcuLuaScript::toByteResponse(uint32_t value,
  */
 void EcuLuaScript::sendRaw(const string& response) const
 {
-    pSender_->sendData(response.c_str(), response.size());
+    string str(response);
+    str.erase(remove_if(str.begin(), str.end(), ::isspace), str.end());
+    std::transform(str.begin(), str.end(),str.begin(), ::toupper);
+
+    if (str.size() % 2)
+    {
+        str = "0" + str;
+    }
+
+    uint8_t buffer[str.size()/2];
+
+    for (uint32_t i = 0; i < str.size(); i+=2)
+    {
+        char high = str[i];
+        char low  = str[i+1];
+
+        if (high >= '0' && high <= '9')
+        {
+            buffer[i/2] = uint8_t((high - '0') << 4);
+        }
+        else if (high >= 'A' && high <= 'F')
+        {
+            buffer[i/2] = uint8_t((high - 'A' + 10) << 4);
+        }
+        else
+        {
+            cerr << "sendRaw: not a valid hex byte, abort sending" << endl;
+            return;
+        }
+
+        if (low >= '0' && low <= '9')
+        {
+            buffer[i/2] |= uint8_t(low - '0');
+        }
+        else if (low >= 'A' && low <= 'F')
+        {
+            buffer[i/2] |= uint8_t(low - 'A' + 10);
+        }
+        else
+        {
+            cerr << "sendRaw: not a valid hex byte, abort sending" << endl;
+            return;
+        }
+    }
+
+    pSender_->sendData(buffer, str.size()/2);
 }
 
 /**
@@ -332,9 +385,10 @@ bool EcuLuaScript::hasRaw(const string& identStr) const
 }
 
 /**
- * Gets the raw data entries form the Lua "Raw"-Table. All entries, as well as
- * the identifiers of the corresponding entries, are literal hex byte strings
- * (e.g. "12 FF 00").
+ * Gets the raw data entries form the Lua "Raw"-Table.
+ * The identifiers of the corresponding entries are literal hex byte strings
+ * (e.g. "12 FF 00"). The entries are either strings or functions that need
+ * to be called, with the identifier string as the default parameter.
  *
  * @param identStr: the identifier string for the entry in the Lua "Raw"-table
  * @return the raw data as literal hex byte string or an empty string on error

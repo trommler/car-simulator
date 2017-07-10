@@ -31,12 +31,11 @@ Main = {
 
     Raw =
     {
-        ["22 F1 90"] = ascii("SALGA2EV9HA298784"),
         ["33 33 33"] = function(request)
             myCounter = myCounter + 1
-            sendRaw("F00")
+            sendRaw("F1B")
             sendRaw(request)
-            return toByteResponse(myCounter, 3)
+            return toByteResponse(myCounter, 2)
         end,
         ["22 FA BC"] = "10 33 11",
         ["23 FA BC"] = "01 02 03 04 05 06 07",
@@ -44,10 +43,13 @@ Main = {
     },
 
     ReadDataByIdentifier = { -- "=" on tables is necessary
-        [0xf190] = "SALGA2EV9HA298784",
-        [0xf124] = "HPLA-12345-AB",
-        [0xf123] = nil,
-        [0xfabc] = nil,
-        [0x1e23] = "231132",
+        ["F1 90"] = function(request)
+            myCounter = myCounter + 1
+            return "ABCD"
+        end,
+        ["F1 24"] = "HPLA-12345-AB",
+        ["F1 23"] = nil,
+        ["FA BC"] = nil,
+        ["1E 23"] = "231132",
     }
 }
