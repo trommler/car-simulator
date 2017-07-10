@@ -12,13 +12,13 @@ using namespace std;
 
 ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&& ecuScript)
 : sender_(ecuScript.getRequestId(), ecuScript.getResponseId(), device)
-, udsReceiver_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript), sender_, &sessionControl_)
-, broadcastReceiver_(ecuScript.getBroadcastId(), device, &udsReceiver_, &sessionControl_)
+, udsReceiver_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript), &sender_, &sessionControl_)
+, broadcastReceiver_(ecuScript.getBroadcastId(), device, &udsReceiver_)
 , udsReceiverThread_(&IsoTpReceiver::readData, &udsReceiver_)
 , broadcastReceiverThread_(&IsoTpReceiver::readData, &broadcastReceiver_)
 {
-    ecuScript.setSessionController(&sessionControl_);
-    ecuScript.setSender(&sender_);
+    ecuScript.registerSessionController(&sessionControl_);
+    ecuScript.registerIsoTpSender(&sender_);
 }
 
 ElectronicControlUnit::~ElectronicControlUnit()

@@ -30,7 +30,7 @@ public:
 
 private:
     SessionController sessionControl_;
-    const IsoTpSender sender_;
+    IsoTpSender sender_;
     UdsReceiver udsReceiver_;
     BroadcastReceiver broadcastReceiver_;
     std::thread udsReceiverThread_;

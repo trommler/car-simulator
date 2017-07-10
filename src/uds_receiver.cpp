@@ -10,6 +10,7 @@
 #include <vector>
 #include <array>
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
@@ -17,13 +18,17 @@ UdsReceiver::UdsReceiver(canid_t source,
                          canid_t dest,
                          const string& device,
                          EcuLuaScript&& ecuScript,
-                         const IsoTpSender& sender,
+                         IsoTpSender* pSender,
                          SessionController* pSesCtrl)
 : IsoTpReceiver(source, dest, device)
 , script_(move(ecuScript))
-, sender_(sender)
+, pIsoTpSender_(pSender)
 , pSessionCtrl_(pSesCtrl)
 {
+    assert(pSender != nullptr);
+    assert(pSesCtrl != nullptr);
+    assert(pIsoTpSender_ != nullptr);
+    assert(pSessionCtrl_ != nullptr);
 }
 
 /**
@@ -44,7 +49,7 @@ void UdsReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_by
     if (isRaw)
     {
         vector<unsigned char> raw = script_.literalHexStrToBytes(script_.getRaw(intToHexString(buffer, num_bytes)));
-        sender_.sendData(raw.data(), raw.size());
+        pIsoTpSender_->sendData(raw.data(), raw.size());
     }
     else
     {
@@ -79,6 +84,9 @@ void UdsReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_by
  */
 void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
+    assert(pSessionCtrl_ != nullptr);
+    assert(pIsoTpSender_ != nullptr);
+    
     const uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
     string data;
 
@@ -107,7 +115,7 @@ void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_b
             buffer[2]
         };
         resp.insert(resp.cend(), data.cbegin(), data.cend()); // insert payload
-        sender_.sendData(resp.data(), resp.size());
+        pIsoTpSender_->sendData(resp.data(), resp.size());
     }
     else // send out of range
     {
@@ -115,7 +123,7 @@ void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_b
             ERROR,
             REQUEST_OUT_OF_RANGE
         };
-        sender_.sendData(nrc.data(), nrc.size());
+        pIsoTpSender_->sendData(nrc.data(), nrc.size());
     }
 }
 
@@ -127,6 +135,8 @@ void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_b
  */
 void UdsReceiver::diagnosticSessionControl(const uint8_t* buffer, const size_t num_bytes)
 {
+    assert(pSessionCtrl_ != nullptr);
+            
     const uint8_t sessionId = buffer[1];
     switch (sessionId)
     {
@@ -150,7 +160,7 @@ void UdsReceiver::diagnosticSessionControl(const uint8_t* buffer, const size_t n
         DIAGNOSTIC_SESSION_CONTROL_RES,
         sessionId
     };
-    sender_.sendData(resp.data(), resp.size());
+    pIsoTpSender_->sendData(resp.data(), resp.size());
 }
 
 /**
@@ -171,7 +181,7 @@ void UdsReceiver::securityAccess(const uint8_t* buffer, const size_t num_bytes) 
             seedId
         };
         resp.insert(resp.cend(), seed.cbegin(), seed.cend() - 1); // insert payload - nullbyte
-        sender_.sendData(resp.data(), resp.size());
+        pIsoTpSender_->sendData(resp.data(), resp.size());
         securityAccessType_ = seedId + 0x01;
     }
     else
@@ -181,7 +191,7 @@ void UdsReceiver::securityAccess(const uint8_t* buffer, const size_t num_bytes) 
             // second request
             constexpr array<uint8_t, 1> resp = {SECURITY_ACCESS_RES};
             // Lua seed function
-            sender_.sendData(resp.data(), resp.size());
+            pIsoTpSender_->sendData(resp.data(), resp.size());
             securityAccessType_ = 0x00;
         }
         else
@@ -190,7 +200,7 @@ void UdsReceiver::securityAccess(const uint8_t* buffer, const size_t num_bytes) 
                 ERROR,
                 SUBFUNCTION_NOT_SUPPORTED
             };
-            sender_.sendData(resp.data(), resp.size());
+            pIsoTpSender_->sendData(resp.data(), resp.size());
         }
     }
 }

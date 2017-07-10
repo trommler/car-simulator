@@ -1,6 +1,11 @@
 /**
  * @file uds_receiver_test.cpp
  *
+ * These test cases are used to ensure a proper UDS response from the 
+ * `UdsReceiver`. Since this task is done via ISO-TP, ensure the kernel module
+ * for virtual CAN is enabled (`sudo modprobe vcan`), the vcan address is added 
+ * (`sudo ip link add dev vcan0 type vcan`) and set up (`sudo ip link set up 
+ * vcan0`) before running these tests. 
  */
 
 #include "uds_receiver_test.h"
@@ -13,7 +18,7 @@
 
 const std::string DEVICE = "vcan0";
 const std::string ECU_IDENT = "PCM";
-const std::string LUA_SCRIPT = "tests/test_config_dir/testscript05.lua";
+const std::string LUA_SCRIPT = "tests/test_config_dir/testscript06.lua";
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UdsReceiverTest);
 
@@ -38,10 +43,10 @@ void UdsReceiverTest::testUdsReceiver()
     EcuLuaScript script(ECU_IDENT, LUA_SCRIPT);
     const uint16_t respId = script.getResponseId();
     const uint16_t requId = script.getRequestId();
-    const IsoTpSender sender(respId, requId, DEVICE);
+    IsoTpSender sender(respId, requId, DEVICE);
     SessionController sesCtrl;
     UdsReceiver* udsReceiver;
-    CPPUNIT_ASSERT_NO_THROW(udsReceiver = new UdsReceiver(requId, respId, DEVICE, std::move(script), sender, &sesCtrl));
+    CPPUNIT_ASSERT_NO_THROW(udsReceiver = new UdsReceiver(requId, respId, DEVICE, std::move(script), &sender, &sesCtrl));
     delete udsReceiver;
 }
 
@@ -51,7 +56,6 @@ void UdsReceiverTest::testProceedReceivedData()
     constexpr std::array<uint8_t, 3> readDataById02 = {0x22, 0xf1, 0x24};
     constexpr std::array<uint8_t, 3> readDataById03 = {0x22, 0xf1, 0x23};
     constexpr std::array<uint8_t, 3> readDataById04 = {0x22, 0x1e, 0x23};
-//    constexpr std::array<uint8_t, 3> readDataById05 = {0x19, 0x02, 0xaf};
 
     constexpr std::array<uint8_t, 20> expAnswer01 = {
         READ_DATA_BY_IDENTIFIER_RES, 0xf1, 0x90,
@@ -72,15 +76,16 @@ void UdsReceiverTest::testProceedReceivedData()
         '2', '3', '1', '1', '3', '2'
     };
 
-    //
     uint8_t* buffer;
     size_t num_bytes;
     EcuLuaScript script(ECU_IDENT, LUA_SCRIPT);
     const uint16_t respId = script.getResponseId();
     const uint16_t requId = script.getRequestId();
-    const IsoTpSender sender(respId, requId, DEVICE);
+    IsoTpSender sender(respId, requId, DEVICE);
     SessionController sesCtrl;
-    UdsReceiver udsReceiver(requId, respId, DEVICE, std::move(script), sender, &sesCtrl);
+    script.registerIsoTpSender(&sender);
+    script.registerSessionController(&sesCtrl);
+    UdsReceiver udsReceiver(requId, respId, DEVICE, std::move(script), &sender, &sesCtrl);
     TestReceiver testReceiver(requId, respId, DEVICE);
     std::thread testThread(&IsoTpReceiver::readData, &testReceiver); // run async in thread
     usleep(4000); // wait some time to ensure the thread is set up and running
@@ -113,10 +118,27 @@ void UdsReceiverTest::testProceedReceivedData()
     udsReceiver.proceedReceivedData(buffer, num_bytes);
     usleep(4000);
 
-//    buffer = (uint8_t*) readDataById05.data();
-//    num_bytes = readDataById05.size();
-//    udsReceiver.proceedReceivedData(buffer, num_bytes);
-//    usleep(4000);
+
+    constexpr std::array<uint8_t, 3> readDataById05 = {0x19, 0x02, 0xaf};
+    constexpr std::array<uint8_t, 3> expAnswer05 = {
+        0x7F, 0x19, 0x78,
+    };
+
+    constexpr std::array<uint8_t, 7> expAnswer06 = {
+        0x59, 0x02, 0xFF, 0xE3, 0x00, 0x54, 0x2F
+    };
+
+    usleep(4000);
+    testReceiver.setExpectedUdsRespData(expAnswer05.data(), expAnswer05.size());
+    usleep(4000);
+
+    buffer = (uint8_t*) readDataById05.data();
+    num_bytes = readDataById05.size();
+    udsReceiver.proceedReceivedData(buffer, num_bytes);
+    usleep(4000);
+
+    //    testReceiver.setExpectedUdsRespData(expAnswer06.data(), expAnswer06.size());
+    //    usleep(4000);
 
     testReceiver.closeReceiver();
     udsReceiver.proceedReceivedData(buffer, num_bytes); // send some garbage to close the receiver
@@ -136,7 +158,7 @@ void UdsReceiverTest::testProceedReceivedData()
 void TestReceiver::proceedReceivedData(const std::uint8_t* buffer,
                                        const std::size_t num_bytes) noexcept
 {
-    
+
     CPPUNIT_ASSERT(num_bytes < MAX_UDS_MSG_SIZE);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Message size don't match!", m_expNumBytes, num_bytes);
 

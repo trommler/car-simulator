@@ -36,8 +36,9 @@ UdsSession SessionController::getCurretnUdsSession() const noexcept
  */
 void SessionController::setCurrentUdsSession(const UdsSession ses) noexcept
 {
-    if (ses == UdsSession::DEFAULT || ses == UdsSession::PROGRAMMING
-            || ses == UdsSession::EXTENDED)
+    if (ses == UdsSession::DEFAULT
+        || ses == UdsSession::PROGRAMMING
+        || ses == UdsSession::EXTENDED)
     {
         session_ = ses;
     }

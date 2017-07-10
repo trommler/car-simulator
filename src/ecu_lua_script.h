@@ -46,14 +46,14 @@ public:
     int getCurrentSession() const;
     void switchToSession(int ses);
 
-    void setSessionController(SessionController* pSesCtrl) noexcept;
-    void setSender(const IsoTpSender *pSender) noexcept;
+    void registerSessionController(SessionController* pSesCtrl) noexcept;
+    void registerIsoTpSender(IsoTpSender* pSender) noexcept;
 
 private:
     sel::State lua_state_;
     std::string ecu_ident_;
-    SessionController* pSessionCtrl_;
-    const IsoTpSender *pSender_;
+    SessionController* pSessionCtrl_ = nullptr;
+    IsoTpSender* pIsoTpSender_ = nullptr;
     std::uint16_t requestId_;
     std::uint16_t responseId_;
     std::uint16_t broadcastId_;

@@ -21,7 +21,7 @@ public:
                 canid_t dest,
                 const std::string& device,
                 EcuLuaScript&& ecuScript,
-                const IsoTpSender& sender,
+                IsoTpSender* sender,
                 SessionController* pSesCtrl);
     UdsReceiver(const UdsReceiver& orig) = default;
     UdsReceiver& operator =(const UdsReceiver& orig) = default;
@@ -33,8 +33,8 @@ public:
 
 private:
     EcuLuaScript script_;
-    const IsoTpSender& sender_;
-    SessionController* pSessionCtrl_;
+    IsoTpSender* pIsoTpSender_ = nullptr;
+    SessionController* pSessionCtrl_ = nullptr;
     uint8_t securityAccessType_ = 0x00;
 
     void readDataByIdentifier(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;

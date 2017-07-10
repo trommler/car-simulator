@@ -13,11 +13,9 @@ using namespace std;
 
 BroadcastReceiver::BroadcastReceiver(canid_t source,
                                      const string& device,
-                                     UdsReceiver* pUdsRec,
-                                     SessionController* pSesCtrl)
+                                     UdsReceiver* pUdsRec)
 : IsoTpReceiver(BROADCAST_ADDR, source, device)
 , pUdsReceiver_(pUdsRec)
-, pSessionCtrl_(pSesCtrl)
 {
 }
 
@@ -34,15 +32,16 @@ void BroadcastReceiver::proceedReceivedData(const uint8_t* buffer,
     {
         case TESTER_PRESENT_REQ:
         {
-            pSessionCtrl_->reset();
+            // -> beware of arrows ->
+            pUdsReceiver_->pSessionCtrl_->reset();
             constexpr array<uint8_t, 1> tp = {TESTER_PRESENT_RES};
-            pUdsReceiver_->sender_.sendData(tp.data(), tp.size());
+            pUdsReceiver_->pIsoTpSender_->sendData(tp.data(), tp.size());
             break;
         }
         case 0x50:
         {
             constexpr array<uint8_t, 10> tp = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09};
-            pUdsReceiver_->sender_.sendData(tp.data(), tp.size());
+            pUdsReceiver_->pIsoTpSender_->sendData(tp.data(), tp.size());
             break;
         }
         default:

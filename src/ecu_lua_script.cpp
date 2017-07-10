@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <unistd.h>
+#include <cassert>
 
 using namespace std;
 
@@ -33,10 +34,10 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         lua_state_["ascii"] = &ascii;
         lua_state_["toByteResponse"] = &toByteResponse;
         lua_state_["sleep"] = &sleep;
-        // some lambda magic for the member functions
-        lua_state_["getCurrentSession"] = [=]()-> int {return this->getCurrentSession();};
-        lua_state_["switchToSession"] = [=](int ses){return this->switchToSession(ses);};
-        lua_state_["sendRaw"] = [=](const string& msg){this->sendRaw(msg);};
+        // some lambda magic for the member functions 
+        lua_state_["getCurrentSession"] = [this]()->uint8_t { return this->getCurrentSession(); }; 
+        lua_state_["switchToSession"] = [this](uint8_t ses) { this->switchToSession(ses); };
+        lua_state_["sendRaw"] = [this](const string& msg) { this->sendRaw(msg); };
 
         lua_state_.Load(luaScript);
         if (lua_state_[ecuIdent.c_str()].exists())
@@ -303,52 +304,11 @@ string EcuLuaScript::toByteResponse(uint32_t value,
  */
 void EcuLuaScript::sendRaw(const string& response) const
 {
-    string str(response);
-    str.erase(remove_if(str.begin(), str.end(), ::isspace), str.end());
-    std::transform(str.begin(), str.end(),str.begin(), ::toupper);
-
-    if (str.size() % 2)
-    {
-        str = "0" + str;
-    }
-
-    uint8_t buffer[str.size()/2];
-
-    for (uint32_t i = 0; i < str.size(); i+=2)
-    {
-        char high = str[i];
-        char low  = str[i+1];
-
-        if (high >= '0' && high <= '9')
-        {
-            buffer[i/2] = uint8_t((high - '0') << 4);
-        }
-        else if (high >= 'A' && high <= 'F')
-        {
-            buffer[i/2] = uint8_t((high - 'A' + 10) << 4);
-        }
-        else
-        {
-            cerr << "sendRaw: not a valid hex byte, abort sending" << endl;
-            return;
-        }
-
-        if (low >= '0' && low <= '9')
-        {
-            buffer[i/2] |= uint8_t(low - '0');
-        }
-        else if (low >= 'A' && low <= 'F')
-        {
-            buffer[i/2] |= uint8_t(low - 'A' + 10);
-        }
-        else
-        {
-            cerr << "sendRaw: not a valid hex byte, abort sending" << endl;
-            return;
-        }
-    }
-
-    pSender_->sendData(buffer, str.size()/2);
+    assert(pIsoTpSender_ != nullptr);
+    
+    cerr << "Here is the response msg from the Lua script we send: " << response << endl;
+    vector<uint8_t> resp = literalHexStrToBytes(response); 
+    pIsoTpSender_->sendData(resp.data(), resp.size());
 }
 
 /**
@@ -367,6 +327,8 @@ void EcuLuaScript::sleep(unsigned int ms) noexcept
  */
 int EcuLuaScript::getCurrentSession() const
 {
+    assert(pSessionCtrl_ != nullptr);
+    
     return pSessionCtrl_->getCurretnUdsSession();
 }
 
@@ -377,6 +339,8 @@ int EcuLuaScript::getCurrentSession() const
  */
 void EcuLuaScript::switchToSession(int ses)
 {
+    assert(pSessionCtrl_ != nullptr);
+    
     pSessionCtrl_->setCurrentUdsSession(UdsSession(ses));
 }
 
@@ -424,17 +388,12 @@ string EcuLuaScript::getRaw(const string& identStr) const
  *
  * @param pSesCtrl: pointer to the orchestrating `SessionController`
  */
-void EcuLuaScript::setSessionController(SessionController* pSesCtrl) noexcept
+void EcuLuaScript::registerSessionController(SessionController* pSesCtrl) noexcept
 {
     pSessionCtrl_ = pSesCtrl;
 }
 
-/**
- * Sets the IsoTpSender required for sending raw messages.
- *
- * @param pSender: pointer to the `IsoTpSender`
- */
-void EcuLuaScript::setSender(const IsoTpSender *pSender) noexcept
+void EcuLuaScript::registerIsoTpSender(IsoTpSender* pSender) noexcept
 {
-    pSender_ = pSender;
+   pIsoTpSender_ = pSender; 
 }

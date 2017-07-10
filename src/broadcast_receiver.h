@@ -21,8 +21,7 @@ public:
     BroadcastReceiver() = delete;
     BroadcastReceiver(canid_t source,
                       const std::string& device,
-                      UdsReceiver* udsRec,
-                      SessionController* pSesCtrl);
+                      UdsReceiver* udsRec);
     BroadcastReceiver(const BroadcastReceiver& orig) = default;
     BroadcastReceiver& operator =(const BroadcastReceiver& orig) = default;
     BroadcastReceiver(BroadcastReceiver&& orig) = default;
@@ -34,7 +33,6 @@ public:
 
 private:
     UdsReceiver* pUdsReceiver_;
-    SessionController* pSessionCtrl_;
 
 };
 
