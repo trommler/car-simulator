@@ -51,6 +51,7 @@ void UdsReceiverTest::testProceedReceivedData()
     constexpr std::array<uint8_t, 3> readDataById02 = {0x22, 0xf1, 0x24};
     constexpr std::array<uint8_t, 3> readDataById03 = {0x22, 0xf1, 0x23};
     constexpr std::array<uint8_t, 3> readDataById04 = {0x22, 0x1e, 0x23};
+//    constexpr std::array<uint8_t, 3> readDataById05 = {0x19, 0x02, 0xaf};
 
     constexpr std::array<uint8_t, 20> expAnswer01 = {
         READ_DATA_BY_IDENTIFIER_RES, 0xf1, 0x90,
@@ -111,7 +112,12 @@ void UdsReceiverTest::testProceedReceivedData()
     num_bytes = readDataById04.size();
     udsReceiver.proceedReceivedData(buffer, num_bytes);
     usleep(4000);
-    
+
+//    buffer = (uint8_t*) readDataById05.data();
+//    num_bytes = readDataById05.size();
+//    udsReceiver.proceedReceivedData(buffer, num_bytes);
+//    usleep(4000);
+
     testReceiver.closeReceiver();
     udsReceiver.proceedReceivedData(buffer, num_bytes); // send some garbage to close the receiver
     testThread.join();

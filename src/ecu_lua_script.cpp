@@ -33,9 +33,10 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         lua_state_["ascii"] = &ascii;
         lua_state_["toByteResponse"] = &toByteResponse;
         lua_state_["sleep"] = &sleep;
-        //lua_state_["getCurrentSession"] = &getCurrentSession;
-        //lua_state_["switchToSession"] = &switchToSession;
-        //lua_state_["sendRaw"] = &sendRaw;
+        // some lambda magic for the member functions 
+        lua_state_["getCurrentSession"] = [=]()-> int {return this->getCurrentSession();}; 
+        lua_state_["switchToSession"] = [=](int ses){return this->switchToSession(ses);};
+        lua_state_["sendRaw"] = [=](const string& msg){this->sendRaw(msg);};
 
         lua_state_.Load(luaScript);
         if (lua_state_[ecuIdent.c_str()].exists())
@@ -277,6 +278,7 @@ string EcuLuaScript::toByteResponse(uint32_t value,
 void EcuLuaScript::sendRaw(const string& response) const
 {
     // TODO: implement
+    cerr << "Here is the response msg from the Lua script we should send: " << response << endl;
 }
 
 /**

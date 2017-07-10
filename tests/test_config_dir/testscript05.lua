@@ -17,7 +17,22 @@ PCM = {
         -- As an alternative, requests and responses can be specified
         -- using concatenation, functions or any other language
         -- features of lua
-        ["22 F1 91"] = "62 F1 91" .. ascii("SALGA2EV9HA298784")
+        ["22 F1 91"] = "62 F1 91" .. ascii("SALGA2EV9HA298784"),
+        ["19 02 AF"] = function (request)
+            ses01 = getCurrentSession()
+            sendRaw("current session: " .. ses01)
+            switchToSession(2)
+            sleep(2000)
+            ses02 = getCurrentSession() 
+            sendRaw("Session after 'switchToSession()': " .. ses01)
+            sendRaw("7f 19 78")
+            sleep(2000)
+            sendRaw("7f 19 78")
+            sleep(2000)
+            sendRaw("7f 19 78")
+            sleep(1000)
+            return "59 02 ff e3 00 54 2f"
+        end
     },
 
    Seed = {
