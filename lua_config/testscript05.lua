@@ -34,11 +34,12 @@ Main = {
         ["22 F1 90"] = ascii("SALGA2EV9HA298784"),
         ["33 33 33"] = function()
             myCounter = myCounter + 1
-            session = getCurrentSession()
+            sendRaw("F00")
             sleep(1000)
-            switchToSession(2)
-            session = getCurrentSession()
-            return toByteResponse(session, 3)
+            sendRaw("DEAD")
+            sleep(1000)
+            sendRaw("BEEF")
+            return toByteResponse(myCounter, 3)
         end,
         ["22 FA BC"] = "10 33 11",
         ["23 FA BC"] = "01 02 03 04 05 06 07",

@@ -18,6 +18,7 @@ ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&
 , broadcastReceiverThread_(&IsoTpReceiver::readData, &broadcastReceiver_)
 {
     ecuScript.setSessionController(&sessionControl_);
+    ecuScript.setSender(&sender_);
 }
 
 ElectronicControlUnit::~ElectronicControlUnit()

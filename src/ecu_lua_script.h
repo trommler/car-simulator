@@ -7,6 +7,7 @@
 #define ECU_LUA_SCRIPT_H
 
 #include "selene.h"
+#include "isotp_sender.h"
 #include "session_controller.h"
 #include <string>
 #include <cstdint>
@@ -46,11 +47,13 @@ public:
     void switchToSession(int ses);
 
     void setSessionController(SessionController* pSesCtrl) noexcept;
+    void setSender(const IsoTpSender *pSender) noexcept;
 
 private:
     sel::State lua_state_;
     std::string ecu_ident_;
     SessionController* pSessionCtrl_;
+    const IsoTpSender *pSender_;
     std::uint16_t requestId_;
     std::uint16_t responseId_;
     std::uint16_t broadcastId_;

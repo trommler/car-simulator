@@ -287,8 +287,7 @@ string EcuLuaScript::toByteResponse(uint32_t value,
  */
 void EcuLuaScript::sendRaw(const string& response) const
 {
-    // TODO: implement
-    cerr << "Here is the response msg from the Lua script we should send: " << response << endl;
+    pSender_->sendData(response.c_str(), response.size());
 }
 
 /**
@@ -362,4 +361,14 @@ string EcuLuaScript::getRaw(const string& identStr) const
 void EcuLuaScript::setSessionController(SessionController* pSesCtrl) noexcept
 {
     pSessionCtrl_ = pSesCtrl;
+}
+
+/**
+ * Sets the IsoTpSender required for sending raw messages.
+ *
+ * @param pSender: pointer to the `IsoTpSender`
+ */
+void EcuLuaScript::setSender(const IsoTpSender *pSender) noexcept
+{
+    pSender_ = pSender;
 }
