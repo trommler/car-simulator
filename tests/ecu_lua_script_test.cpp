@@ -32,8 +32,12 @@ void EcuLuaScriptTest::testEcuLuaScript()
     CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("hzlpfrt", luaScript), std::invalid_argument);
 
     luaScript = "tests/test_config_dir/invalid_testscript01.lua";
+    // no request ID
     CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC01", luaScript), std::invalid_argument);
+    // no response ID
     CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC02", luaScript), std::invalid_argument);
+    // no broadcast ID
+    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC03", luaScript), std::invalid_argument);
 }
 
 void EcuLuaScriptTest::testGetRequestId()

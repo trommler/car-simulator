@@ -85,6 +85,7 @@ void UtilsTest::testGetConfigFilenames()
         "testscript03.lua",
         "testscript04.lua",
         "testscript05.lua",
+        "testscript06.lua",
         "invalid_testscript01.lua"
     };
     std::sort(expected.begin(), expected.end());
