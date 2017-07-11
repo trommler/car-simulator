@@ -119,13 +119,9 @@ string EcuLuaScript::getDataByIdentifier(const string& identifier) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
 
-    string identNoSpaces(identifier);
-    identNoSpaces.erase(remove_if(identNoSpaces.begin(), identNoSpaces.end(), ::isspace),
-                        identNoSpaces.end());
-
     if (val.isFunction())
     {
-        return val(identNoSpaces.c_str());
+        return val(identifier);
     }
     else
     {
@@ -144,13 +140,9 @@ string EcuLuaScript::getDataByIdentifier(const string& identifier, const string&
 {
     auto val = lua_state_[ecu_ident_.c_str()][session][READ_DATA_BY_IDENTIFIER_TABLE][identifier];
 
-    string identNoSpaces(identifier);
-    identNoSpaces.erase(remove_if(identNoSpaces.begin(), identNoSpaces.end(), ::isspace),
-                        identNoSpaces.end());
-
     if (val.isFunction())
     {
-        return val(identNoSpaces.c_str());
+        return val(identifier);
     }
     else
     {
@@ -369,13 +361,9 @@ string EcuLuaScript::getRaw(const string& identStr) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()];
 
-    string identNoSpaces(identStr);
-    identNoSpaces.erase(remove_if(identNoSpaces.begin(), identNoSpaces.end(), ::isspace),
-                        identNoSpaces.end());
-
     if (val.isFunction())
     {
-        return val(identNoSpaces.c_str());
+        return val(identStr);
     }
     else
     {
