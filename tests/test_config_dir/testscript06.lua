@@ -21,16 +21,16 @@ PCM = {
         -- features of lua
         ["22 F1 91"] = "62 F1 91" .. ascii("SALGA2EV9HA298784"),
         ["19 02 AF"] = function (request)
-            --ses02 = getCurrentSession() -- currently segfaults 
+            --ses01 = getCurrentSession() -- currently segfaults 
             --switchToSession(2)
-            sleep(2000)
-            sendRaw("7F 19 78")
-            sleep(2000)
-            sendRaw("7F 19 78")
-            sleep(2000)
+            --sleep(2000)
+            --sendRaw("7F 19 78")
+            --sleep(2000)
+            --sendRaw("7F 19 78")
+            --sleep(2000)
             sendRaw("7F 19 78")
             sleep(5000)
-            return "7F 19 78" --"59 02 FF E3 00 54 2F"
+            return "59 02 FF E3 00 54 2F"
         end
     },
 

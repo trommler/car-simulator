@@ -45,6 +45,14 @@
         <itemPath>tests/ecu_lua_script_test.h</itemPath>
         <itemPath>tests/ecu_lua_script_test_runner.cpp</itemPath>
       </logicalFolder>
+      <logicalFolder name="f4"
+                     displayName="ElectronicControlUnitTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/electronic_control_unit_test.cpp</itemPath>
+        <itemPath>tests/electronic_control_unit_test.h</itemPath>
+        <itemPath>tests/electronic_control_unit_test_runner.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f5"
                      displayName="IsoTpSenderTest"
                      projectFiles="true"
@@ -162,6 +170,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f5">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -235,6 +257,21 @@
       <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/ecu_lua_script_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test_runner.cpp"
             ex="false"
             tool="1"
             flavor2="0">
@@ -345,6 +382,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f5">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -418,6 +469,21 @@
       <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/ecu_lua_script_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test_runner.cpp"
             ex="false"
             tool="1"
             flavor2="0">
@@ -518,6 +584,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f5">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -591,6 +671,21 @@
       <item path="tests/ecu_lua_script_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/ecu_lua_script_test_runner.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="tests/electronic_control_unit_test_runner.cpp"
             ex="false"
             tool="1"
             flavor2="0">

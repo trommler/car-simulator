@@ -118,30 +118,28 @@ void UdsReceiverTest::testProceedReceivedData()
     udsReceiver.proceedReceivedData(buffer, num_bytes);
     usleep(4000);
 
-
     constexpr std::array<uint8_t, 3> readDataById05 = {0x19, 0x02, 0xaf};
-    constexpr std::array<uint8_t, 3> expAnswer05 = {
-        0x7F, 0x19, 0x78,
-    };
-
+    constexpr std::array<uint8_t, 3> expAnswer05 = {0x7F, 0x19, 0x78};
     constexpr std::array<uint8_t, 7> expAnswer06 = {
         0x59, 0x02, 0xFF, 0xE3, 0x00, 0x54, 0x2F
     };
-
-    usleep(4000);
     testReceiver.setExpectedUdsRespData(expAnswer05.data(), expAnswer05.size());
     usleep(4000);
 
     buffer = (uint8_t*) readDataById05.data();
     num_bytes = readDataById05.size();
-    udsReceiver.proceedReceivedData(buffer, num_bytes);
-    usleep(4000);
 
-    //    testReceiver.setExpectedUdsRespData(expAnswer06.data(), expAnswer06.size());
-    //    usleep(4000);
+    /* Since there is a 4 second sleep in-between two send commands inside the 
+     * Lua file, we need some thread ballet to test this case.
+     */
+    std::thread asyncThr(&UdsReceiver::proceedReceivedData, &udsReceiver, buffer, num_bytes);
+    usleep(4000);
+    testReceiver.setExpectedUdsRespData(expAnswer06.data(), expAnswer06.size());
+    asyncThr.detach();
 
     testReceiver.closeReceiver();
-    udsReceiver.proceedReceivedData(buffer, num_bytes); // send some garbage to close the receiver
+    constexpr std::array<uint8_t, 1> eof = {0x00}; // send some garbage to close the receiver
+    udsReceiver.proceedReceivedData(eof.data(), eof.size());
     testThread.join();
 }
 
