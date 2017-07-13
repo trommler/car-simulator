@@ -36,8 +36,9 @@ void EcuLuaScriptTest::testEcuLuaScript()
     CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC01", luaScript), std::invalid_argument);
     // no response ID
     CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC02", luaScript), std::invalid_argument);
-    // no broadcast ID
-    CPPUNIT_ASSERT_THROW(EcuLuaScript ecuLuaScript("TC03", luaScript), std::invalid_argument);
+
+    // no broadcast ID (default addr `0x7DF` should be loaded)
+    CPPUNIT_ASSERT_NO_THROW(EcuLuaScript ecuLuaScript("TC03", luaScript));
 }
 
 void EcuLuaScriptTest::testGetRequestId()

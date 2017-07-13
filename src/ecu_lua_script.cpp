@@ -69,10 +69,6 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
             {
                 broadcastId_ = int(broadcastId);
             }
-            else
-            {
-                throw invalid_argument("No 'BroadcastId'-field in the Lua ECU table!");
-            }
 
             return;
         }
@@ -104,6 +100,12 @@ uint16_t EcuLuaScript::getResponseId() const
     return responseId_;
 }
 
+/**
+ * Gets the UDS broadcast address, which is `0x7DF` on default.
+ *  
+ * @return the specific broadcast address according to the Lua file or `0x7DF`
+ *         on default
+ */
 uint16_t EcuLuaScript::getBroadcastId() const
 {
     return broadcastId_;
@@ -297,9 +299,9 @@ string EcuLuaScript::toByteResponse(uint32_t value,
 void EcuLuaScript::sendRaw(const string& response) const
 {
     assert(pIsoTpSender_ != nullptr);
-    
+
     cerr << "Here is the response msg from the Lua script we send: " << response << endl;
-    vector<uint8_t> resp = literalHexStrToBytes(response); 
+    vector<uint8_t> resp = literalHexStrToBytes(response);
     pIsoTpSender_->sendData(resp.data(), resp.size());
 }
 
@@ -320,7 +322,7 @@ void EcuLuaScript::sleep(unsigned int ms) noexcept
 int EcuLuaScript::getCurrentSession() const
 {
     assert(pSessionCtrl_ != nullptr);
-    
+
     return pSessionCtrl_->getCurretnUdsSession();
 }
 
@@ -332,7 +334,7 @@ int EcuLuaScript::getCurrentSession() const
 void EcuLuaScript::switchToSession(int ses)
 {
     assert(pSessionCtrl_ != nullptr);
-    
+
     pSessionCtrl_->setCurrentUdsSession(UdsSession(ses));
 }
 
@@ -383,5 +385,5 @@ void EcuLuaScript::registerSessionController(SessionController* pSesCtrl) noexce
 
 void EcuLuaScript::registerIsoTpSender(IsoTpSender* pSender) noexcept
 {
-   pIsoTpSender_ = pSender; 
+    pIsoTpSender_ = pSender;
 }

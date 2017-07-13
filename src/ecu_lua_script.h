@@ -19,6 +19,7 @@ constexpr char BROADCAST_ID_FIELD[] = "BroadcastId";
 constexpr char READ_DATA_BY_IDENTIFIER_TABLE[] = "ReadDataByIdentifier";
 constexpr char READ_SEED[] = "Seed";
 constexpr char RAW_TABLE[] = "Raw";
+constexpr uint16_t DEFAULT_BROADCAST_ADDR = 0x7DF;
 
 class EcuLuaScript
 {
@@ -58,7 +59,7 @@ private:
     IsoTpSender* pIsoTpSender_ = nullptr;
     std::uint16_t requestId_;
     std::uint16_t responseId_;
-    std::uint16_t broadcastId_;
+    std::uint16_t broadcastId_ = DEFAULT_BROADCAST_ADDR;
 
 };
 
