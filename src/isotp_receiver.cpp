@@ -10,6 +10,7 @@
  */
 
 #include "isotp_receiver.h"
+#include "can/isotp.h"
 #include <net/if.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -25,8 +26,8 @@ constexpr size_t MAX_BUFSIZE = 4096; ///< max. 4096 bytes per UDS message
 /**
  * Constructor. Opens the receiver socket.
  * 
- * @param source:
- * @param dest:
+ * @param source: the source CAN address
+ * @param dest: the destination CAN address
  * @param device: the device used for the transmission (e.g. "vcan0")
  */
 IsoTpReceiver::IsoTpReceiver(canid_t source,
@@ -72,6 +73,10 @@ int IsoTpReceiver::openReceiver() noexcept
         cerr << __func__ << "() socket: " << strerror(errno) << '\n';
         return -1;
     }
+
+    static struct can_isotp_options opts;
+    opts.flags |= (CAN_ISOTP_TX_PADDING | CAN_ISOTP_RX_PADDING);
+    setsockopt(skt, SOL_CAN_ISOTP, CAN_ISOTP_OPTS, &opts, sizeof(opts));
 
     struct ifreq ifr;
     strncpy(ifr.ifr_name, device_.c_str(), device_.length() + 1);
