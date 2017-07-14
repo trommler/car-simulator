@@ -29,6 +29,7 @@ public:
     UdsReceiver& operator =(UdsReceiver&& orig) = default;
     virtual ~UdsReceiver() = default;
 
+    static std::uint16_t generateSeed();
     virtual void proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept override;
 
 private:

@@ -10,9 +10,13 @@
 #include <vector>
 #include <array>
 #include <iostream>
+#include <random>
+#include <limits>
 #include <cassert>
 
 using namespace std;
+
+static random_device RANDOM_DEVICE; /// necessary for `generateSeed()`
 
 UdsReceiver::UdsReceiver(canid_t source,
                          canid_t dest,
@@ -86,7 +90,7 @@ void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_b
 {
     assert(pSessionCtrl_ != nullptr);
     assert(pIsoTpSender_ != nullptr);
-    
+
     const uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
     string data;
 
@@ -136,7 +140,7 @@ void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_b
 void UdsReceiver::diagnosticSessionControl(const uint8_t* buffer, const size_t num_bytes)
 {
     assert(pSessionCtrl_ != nullptr);
-            
+
     const uint8_t sessionId = buffer[1];
     switch (sessionId)
     {
@@ -255,4 +259,16 @@ string UdsReceiver::intToHexString(const uint8_t* buffer, const size_t num_bytes
         }
     }
     return a;
+}
+
+/**
+ * Generates a random 2 byte large unsigned number.
+ *
+ * @return a random `uint16_t` value;
+ */
+uint16_t UdsReceiver::generateSeed()
+{
+    default_random_engine gen(RANDOM_DEVICE());
+    uniform_int_distribution<uint16_t> dist(0, numeric_limits<uint16_t>::max());
+    return dist(gen);
 }

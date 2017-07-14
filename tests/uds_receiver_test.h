@@ -45,6 +45,7 @@ class UdsReceiverTest : public CPPUNIT_NS::TestFixture
 
     CPPUNIT_TEST(testUdsReceiver);
     CPPUNIT_TEST(testProceedReceivedData);
+    CPPUNIT_TEST(testGenerateSeed);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -58,6 +59,7 @@ private:
     void testUdsReceiver();
     void testProceedReceivedData();
     void testSetSessionController();
+    void testGenerateSeed();
 
 };
 

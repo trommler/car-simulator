@@ -143,6 +143,41 @@ void UdsReceiverTest::testProceedReceivedData()
     testThread.join();
 }
 
+void UdsReceiverTest::testGenerateSeed()
+{
+    /* Testing a random number generator is somehow pointless. However, this is
+     * a simple check to proof that out of N numbers, at least one is not
+     * identical with the rest of the generated number set.
+     */
+    constexpr int N = 64;
+    std::array<uint16_t, N> randomNumbers;
+    for (size_t i = 0; i < randomNumbers.size(); i++)
+    {
+        // fill array with random numbers
+        randomNumbers[i] = UdsReceiver::generateSeed();
+    }
+
+    auto ref = randomNumbers[0]; // first number is the reference to check
+    size_t counter = 1; // start at 1 to skip the reference value
+    for (size_t i = 1; i < randomNumbers.size(); i++)
+    {
+        if (ref != randomNumbers[i])
+        {
+            break;
+        }
+        ++counter;
+    }
+
+    if (counter == N)
+    {
+        CPPUNIT_ASSERT_MESSAGE("The entire set of random numbers are identical!", false);
+    }
+    else
+    {
+        CPPUNIT_ASSERT(true);
+    }
+}
+
 /**
  * Compares the incoming response data from the corresponding `UdsReceiver` with
  * the expected internal data set. This is done by the 
@@ -156,7 +191,6 @@ void UdsReceiverTest::testProceedReceivedData()
 void TestReceiver::proceedReceivedData(const std::uint8_t* buffer,
                                        const std::size_t num_bytes) noexcept
 {
-
     CPPUNIT_ASSERT(num_bytes < MAX_UDS_MSG_SIZE);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Message size don't match!", m_expNumBytes, num_bytes);
 
