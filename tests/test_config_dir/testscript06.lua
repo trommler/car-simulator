@@ -25,9 +25,15 @@ PCM = {
             return "59 02 FF E3" .. toByteResponse(myNumber, 3) -- "59 02 FF E3 00 54 2E" 
         end,
 
-       ["19 02 B2"] = function (request)
-            session = getSession()
+        ["19 02 B2"] = function (request)
+            session = getCurrentSession()
             return "47 11" .. toByteResponse(session, 1) -- "47 11 01"
+        end,
+
+        ["19 02 B3"] = function (request)
+            switchToSession(3) -- extended session
+            session = getCurrentSession()
+            return "47 11" .. toByteResponse(session, 1) -- "47 11 03"
         end,
 
         ["19 02 AF"] = function (request)

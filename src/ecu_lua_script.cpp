@@ -35,8 +35,8 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
         lua_state_["toByteResponse"] = &toByteResponse;
         lua_state_["sleep"] = &sleep;
         // some lambda magic for the member functions 
-        lua_state_["getCurrentSession"] = [this]()->uint8_t { return this->getCurrentSession(); }; 
-        lua_state_["switchToSession"] = [this](uint8_t ses) { this->switchToSession(ses); };
+        lua_state_["getCurrentSession"] = [this]() -> uint32_t { return this->getCurrentSession(); }; 
+        lua_state_["switchToSession"] = [this](uint32_t ses) { this->switchToSession(ses); };
         lua_state_["sendRaw"] = [this](const string& msg) { this->sendRaw(msg); };
 
         lua_state_.Load(luaScript);
