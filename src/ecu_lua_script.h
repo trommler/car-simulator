@@ -46,7 +46,7 @@ public:
     static std::string toByteResponse(std::uint32_t value, std::uint32_t len = sizeof(std::uint32_t)) noexcept;
     static void sleep(unsigned int ms) noexcept;
     void sendRaw(const std::string& response) const;
-    int getCurrentSession() const;
+    std::uint8_t getCurrentSession() const;
     void switchToSession(int ses);
 
     void registerSessionController(SessionController* pSesCtrl) noexcept;

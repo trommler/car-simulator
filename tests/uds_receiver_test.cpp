@@ -52,30 +52,6 @@ void UdsReceiverTest::testUdsReceiver()
 
 void UdsReceiverTest::testProceedReceivedData()
 {
-    constexpr std::array<uint8_t, 3> readDataById01 = {0x22, 0xf1, 0x90};
-    constexpr std::array<uint8_t, 3> readDataById02 = {0x22, 0xf1, 0x24};
-    constexpr std::array<uint8_t, 3> readDataById03 = {0x22, 0xf1, 0x23};
-    constexpr std::array<uint8_t, 3> readDataById04 = {0x22, 0x1e, 0x23};
-
-    constexpr std::array<uint8_t, 20> expAnswer01 = {
-        READ_DATA_BY_IDENTIFIER_RES, 0xf1, 0x90,
-        'S', 'A', 'L', 'G', 'A', '2', 'E', 'V', '9', 'H', 'A', '2', '9', '8', '7', '8', '4'
-    };
-
-    constexpr std::array<uint8_t, 16> expAnswer02 = {
-        READ_DATA_BY_IDENTIFIER_RES, 0xf1, 0x24,
-        'H', 'P', 'L', 'A', '-', '1', '2', '3', '4', '5', '-', 'A', 'B'
-    };
-
-    constexpr std::array<uint8_t, 2> expAnswer03 = {
-        ERROR, REQUEST_OUT_OF_RANGE
-    };
-
-    constexpr std::array<uint8_t, 9> expAnswer04 = {
-        READ_DATA_BY_IDENTIFIER_RES, 0x1e, 0x23,
-        '2', '3', '1', '1', '3', '2'
-    };
-
     uint8_t* buffer;
     size_t num_bytes;
     EcuLuaScript script(ECU_IDENT, LUA_SCRIPT);
@@ -84,58 +60,111 @@ void UdsReceiverTest::testProceedReceivedData()
     IsoTpSender sender(respId, requId, DEVICE);
     SessionController sesCtrl;
     script.registerIsoTpSender(&sender);
-    script.registerSessionController(&sesCtrl);
     UdsReceiver udsReceiver(requId, respId, DEVICE, std::move(script), &sender, &sesCtrl);
     TestReceiver testReceiver(requId, respId, DEVICE);
     std::thread testThread(&IsoTpReceiver::readData, &testReceiver); // run async in thread
     usleep(4000); // wait some time to ensure the thread is set up and running
 
-    testReceiver.setExpectedUdsRespData(expAnswer01.data(), expAnswer01.size());
-    usleep(4000);
-    buffer = (uint8_t*) readDataById01.data();
-    num_bytes = readDataById01.size();
-    udsReceiver.proceedReceivedData(buffer, num_bytes);
+    {
+        constexpr std::array<uint8_t, 3> readDataById01 = {0x22, 0xf1, 0x90};
+        constexpr std::array<uint8_t, 20> expAnswer01 = {
+            READ_DATA_BY_IDENTIFIER_RES, 0xf1, 0x90,
+            'S', 'A', 'L', 'G', 'A', '2', 'E', 'V', '9', 'H', 'A', '2', '9', '8', '7', '8', '4'
+        };
+        testReceiver.setExpectedUdsRespData(expAnswer01.data(), expAnswer01.size());
+        usleep(4000);
+        buffer = (uint8_t*) readDataById01.data();
+        num_bytes = readDataById01.size();
+        udsReceiver.proceedReceivedData(buffer, num_bytes);
+        usleep(4000);
+    }
 
-    usleep(4000);
-    testReceiver.setExpectedUdsRespData(expAnswer02.data(), expAnswer02.size());
-    usleep(4000);
-    buffer = (uint8_t*) readDataById02.data();
-    num_bytes = readDataById02.size();
-    udsReceiver.proceedReceivedData(buffer, num_bytes);
+    {
+        constexpr std::array<uint8_t, 3> readDataById02 = {0x22, 0xf1, 0x24};
+        constexpr std::array<uint8_t, 16> expAnswer02 = {
+            READ_DATA_BY_IDENTIFIER_RES, 0xf1, 0x24,
+            'H', 'P', 'L', 'A', '-', '1', '2', '3', '4', '5', '-', 'A', 'B'
+        };
+        testReceiver.setExpectedUdsRespData(expAnswer02.data(), expAnswer02.size());
+        usleep(4000);
+        buffer = (uint8_t*) readDataById02.data();
+        num_bytes = readDataById02.size();
+        udsReceiver.proceedReceivedData(buffer, num_bytes);
+        usleep(4000);
+    }
 
-    usleep(4000);
-    testReceiver.setExpectedUdsRespData(expAnswer03.data(), expAnswer03.size());
-    usleep(4000);
-    buffer = (uint8_t*) readDataById03.data();
-    num_bytes = readDataById03.size();
-    udsReceiver.proceedReceivedData(buffer, num_bytes);
+    {
+        constexpr std::array<uint8_t, 3> readDataById03 = {0x22, 0xf1, 0x23};
+        constexpr std::array<uint8_t, 2> expAnswer03 = {
+            ERROR, REQUEST_OUT_OF_RANGE
+        };
+        testReceiver.setExpectedUdsRespData(expAnswer03.data(), expAnswer03.size());
+        usleep(4000);
+        buffer = (uint8_t*) readDataById03.data();
+        num_bytes = readDataById03.size();
+        udsReceiver.proceedReceivedData(buffer, num_bytes);
+        usleep(4000);
+    }
 
-    usleep(4000);
-    testReceiver.setExpectedUdsRespData(expAnswer04.data(), expAnswer04.size());
-    usleep(4000);
-    buffer = (uint8_t*) readDataById04.data();
-    num_bytes = readDataById04.size();
-    udsReceiver.proceedReceivedData(buffer, num_bytes);
-    usleep(4000);
+    {
+        constexpr std::array<uint8_t, 3> readDataById04 = {0x22, 0x1e, 0x23};
+        constexpr std::array<uint8_t, 9> expAnswer04 = {
+            READ_DATA_BY_IDENTIFIER_RES, 0x1e, 0x23,
+            '2', '3', '1', '1', '3', '2'
+        };
+        testReceiver.setExpectedUdsRespData(expAnswer04.data(), expAnswer04.size());
+        usleep(4000);
+        buffer = (uint8_t*) readDataById04.data();
+        num_bytes = readDataById04.size();
+        udsReceiver.proceedReceivedData(buffer, num_bytes);
+        usleep(4000);
+    }
 
-    constexpr std::array<uint8_t, 3> readDataById05 = {0x19, 0x02, 0xaf};
-    constexpr std::array<uint8_t, 3> expAnswer05 = {0x7F, 0x19, 0x78};
-    constexpr std::array<uint8_t, 7> expAnswer06 = {
-        0x59, 0x02, 0xFF, 0xE3, 0x00, 0x54, 0x2F
-    };
-    testReceiver.setExpectedUdsRespData(expAnswer05.data(), expAnswer05.size());
-    usleep(4000);
+    {
+        constexpr std::array<uint8_t, 3> readDataById05 = {0x19, 0x02, 0xb1};
+        constexpr std::array<uint8_t, 7> expAnswer05 = {
+            0x59, 0x02, 0xFF, 0xE3, 0x00, 0x54, 0x2E
+        };
+        testReceiver.setExpectedUdsRespData(expAnswer05.data(), expAnswer05.size());
+        usleep(4000);
+        buffer = (uint8_t*) readDataById05.data();
+        num_bytes = readDataById05.size();
+        udsReceiver.proceedReceivedData(buffer, num_bytes);
+        usleep(4000);
+    }
 
-    buffer = (uint8_t*) readDataById05.data();
-    num_bytes = readDataById05.size();
+//    {
+//        constexpr std::array<uint8_t, 3> readDataById06 = {0x19, 0x02, 0xb2};
+//        constexpr std::array<uint8_t, 3> expAnswer06 = {
+//            0x47, 0x11, 0x01
+//        };
+//        testReceiver.setExpectedUdsRespData(expAnswer06.data(), expAnswer06.size());
+//        usleep(4000);
+//        buffer = (uint8_t*) readDataById06.data();
+//        num_bytes = readDataById06.size();
+//        udsReceiver.proceedReceivedData(buffer, num_bytes);
+//        usleep(4000);
+//    }
 
-    /* Since there is a 4 second sleep in-between two send commands inside the 
-     * Lua file, we need some thread ballet to test this case.
-     */
-    std::thread asyncThr(&UdsReceiver::proceedReceivedData, &udsReceiver, buffer, num_bytes);
-    usleep(4000);
-    testReceiver.setExpectedUdsRespData(expAnswer06.data(), expAnswer06.size());
-    asyncThr.detach();
+    {
+        constexpr std::array<uint8_t, 3> readDataById07 = {0x19, 0x02, 0xaf};
+        constexpr std::array<uint8_t, 3> expAnswer07_1 = {0x7F, 0x19, 0x78};
+        constexpr std::array<uint8_t, 7> expAnswer07_2 = {
+            0x59, 0x02, 0xFF, 0xE3, 0x00, 0x54, 0x2F
+        };
+        testReceiver.setExpectedUdsRespData(expAnswer07_1.data(), expAnswer07_1.size());
+        usleep(4000);
+        buffer = (uint8_t*) readDataById07.data();
+        num_bytes = readDataById07.size();
+
+        /* Since there is a 4 second sleep in-between two send commands inside the 
+         * Lua file, we need some thread ballet to test this case.
+         */
+        std::thread asyncThr(&UdsReceiver::proceedReceivedData, &udsReceiver, buffer, num_bytes);
+        usleep(4000);
+        testReceiver.setExpectedUdsRespData(expAnswer07_2.data(), expAnswer07_2.size());
+        asyncThr.detach();
+    }
 
     testReceiver.closeReceiver();
     constexpr std::array<uint8_t, 1> eof = {0x00}; // send some garbage to close the receiver

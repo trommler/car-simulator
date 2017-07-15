@@ -24,7 +24,7 @@ void SessionController::startSession()
  *
  * @return the active UDS state
  */
-UdsSession SessionController::getCurretnUdsSession() const noexcept
+UdsSession SessionController::getCurrentUdsSession() const noexcept
 {
     return session_;
 }

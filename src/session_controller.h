@@ -29,7 +29,7 @@ public:
     virtual ~SessionController() = default;
 
     void startSession();
-    UdsSession getCurretnUdsSession() const noexcept;
+    UdsSession getCurrentUdsSession() const noexcept;
     void setCurrentUdsSession(const UdsSession ses) noexcept;
 
 private:

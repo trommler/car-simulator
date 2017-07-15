@@ -94,11 +94,11 @@ void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_b
     const uint16_t dataIdentifier = (buffer[1] << 8) + buffer[2];
     string data;
 
-    if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::PROGRAMMING)
+    if (pSessionCtrl_->getCurrentUdsSession() == UdsSession::PROGRAMMING)
     {
         data = script_.getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Programming");
     }
-    else if (pSessionCtrl_->getCurretnUdsSession() == UdsSession::EXTENDED)
+    else if (pSessionCtrl_->getCurrentUdsSession() == UdsSession::EXTENDED)
     {
         data = script_.getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Extended");
     }

@@ -20,14 +20,17 @@ PCM = {
         -- using concatenation, functions or any other language
         -- features of lua
         ["22 F1 91"] = "62 F1 91" .. ascii("SALGA2EV9HA298784"),
+        ["19 02 B1"] = function (request)
+            myNumber = 21550
+            return "59 02 FF E3" .. toByteResponse(myNumber, 3) -- "59 02 FF E3 00 54 2E" 
+        end,
+
+       ["19 02 B2"] = function (request)
+            session = getSession()
+            return "47 11" .. toByteResponse(session, 1) -- "47 11 01"
+        end,
+
         ["19 02 AF"] = function (request)
-            --ses01 = getCurrentSession() -- currently segfaults 
-            --switchToSession(2)
-            --sleep(2000)
-            --sendRaw("7F 19 78")
-            --sleep(2000)
-            --sendRaw("7F 19 78")
-            --sleep(2000)
             sendRaw("7F 19 78")
             sleep(5000)
             return "59 02 FF E3 00 54 2F"

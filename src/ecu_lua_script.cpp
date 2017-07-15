@@ -318,11 +318,11 @@ void EcuLuaScript::sleep(unsigned int ms) noexcept
  * Returns the currently active diagnostic session to be used in custom
  * functions.
  */
-int EcuLuaScript::getCurrentSession() const
+uint8_t EcuLuaScript::getCurrentSession() const
 {
     assert(pSessionCtrl_ != nullptr);
 
-    return pSessionCtrl_->getCurretnUdsSession();
+    return pSessionCtrl_->getCurrentUdsSession();
 }
 
 /**
