@@ -264,7 +264,7 @@ string UdsReceiver::intToHexString(const uint8_t* buffer, const size_t num_bytes
 /**
  * Generates a random 2 byte large unsigned number.
  *
- * @return a random `uint16_t` value;
+ * @return a random `uint16_t` value
  */
 uint16_t UdsReceiver::generateSeed()
 {

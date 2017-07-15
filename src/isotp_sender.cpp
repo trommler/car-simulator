@@ -137,7 +137,6 @@ int IsoTpSender::sendData(const void* buffer, size_t size) const noexcept
         return -2;
     }
 
-    cout << __func__ << "() Sent " << dec << bytes_sent << " bytes." << endl;
     return bytes_sent;
 }
 

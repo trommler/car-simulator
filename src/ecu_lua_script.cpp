@@ -300,7 +300,6 @@ void EcuLuaScript::sendRaw(const string& response) const
 {
     assert(pIsoTpSender_ != nullptr);
 
-    cerr << "Here is the response msg from the Lua script we send: " << response << endl;
     vector<uint8_t> resp = literalHexStrToBytes(response);
     pIsoTpSender_->sendData(resp.data(), resp.size());
 }
@@ -362,7 +361,6 @@ bool EcuLuaScript::hasRaw(const string& identStr) const
 string EcuLuaScript::getRaw(const string& identStr) const
 {
     auto val = lua_state_[ecu_ident_.c_str()][RAW_TABLE][identStr.c_str()];
-
     if (val.isFunction())
     {
         return val(identStr);
