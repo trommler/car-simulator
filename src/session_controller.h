@@ -14,7 +14,8 @@ enum UdsSession : std::uint8_t
 {
     DEFAULT = 0x01, ///< the default UDS session
     PROGRAMMING = 0x02,
-    EXTENDED = 0x03
+    EXTENDED = 0x03,
+    END_OF_LINE = 0x40
 };
 
 class SessionController : public EcuTimer
