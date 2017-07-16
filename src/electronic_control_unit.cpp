@@ -11,8 +11,8 @@
 using namespace std;
 
 ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&& ecuScript)
-: sender_(ecuScript.getRequestId(), ecuScript.getResponseId(), device)
-, udsReceiver_(ecuScript.getRequestId(), ecuScript.getResponseId(), device, move(ecuScript), &sender_, &sessionControl_)
+: sender_(ecuScript.getResponseId(), ecuScript.getRequestId(), device)
+, udsReceiver_(ecuScript.getResponseId(), ecuScript.getRequestId(), device, move(ecuScript), &sender_, &sessionControl_)
 , broadcastReceiver_(ecuScript.getBroadcastId(), device, &udsReceiver_)
 , udsReceiverThread_(&IsoTpReceiver::readData, &udsReceiver_)
 , broadcastReceiverThread_(&IsoTpReceiver::readData, &broadcastReceiver_)

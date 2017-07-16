@@ -38,12 +38,6 @@ void BroadcastReceiver::proceedReceivedData(const uint8_t* buffer,
             pUdsReceiver_->pIsoTpSender_->sendData(tp.data(), tp.size());
             break;
         }
-        case 0x50:
-        {
-            constexpr array<uint8_t, 10> tp = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09};
-            pUdsReceiver_->pIsoTpSender_->sendData(tp.data(), tp.size());
-            break;
-        }
         default:
         {
             pUdsReceiver_->proceedReceivedData(buffer, num_bytes);
