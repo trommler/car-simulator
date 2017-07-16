@@ -17,8 +17,8 @@ ElectronicControlUnit::ElectronicControlUnit(const string& device, EcuLuaScript&
 , udsReceiverThread_(&IsoTpReceiver::readData, &udsReceiver_)
 , broadcastReceiverThread_(&IsoTpReceiver::readData, &broadcastReceiver_)
 {
-    //ecuScript.registerSessionController(&sessionControl_); // not necessary. Already done in the c'tor of `udsReceiver_`
-    //ecuScript.registerIsoTpSender(&sender_);  // not necessary. Already done in the c'tor of `udsReceiver_`
+    ecuScript.registerSessionController(&sessionControl_); // not necessary. Already done in the c'tor of `udsReceiver_` // It's not done in the c'tor of 'udsReceiver_', and even if it is, it does not work there.
+    ecuScript.registerIsoTpSender(&sender_);  // not necessary. Already done in the c'tor of `udsReceiver_` // It's not done in the c'tor of 'udsReceiver_', and even if it is, it does not work there.
 }
 
 ElectronicControlUnit::~ElectronicControlUnit()
