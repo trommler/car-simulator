@@ -54,6 +54,7 @@ void UdsReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_by
     {
         vector<unsigned char> raw = script_.literalHexStrToBytes(script_.getRaw(intToHexString(buffer, num_bytes)));
         pIsoTpSender_->sendData(raw.data(), raw.size());
+        pSessionCtrl_->reset();
     }
     else
     {
