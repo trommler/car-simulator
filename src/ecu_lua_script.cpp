@@ -77,6 +77,48 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
 }
 
 /**
+ * Move constructor.
+ * 
+ * @param orig: the originating instance
+ */
+EcuLuaScript::EcuLuaScript(EcuLuaScript&& orig)
+: lua_state_(move(orig.lua_state_))
+, ecu_ident_(move(orig.ecu_ident_))
+, pSessionCtrl_(orig.pSessionCtrl_)
+, pIsoTpSender_(orig.pIsoTpSender_)
+, requestId_(orig.requestId_)
+, responseId_(orig.responseId_)
+, broadcastId_(orig.broadcastId_)
+{
+    orig.pSessionCtrl_ = nullptr;
+    orig.pIsoTpSender_ = nullptr;
+}
+
+/**
+ * Move-assignment operator.
+ * 
+ * @param orig: the originating instance
+ * @return reference to the moved instance
+ */
+EcuLuaScript& EcuLuaScript::operator=(EcuLuaScript&& orig)
+{
+    if (&orig == this)
+    {
+        return *this;
+    }
+    lua_state_ = move(orig.lua_state_);
+    ecu_ident_ = move(orig.ecu_ident_);
+    pSessionCtrl_ = orig.pSessionCtrl_;
+    orig.pSessionCtrl_ = nullptr;
+    pIsoTpSender_ = orig.pIsoTpSender_;
+    orig.pIsoTpSender_ = nullptr;
+    requestId_ = orig.requestId_;
+    responseId_ = orig.responseId_;
+    broadcastId_ = orig.broadcastId_;
+    return *this;
+};
+
+/**
  * Gets the UDS request ID according to the loaded Lua script. Since this call
  * is very common, the value is cached at the instantiation to avoid expensive
  * access operations on the Lua file.

@@ -33,6 +33,9 @@ UdsReceiver::UdsReceiver(canid_t source,
     assert(pSesCtrl != nullptr);
     assert(pIsoTpSender_ != nullptr);
     assert(pSessionCtrl_ != nullptr);
+
+    script_.registerIsoTpSender(pSender);
+    script_.registerSessionController(pSesCtrl);
 }
 
 /**

@@ -28,8 +28,8 @@ public:
     EcuLuaScript(const std::string& ecuIdent, const std::string& luaScript);
     EcuLuaScript(const EcuLuaScript& orig) = delete;
     EcuLuaScript& operator =(const EcuLuaScript& orig) = delete;
-    EcuLuaScript(EcuLuaScript&& orig) = default;
-    EcuLuaScript& operator =(EcuLuaScript&& orig) = default;
+    EcuLuaScript(EcuLuaScript&& orig);
+    EcuLuaScript& operator =(EcuLuaScript&& orig);
     virtual ~EcuLuaScript() = default;
 
     std::uint16_t getRequestId() const;
