@@ -10,6 +10,7 @@
 #include "isotp_sender.h"
 #include "ecu_lua_script.h"
 #include "session_controller.h"
+#include <memory>
 
 class UdsReceiver : public IsoTpReceiver
 {
@@ -20,23 +21,23 @@ public:
     UdsReceiver(canid_t source,
                 canid_t dest,
                 const std::string& device,
-                EcuLuaScript&& ecuScript,
-                IsoTpSender* sender,
+                std::unique_ptr<EcuLuaScript> pEcuScript,
+                IsoTpSender* pSender,
                 SessionController* pSesCtrl);
     UdsReceiver(const UdsReceiver& orig) = default;
     UdsReceiver& operator =(const UdsReceiver& orig) = default;
-    UdsReceiver(UdsReceiver&& orig) = default;
-    UdsReceiver& operator =(UdsReceiver&& orig) = default;
+    UdsReceiver(UdsReceiver&& orig);
+    UdsReceiver& operator =(UdsReceiver&& orig);
     virtual ~UdsReceiver() = default;
 
     static std::uint16_t generateSeed();
     virtual void proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept override;
 
 private:
-    EcuLuaScript script_;
+    std::unique_ptr<EcuLuaScript> pEcuScript_;
     IsoTpSender* pIsoTpSender_ = nullptr;
     SessionController* pSessionCtrl_ = nullptr;
-    uint8_t securityAccessType_ = 0x00;
+    std::uint8_t securityAccessType_ = 0x00;
 
     void readDataByIdentifier(const std::uint8_t* buffer, const std::size_t num_bytes) noexcept;
     void diagnosticSessionControl(const std::uint8_t* buffer, const std::size_t num_bytes);

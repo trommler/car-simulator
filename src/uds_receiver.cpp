@@ -16,26 +16,67 @@
 
 using namespace std;
 
-static random_device RANDOM_DEVICE; /// necessary for `generateSeed()`
+static random_device RANDOM_DEVICE; ///< necessary for `generateSeed()`
 
+/**
+ * Constructor.
+ * 
+ * @param source
+ * @param dest
+ * @param device
+ * @param ecuScript
+ * @param pSender
+ * @param pSesCtrl
+ */
 UdsReceiver::UdsReceiver(canid_t source,
                          canid_t dest,
                          const string& device,
-                         EcuLuaScript&& ecuScript,
+                         unique_ptr<EcuLuaScript> pEcuScript,
                          IsoTpSender* pSender,
                          SessionController* pSesCtrl)
 : IsoTpReceiver(source, dest, device)
-, script_(move(ecuScript))
+, pEcuScript_(move(pEcuScript))
 , pIsoTpSender_(pSender)
 , pSessionCtrl_(pSesCtrl)
 {
-    assert(pSender != nullptr);
-    assert(pSesCtrl != nullptr);
     assert(pIsoTpSender_ != nullptr);
     assert(pSessionCtrl_ != nullptr);
+    pEcuScript_->registerIsoTpSender(pSender);
+    pEcuScript_->registerSessionController(pSesCtrl);
+}
 
-    script_.registerIsoTpSender(pSender);
-    script_.registerSessionController(pSesCtrl);
+/**
+ * Move constructor.
+ * 
+ * @param orig: the originating instance
+ */
+UdsReceiver::UdsReceiver(UdsReceiver&& orig)
+: IsoTpReceiver(forward<IsoTpReceiver>(orig))
+, pEcuScript_(move(orig.pEcuScript_))
+, pIsoTpSender_(orig.pIsoTpSender_)
+, pSessionCtrl_(orig.pSessionCtrl_)
+{
+    orig.pIsoTpSender_ = nullptr;
+    orig.pSessionCtrl_ = nullptr;
+}
+
+/**
+ * Move assignment operator.
+ * 
+ * @param orig: the originating instance
+ * @return reference to the moved instance
+ */
+UdsReceiver& UdsReceiver::operator=(UdsReceiver&& orig)
+{
+    if (this != &orig)
+    {
+        pEcuScript_ = move(orig.pEcuScript_);
+        pIsoTpSender_ = orig.pIsoTpSender_;
+        pSessionCtrl_ = orig.pSessionCtrl_;
+        orig.pIsoTpSender_ = nullptr;
+        orig.pSessionCtrl_ = nullptr;
+    }
+    return *this;
 }
 
 /**
@@ -51,11 +92,12 @@ UdsReceiver::UdsReceiver(canid_t source,
 void UdsReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint8_t udsServiceIdentifier = buffer[0];
-    const bool isRaw = script_.hasRaw(intToHexString(buffer, num_bytes));
+    const string identifier = intToHexString(buffer, num_bytes);
+    const bool isRaw = pEcuScript_->hasRaw(identifier);
 
     if (isRaw)
     {
-        vector<unsigned char> raw = script_.literalHexStrToBytes(script_.getRaw(intToHexString(buffer, num_bytes)));
+        vector<unsigned char> raw = pEcuScript_->literalHexStrToBytes(pEcuScript_->getRaw(identifier));
         pIsoTpSender_->sendData(raw.data(), raw.size());
         pSessionCtrl_->reset();
     }
@@ -100,16 +142,16 @@ void UdsReceiver::readDataByIdentifier(const uint8_t* buffer, const size_t num_b
 
     if (pSessionCtrl_->getCurrentUdsSession() == UdsSession::PROGRAMMING)
     {
-        data = script_.getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Programming");
+        data = pEcuScript_->getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Programming");
     }
     else if (pSessionCtrl_->getCurrentUdsSession() == UdsSession::EXTENDED)
     {
-        data = script_.getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Extended");
+        data = pEcuScript_->getDataByIdentifier(EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier)), "Extended");
     }
     else // default session
     {
         const string resp = EcuLuaScript::toByteResponse(dataIdentifier, sizeof(dataIdentifier));
-        data = script_.getDataByIdentifier(resp);
+        data = pEcuScript_->getDataByIdentifier(resp);
     }
 
 
@@ -179,7 +221,7 @@ void UdsReceiver::diagnosticSessionControl(const uint8_t* buffer, const size_t n
 void UdsReceiver::securityAccess(const uint8_t* buffer, const size_t num_bytes) noexcept
 {
     const uint8_t seedId = buffer[1];
-    const string seed = script_.getSeed(seedId);
+    const string seed = pEcuScript_->getSeed(seedId);
     if (!seed.empty())
     {
         // send seed

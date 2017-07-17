@@ -40,13 +40,13 @@ void UdsReceiverTest::tearDown()
 
 void UdsReceiverTest::testUdsReceiver()
 {
-    EcuLuaScript script(ECU_IDENT, LUA_SCRIPT);
-    const uint16_t respId = script.getResponseId();
-    const uint16_t requId = script.getRequestId();
+    auto ecuScript = std::make_unique<EcuLuaScript>(ECU_IDENT, LUA_SCRIPT);
+    const uint16_t respId = ecuScript->getResponseId();
+    const uint16_t requId = ecuScript->getRequestId();
     IsoTpSender sender(respId, requId, DEVICE);
     SessionController sesCtrl;
     UdsReceiver* udsReceiver;
-    CPPUNIT_ASSERT_NO_THROW(udsReceiver = new UdsReceiver(requId, respId, DEVICE, std::move(script), &sender, &sesCtrl));
+    CPPUNIT_ASSERT_NO_THROW(udsReceiver = new UdsReceiver(requId, respId, DEVICE, std::move(ecuScript), &sender, &sesCtrl));
     delete udsReceiver;
 }
 
@@ -54,14 +54,12 @@ void UdsReceiverTest::testProceedReceivedData()
 {
     uint8_t* buffer;
     size_t num_bytes;
-    EcuLuaScript script(ECU_IDENT, LUA_SCRIPT);
-    const uint16_t respId = script.getResponseId();
-    const uint16_t requId = script.getRequestId();
+    auto ecuScript = std::make_unique<EcuLuaScript>(ECU_IDENT, LUA_SCRIPT);
+    const uint16_t respId = ecuScript->getResponseId();
+    const uint16_t requId = ecuScript->getRequestId();
     IsoTpSender sender(respId, requId, DEVICE);
     SessionController sesCtrl;
-    script.registerIsoTpSender(&sender);
-    script.registerSessionController(&sesCtrl);
-    UdsReceiver udsReceiver(requId, respId, DEVICE, std::move(script), &sender, &sesCtrl);
+    UdsReceiver udsReceiver(requId, respId, DEVICE, std::move(ecuScript), &sender, &sesCtrl);
     TestReceiver testReceiver(requId, respId, DEVICE);
     std::thread testThread(&IsoTpReceiver::readData, &testReceiver); // run async in thread
     usleep(4000); // wait some time to ensure the thread is set up and running
