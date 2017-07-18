@@ -28,7 +28,7 @@ public:
 private:
     canid_t source_;
     canid_t dest_;
-    const std::string device_;
+    std::string device_;
     int send_skt_ = -1;
 };
 

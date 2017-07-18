@@ -50,11 +50,12 @@ UdsReceiver::UdsReceiver(canid_t source,
  * 
  * @param orig: the originating instance
  */
-UdsReceiver::UdsReceiver(UdsReceiver&& orig)
-: IsoTpReceiver(forward<IsoTpReceiver>(orig))
+UdsReceiver::UdsReceiver(UdsReceiver&& orig) noexcept
+: IsoTpReceiver(move(orig))
 , pEcuScript_(move(orig.pEcuScript_))
 , pIsoTpSender_(orig.pIsoTpSender_)
 , pSessionCtrl_(orig.pSessionCtrl_)
+, securityAccessType_(orig.securityAccessType_)
 {
     orig.pIsoTpSender_ = nullptr;
     orig.pSessionCtrl_ = nullptr;
@@ -66,16 +67,15 @@ UdsReceiver::UdsReceiver(UdsReceiver&& orig)
  * @param orig: the originating instance
  * @return reference to the moved instance
  */
-UdsReceiver& UdsReceiver::operator=(UdsReceiver&& orig)
+UdsReceiver& UdsReceiver::operator=(UdsReceiver&& orig) noexcept
 {
-    if (this != &orig)
-    {
-        pEcuScript_ = move(orig.pEcuScript_);
-        pIsoTpSender_ = orig.pIsoTpSender_;
-        pSessionCtrl_ = orig.pSessionCtrl_;
-        orig.pIsoTpSender_ = nullptr;
-        orig.pSessionCtrl_ = nullptr;
-    }
+    assert(this != &orig);
+    pEcuScript_ = move(orig.pEcuScript_);
+    pIsoTpSender_ = orig.pIsoTpSender_;
+    pSessionCtrl_ = orig.pSessionCtrl_;
+    securityAccessType_ = orig.securityAccessType_;
+    orig.pIsoTpSender_ = nullptr;
+    orig.pSessionCtrl_ = nullptr;
     return *this;
 }
 

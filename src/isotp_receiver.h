@@ -32,7 +32,7 @@ protected:
 private:
     canid_t source_;
     canid_t dest_;
-    const std::string device_;
+    std::string device_;
     int receive_skt_ = -1;
     bool isOnExit_ = false;
 

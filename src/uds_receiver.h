@@ -26,8 +26,8 @@ public:
                 SessionController* pSesCtrl);
     UdsReceiver(const UdsReceiver& orig) = default;
     UdsReceiver& operator =(const UdsReceiver& orig) = default;
-    UdsReceiver(UdsReceiver&& orig);
-    UdsReceiver& operator =(UdsReceiver&& orig);
+    UdsReceiver(UdsReceiver&& orig) noexcept;
+    UdsReceiver& operator =(UdsReceiver&& orig) noexcept;
     virtual ~UdsReceiver() = default;
 
     static std::uint16_t generateSeed();

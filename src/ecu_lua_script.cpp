@@ -81,7 +81,7 @@ EcuLuaScript::EcuLuaScript(const string& ecuIdent, const string& luaScript)
  * 
  * @param orig: the originating instance
  */
-EcuLuaScript::EcuLuaScript(EcuLuaScript&& orig)
+EcuLuaScript::EcuLuaScript(EcuLuaScript&& orig) noexcept
 : lua_state_(move(orig.lua_state_))
 , ecu_ident_(move(orig.ecu_ident_))
 , pSessionCtrl_(orig.pSessionCtrl_)
@@ -100,20 +100,18 @@ EcuLuaScript::EcuLuaScript(EcuLuaScript&& orig)
  * @param orig: the originating instance
  * @return reference to the moved instance
  */
-EcuLuaScript& EcuLuaScript::operator=(EcuLuaScript&& orig)
+EcuLuaScript& EcuLuaScript::operator=(EcuLuaScript&& orig) noexcept
 {
-    if (this != &orig)
-    {
-        lua_state_ = move(orig.lua_state_);
-        ecu_ident_ = move(orig.ecu_ident_);
-        pSessionCtrl_ = orig.pSessionCtrl_;
-        pIsoTpSender_ = orig.pIsoTpSender_;
-        requestId_ = orig.requestId_;
-        responseId_ = orig.responseId_;
-        broadcastId_ = orig.broadcastId_;
-        orig.pIsoTpSender_ = nullptr;
-        orig.pSessionCtrl_ = nullptr;
-    }
+    assert(this != &orig);
+    lua_state_ = move(orig.lua_state_);
+    ecu_ident_ = move(orig.ecu_ident_);
+    pSessionCtrl_ = orig.pSessionCtrl_;
+    pIsoTpSender_ = orig.pIsoTpSender_;
+    requestId_ = orig.requestId_;
+    responseId_ = orig.responseId_;
+    broadcastId_ = orig.broadcastId_;
+    orig.pIsoTpSender_ = nullptr;
+    orig.pSessionCtrl_ = nullptr;
     return *this;
 };
 
