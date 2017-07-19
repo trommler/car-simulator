@@ -118,8 +118,12 @@ void UdsReceiver::proceedReceivedData(const uint8_t* buffer, const size_t num_by
                 //                securityAccess(buffer, num_bytes);
                 break;
                 // TODO: implement all other requests ...
-            default:
-                cerr << "Invalid UDS request received!\n";
+        default:
+            constexpr array<uint8_t, 2> resp = {
+                ERROR,
+                SUBFUNCTION_NOT_SUPPORTED
+            };
+            pIsoTpSender_->sendData(resp.data(), resp.size());
         }
     }
 }
