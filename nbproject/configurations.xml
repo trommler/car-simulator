@@ -61,14 +61,6 @@
         <itemPath>tests/isotp_sender_test.h</itemPath>
         <itemPath>tests/isotp_sender_test_runner.cpp</itemPath>
       </logicalFolder>
-      <logicalFolder name="f2"
-                     displayName="SeleneTest"
-                     projectFiles="true"
-                     kind="TEST">
-        <itemPath>tests/selene_test.cpp</itemPath>
-        <itemPath>tests/selene_test.h</itemPath>
-        <itemPath>tests/selene_test_runner.cpp</itemPath>
-      </logicalFolder>
       <logicalFolder name="f6"
                      displayName="UdsReceiverTest"
                      projectFiles="true"
@@ -142,20 +134,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <folder path="TestFiles/f2">
-        <cTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </cTool>
-        <ccTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f2</output>
-          <linkerLibItems>
-            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
       <folder path="TestFiles/f3">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -281,12 +259,6 @@
       <item path="tests/isotp_sender_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/isotp_sender_test_runner.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/uds_receiver_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -354,20 +326,6 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
-      <folder path="TestFiles/f2">
-        <cTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </cTool>
-        <ccTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f2</output>
-          <linkerLibItems>
-            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
       <folder path="TestFiles/f3">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -494,12 +452,6 @@
       </item>
       <item path="tests/isotp_sender_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="tests/uds_receiver_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/uds_receiver_test.h" ex="false" tool="3" flavor2="0">
@@ -551,20 +503,6 @@
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
-          <linkerLibItems>
-            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f2">
-        <cTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </cTool>
-        <ccTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f2</output>
           <linkerLibItems>
             <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
           </linkerLibItems>
@@ -695,12 +633,6 @@
       <item path="tests/isotp_sender_test.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tests/isotp_sender_test_runner.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="tests/selene_test.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="tests/selene_test.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="tests/selene_test_runner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/uds_receiver_test.cpp" ex="false" tool="1" flavor2="0">
       </item>

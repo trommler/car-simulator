@@ -54,7 +54,6 @@ TESTFILES= \
 	${TESTDIR}/TestFiles/f3 \
 	${TESTDIR}/TestFiles/f4 \
 	${TESTDIR}/TestFiles/f5 \
-	${TESTDIR}/TestFiles/f2 \
 	${TESTDIR}/TestFiles/f6 \
 	${TESTDIR}/TestFiles/f1
 
@@ -66,8 +65,6 @@ TESTOBJECTFILES= \
 	${TESTDIR}/tests/electronic_control_unit_test_runner.o \
 	${TESTDIR}/tests/isotp_sender_test.o \
 	${TESTDIR}/tests/isotp_sender_test_runner.o \
-	${TESTDIR}/tests/selene_test.o \
-	${TESTDIR}/tests/selene_test_runner.o \
 	${TESTDIR}/tests/uds_receiver_test.o \
 	${TESTDIR}/tests/uds_receiver_test_runner.o \
 	${TESTDIR}/tests/utils_test.o \
@@ -166,10 +163,6 @@ ${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/isotp_sender_test.o ${TESTDIR}/tests/i
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f5 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/selene_test.o ${TESTDIR}/tests/selene_test_runner.o ${OBJECTFILES:%.o=%_nomain.o}
-	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc} -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
-
 ${TESTDIR}/TestFiles/f6: ${TESTDIR}/tests/uds_receiver_test.o ${TESTDIR}/tests/uds_receiver_test_runner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc} -o ${TESTDIR}/TestFiles/f6 $^ ${LDLIBSOPTIONS}   `cppunit-config --libs`   
@@ -213,18 +206,6 @@ ${TESTDIR}/tests/isotp_sender_test_runner.o: tests/isotp_sender_test_runner.cpp
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/isotp_sender_test_runner.o tests/isotp_sender_test_runner.cpp
-
-
-${TESTDIR}/tests/selene_test.o: tests/selene_test.cpp 
-	${MKDIR} -p ${TESTDIR}/tests
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/selene_test.o tests/selene_test.cpp
-
-
-${TESTDIR}/tests/selene_test_runner.o: tests/selene_test_runner.cpp 
-	${MKDIR} -p ${TESTDIR}/tests
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I/usr/include/lua5.2 -ISelene/include -Isrc `pkg-config --cflags lua-5.2` -std=c++14 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/selene_test_runner.o tests/selene_test_runner.cpp
 
 
 ${TESTDIR}/tests/uds_receiver_test.o: tests/uds_receiver_test.cpp 
@@ -388,7 +369,6 @@ ${OBJECTDIR}/src/utilities_nomain.o: ${OBJECTDIR}/src/utilities.o src/utilities.
 	    ${TESTDIR}/TestFiles/f3 || true; \
 	    ${TESTDIR}/TestFiles/f4 || true; \
 	    ${TESTDIR}/TestFiles/f5 || true; \
-	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f6 || true; \
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	else  \
