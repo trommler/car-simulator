@@ -175,7 +175,8 @@ void UdsReceiverTest::testProceedReceivedData()
         std::thread asyncThr(&UdsReceiver::proceedReceivedData, &udsReceiver, buffer, num_bytes);
         usleep(4000);
         testReceiver.setExpectedUdsRespData(expAnswer08_2.data(), expAnswer08_2.size());
-        asyncThr.detach();
+        testReceiver.closeReceiver();
+        asyncThr.join();
     }
 
     testReceiver.closeReceiver();
