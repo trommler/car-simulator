@@ -29,6 +29,8 @@ public:
     virtual ~ElectronicControlUnit();
 
 private:
+    std::uint16_t requId_;
+    std::uint16_t respId_;
     SessionController sessionControl_;
     IsoTpSender sender_;
     BroadcastReceiver broadcastReceiver_;

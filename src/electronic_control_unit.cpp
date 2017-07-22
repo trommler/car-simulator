@@ -11,9 +11,11 @@
 using namespace std;
 
 ElectronicControlUnit::ElectronicControlUnit(const string& device, unique_ptr<EcuLuaScript> pEcuScript)
-: sender_(pEcuScript->getResponseId(), pEcuScript->getRequestId(), device)
+: requId_(pEcuScript->getRequestId())
+, respId_(pEcuScript->getResponseId())
+, sender_(respId_, requId_, device)
 , broadcastReceiver_(pEcuScript->getBroadcastId(), device, &udsReceiver_)
-, udsReceiver_(pEcuScript->getResponseId(), pEcuScript->getRequestId(), device, move(pEcuScript), &sender_, &sessionControl_)
+, udsReceiver_(respId_, requId_, device, move(pEcuScript), &sender_, &sessionControl_)
 , udsReceiverThread_(&IsoTpReceiver::readData, &udsReceiver_)
 , broadcastReceiverThread_(&IsoTpReceiver::readData, &broadcastReceiver_)
 {
