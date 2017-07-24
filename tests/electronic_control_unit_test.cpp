@@ -1,6 +1,11 @@
 /**
  * @file electronic_control_unit_test.cpp
  *
+ * These test cases are used to ensure a proper UDS handling from the 
+ * `ElectronocControlUnit`. Since this task is done via ISO-TP, ensure the 
+ * kernel module for virtual CAN is enabled (`sudo modprobe vcan`), the vcan 
+ * address is added (`sudo ip link add dev vcan0 type vcan`) and set up (`sudo 
+ * ip link set up vcan0`) before running these tests. 
  */
 
 #include "electronic_control_unit_test.h"

@@ -17,7 +17,7 @@ void UtilsTest::tearDown() { }
 
 void UtilsTest::testExistsFile()
 {
-    const std::string file_path = "tests/test_config_dir/testscript01.lua";
+    const std::string file_path = "tests/test_config_dir/testscript06.lua";
     bool result = utils::existsFile(file_path);
     CPPUNIT_ASSERT_MESSAGE("File does not exist!", result);
 
@@ -45,7 +45,7 @@ void UtilsTest::testExistsDirectory()
     CPPUNIT_ASSERT_EQUAL(true, result);
 
     // this check is supposed to fail
-    result = utils::existsDirectory("tests/test_config_dir/testscript01.lua");
+    result = utils::existsDirectory("tests/test_config_dir/testscript06.lua");
     CPPUNIT_ASSERT_EQUAL(false, result);
 }
 
@@ -80,8 +80,6 @@ void UtilsTest::testGetConfigFilenames()
 {
     std::vector<std::string> expected = {
         "PCM.lua",
-        "testscript01.lua",
-        "testscript02.lua",
         "testscript03.lua",
         "testscript04.lua",
         "testscript05.lua",

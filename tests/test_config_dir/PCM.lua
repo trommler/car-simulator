@@ -1,6 +1,6 @@
 PCM_1 = {
-    requestId  = 0x100,
-    responseId = 0x200,
+    RequestId  = 0x100,
+    ResponseId = 0x200,
 
     Raw = {
         ["10 03"] = "50 03 00 32 01 F4",
