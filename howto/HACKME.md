@@ -136,3 +136,15 @@ You can choose the easy way with the [NetBeans Set-Up](NetBeansSetUp.md) or the 
 _(Author's note: NetBeans is more comfortable in any way)_
 
 
+## Set-Up on the Raspberry PI
+
+ISO-TP has to be installed on the PI (see above). Connect to the PI via ssh and clone this repository. Then execute `resources/setup-can.sh` to set up the CAN link.
+
+The lua config files go into the folder which is specified in `src/config.h` (by default this is `lua_config`). If you change the lua scripts you will have to restart the whole server.
+
+Build the server with `make`. To start the server, execute one of the binarys in `dist` from the main directory of the repository. The first, and only, command line parameter specifies the device (vcan0 be default). E.g:
+```
+dist/Debug/GNU-Linux/amos-ss17-proj4 can0
+```
+
+To modify the build system best open the project in Netbeans (see above).
